@@ -10,6 +10,14 @@
       "ids": {}
     },
     {
+      "name": "Test2",
+      "type": "block",
+      "sortid": 1,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
       "name": "Cross2",
       "type": "block",
       "sortid": 2,
@@ -24,7 +32,8 @@
     "en_us": {
       "block.pmtinfai.cross2": "Cross2",
       "block.pmtinfai.test": "Test",
-      "block.pmtinfai.jannikblock": "Jannik Block"
+      "block.pmtinfai.jannikblock": "Jannik Block",
+      "block.pmtinfai.test2": "Test2"
     }
   },
   "workspaceSettings": {
