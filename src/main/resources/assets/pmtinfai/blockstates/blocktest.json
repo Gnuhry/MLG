@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "pmtinfai:block/blocktest"
+    }
+  }
+}
