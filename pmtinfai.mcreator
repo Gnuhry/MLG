@@ -2,6 +2,7 @@
   "id_map": {},
   "mod_elements": [
     {
+      "name": "TestBlock",
       "name": "Blocktest",
       "type": "block",
       "sortid": 1,
@@ -14,6 +15,7 @@
   "sound_elements": [],
   "language_map": {
     "en_us": {
+      "block.pmtinfai.testblock": "Test Block"
       "block.pmtinfai.blocktest": "Blocktest"
     }
   },

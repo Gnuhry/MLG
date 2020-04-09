@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "pmtinfai:blocks/cross_block_texture",
+    "particle": "pmtinfai:blocks/cross_block_texture"
+  }
+}
