@@ -8,13 +8,23 @@
       "compiles": true,
       "locked_code": false,
       "ids": {}
+    },
+    {
+      "name": "Cross2",
+      "type": "block",
+      "sortid": 2,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
     }
   ],
   "variable_elements": [],
   "sound_elements": [],
   "language_map": {
     "en_us": {
-      "block.pmtinfai.test": "Test"
+      "block.pmtinfai.cross2": "Cross2",
+      "block.pmtinfai.test": "Test",
+      "block.pmtinfai.jannikblock": "Jannik Block"
     }
   },
   "workspaceSettings": {
