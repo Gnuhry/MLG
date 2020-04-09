@@ -3,6 +3,7 @@
   "mod_elements": [
     {
       "name": "TestBlock",
+      "name": "Blocktest",
       "type": "block",
       "sortid": 1,
       "compiles": true,
@@ -15,6 +16,7 @@
   "language_map": {
     "en_us": {
       "block.pmtinfai.testblock": "Test Block"
+      "block.pmtinfai.blocktest": "Blocktest"
     }
   },
   "workspaceSettings": {
