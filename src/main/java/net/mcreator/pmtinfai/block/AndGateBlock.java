@@ -42,7 +42,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraft.block.RepeaterBlock;
 
-import net.mcreator.pmtinfai.procedures.AndGateRedstoneOnProcedure;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 
 import java.util.List;
@@ -51,6 +50,7 @@ import com.mojang.authlib.properties.Property;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.block.RedstoneBlock;
 
 @PMTINFAIElements.ModElement.Tag
 public class AndGateBlock extends PMTINFAIElements.ModElement {
@@ -71,13 +71,14 @@ public class AndGateBlock extends PMTINFAIElements.ModElement {
 		public int output = 0;
 		public CustomBlock() {
 			super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1f, 10f).lightValue(0));
-			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
+			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false);
 			setRegistryName("andgate");
 		}
 
 		@Override
 		protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 			builder.add(FACING);
+			builder.add(POWERED);
 		}
 
 		public BlockState rotate(BlockState state, Rotation rot) {
@@ -95,6 +96,21 @@ public class AndGateBlock extends PMTINFAIElements.ModElement {
 
 		@Override
 		public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+			if(side==Direction.UP||side==Direction.DOWN)
+				return false;
+				
+			if(state.get(FACING)==Direction.NORTH&&side==Direction.SOUTH){
+				return false;
+			}
+			if(state.get(FACING)==Direction.SOUTH&&side==Direction.NORTH){
+				return false;
+			}
+			if(state.get(FACING)==Direction.WEST&&side==Direction.EAST){
+				return false;
+			}
+			if(state.get(FACING)==Direction.EAST&&side==Direction.WEST){
+				return false;
+			}
 			return true;
 		}
 
@@ -105,7 +121,7 @@ public class AndGateBlock extends PMTINFAIElements.ModElement {
 
 		@Override
 		public int getWeakPower(BlockState blockState,IBlockReader blockAccess,BlockPos pos,Direction side){
-				if(Direction.EAST == side)
+				if(blockState.get(FACING) == side)
 					return output;
 				return 0;
 		}
@@ -137,38 +153,43 @@ public class AndGateBlock extends PMTINFAIElements.ModElement {
 		@Override
 		public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
 			super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			if (world.getRedstonePowerFromNeighbors(new BlockPos(x, y, z)) > 0) {
-				
-			} else {
+			if(!neighborBlock.canProvidePower(state))
+				return;
+			BlockPos input1_pos = pos.north();
+			BlockPos input2_pos = pos.south();
+			if(state.get(FACING) == Direction.NORTH||state.get(FACING) == Direction.SOUTH){
+				input1_pos = pos.west();
+				input2_pos = pos.east();
 			}
-			MinecraftServer mcserv = ServerLifecycleHooks.getCurrentServer();
-				//if (mcserv != null)
-					//mcserv.getPlayerList().sendMessage(new StringTextComponent("REDSTONE ON"));
+			int input1_value=IsRedstonePowered(world.getBlockState(input1_pos));
+			int input2_value=IsRedstonePowered(world.getBlockState(input2_pos));
+			if(input1_value>0&&input2_value>0){
+				output=input1_value;
+				if(input1_value<input2_value){
+					output=input2_value;}
+					}
+			else{
+				output=0;}
 
-				BlockState blockstateNorth = world.getBlockState(new BlockPos(x, y, z-1));
-				BlockState blockstateSouth = world.getBlockState(new BlockPos(x, y, z+1));
-				int northPower = blockstateNorth.has(BlockStateProperties.POWER_0_15) ? blockstateNorth.get(BlockStateProperties.POWER_0_15) : 0;
-				int southPower = blockstateSouth.has(BlockStateProperties.POWER_0_15) ? blockstateSouth.get(BlockStateProperties.POWER_0_15) : 0;
-				output = (northPower>0 && southPower>0)  ? 15 : 0;
-
-				//if (mcserv != null)
-					//mcserv.getPlayerList().sendMessage(new StringTextComponent("North: " + northPower + "     South: " + southPower + " = " + output));
-
-				world.notifyNeighbors(pos, this);
+			if(output>0){
+                world.setBlockState(pos, world.getBlockState(pos).with(POWERED, Boolean.getBoolean("true")), 2);
+            } else {
+                world.setBlockState(pos, world.getBlockState(pos).with(POWERED, Boolean.getBoolean("false")), 2);
+            }
 			
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				//world.setBlockState(pos, world.getBlockState(pos).withProperty(Property.POWE, Boolean.valueOf(true)),1);
-				//AndGateRedstoneOnProcedure.executeProcedure($_dependencies);
-				
-			}
+			
+		}
+
+		public int IsRedstonePowered(BlockState bs){
+			if(bs.has(BlockStateProperties.POWER_0_15)){
+				return bs.get(BlockStateProperties.POWER_0_15)-1;}
+			if(bs.has(BlockStateProperties.POWERED) && bs.get(BlockStateProperties.POWERED)){
+				return 15;}
+			if(bs.has(BlockStateProperties.LIT) && bs.get(BlockStateProperties.LIT)){
+				return 15;}
+			//if(bs.getBlock().instanceOf(RedstoneBlock))
+			//	return 15;
+			return 0;
 		}
 	}
 }
