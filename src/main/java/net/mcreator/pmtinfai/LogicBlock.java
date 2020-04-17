@@ -3,7 +3,6 @@ package net.mcreator.pmtinfai;
 
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.World;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Rotation;
@@ -18,6 +17,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.RedstoneWireBlock;
+import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockState;
@@ -63,7 +63,7 @@ public abstract class LogicBlock extends Block {
 
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return (!(side == Direction.UP || side == Direction.DOWN || state.get(FACING) == side.getOpposite()));
+		return (state.get(FACING) == side || state.get(FACING).rotateY() == side || state.get(FACING).rotateYCCW() == side);
 	}
 
 	@Override
@@ -78,23 +78,28 @@ public abstract class LogicBlock extends Block {
 
 	@Override
 	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		return blockState.get(FACING) == side ? blockState.get(POWER) : 0;
+		return blockState.getWeakPower(blockAccess, pos, side);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
 		super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
-		world.setBlockState(pos, world.getBlockState(pos).with(POWER, getPowerOnSides(world, pos, state)), 2);
 		Direction direction = state.get(FACING);
 		BlockPos blockpos = pos.offset(direction.getOpposite());
 		if (net.minecraftforge.event.ForgeEventFactory
 				.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled())
 			return;
+		world.setBlockState(pos, world.getBlockState(pos).with(POWER, getPowerOnSides(world, pos, state)), 2);
 		world.neighborChanged(blockpos, this, pos);
 		world.notifyNeighborsOfStateExcept(blockpos, this, direction);
 	}
 
-	protected int getPowerOnSides(IWorldReader worldIn, BlockPos pos, BlockState state) {
+	@Override
+	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+		this.neighborChanged(state, worldIn, pos, null, null, false);
+	}
+
+	protected int getPowerOnSides(World worldIn, BlockPos pos, BlockState state) {
 		Direction direction = state.get(FACING);
 		Direction direction1 = direction.rotateY();
 		Direction direction2 = direction.rotateYCCW();
@@ -102,23 +107,40 @@ public abstract class LogicBlock extends Block {
 				this.getPowerOnSide(worldIn, pos.offset(direction2), direction2));
 	}
 
-	protected int getPowerOnSide(IWorldReader worldIn, BlockPos pos, Direction side) {
+	protected int getPowerOnSide(World worldIn, BlockPos pos, Direction side) {
 		BlockState blockstate = worldIn.getBlockState(pos);
 		Block block = blockstate.getBlock();
 		if (this.isAlternateInput(blockstate)) {
 			if (block == Blocks.REDSTONE_BLOCK) {
 				return 15;
+			} else if (block == Blocks.DAYLIGHT_DETECTOR) {
+				return block.getWeakPower(blockstate, null, pos, side);
+				// } else if (block == Blocks.TRAPPED_CHEST) {
+				// return block.getStrongPower(blockstate, null, pos, side);
+				// Don't work ------------------------
+			} else if (IsPreasurePlate(block) && blockstate.get(PressurePlateBlock.POWERED)) {
+				return block.getWeakPower(blockstate, null, pos, side);
 			} else {
 				return block == Blocks.REDSTONE_WIRE ? blockstate.get(RedstoneWireBlock.POWER) : worldIn.getStrongPower(pos, side);
 			}
-		} else {
-			return 0;
+		} else if (blockstate.isSolid()) {
+			if (worldIn.isBlockPowered(pos)) {
+				return worldIn.getRedstonePower(pos, side);
+			}
 		}
+		return 0;
 	}
 
 	protected boolean isAlternateInput(BlockState state) {
 		return state.canProvidePower();
 	}
 
-	public abstract int logic(int first_value, int second_value);
+	protected abstract int logic(int first_value, int second_value);
+
+	private boolean IsPreasurePlate(Block block) {
+		return block == Blocks.STONE_PRESSURE_PLATE || block == Blocks.OAK_PRESSURE_PLATE || block == Blocks.SPRUCE_PRESSURE_PLATE
+				|| block == Blocks.BIRCH_PRESSURE_PLATE || block == Blocks.JUNGLE_PRESSURE_PLATE || block == Blocks.ACACIA_PRESSURE_PLATE
+				|| block == Blocks.DARK_OAK_PRESSURE_PLATE || block == Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE
+				|| block == Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE;
+	}
 }

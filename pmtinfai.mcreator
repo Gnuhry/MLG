@@ -2,17 +2,9 @@
   "id_map": {},
   "mod_elements": [
     {
-      "name": "AndGate",
+      "name": "AndGateBlock",
       "type": "block",
       "sortid": 1,
-      "compiles": true,
-      "locked_code": true,
-      "ids": {}
-    },
-    {
-      "name": "TestInterface",
-      "type": "block",
-      "sortid": 3,
       "compiles": true,
       "locked_code": true,
       "ids": {}
@@ -22,8 +14,7 @@
   "sound_elements": [],
   "language_map": {
     "en_us": {
-      "block.pmtinfai.andgate": "And Gate",
-      "block.pmtinfai.testinterface": "Test Interface"
+      "block.pmtinfai.andgateblock": "And Gate Block"
     }
   },
   "workspaceSettings": {

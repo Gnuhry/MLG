@@ -5,12 +5,12 @@
     "texture": "side_gate",
     "textureTop": "arrow_up",
     "textureLeft": "input_gate",
-    "textureFront": "input_gate",
+    "textureFront": "side_gate",
     "textureRight": "input_gate",
     "textureBack": "output_gate",
     "renderType": 10,
     "customModelName": "Normal",
-    "rotationMode": 1,
+    "rotationMode": 0,
     "hasTransparency": false,
     "transparencyType": "SOLID",
     "mx": 0.0,
@@ -20,7 +20,7 @@
     "My": 1.0,
     "Mz": 1.0,
     "faceShape": "SOLID",
-    "name": "And Gate",
+    "name": "And Gate Block",
     "specialInfo": [],
     "hardness": 1.0,
     "resistance": 10.0,
@@ -37,7 +37,7 @@
     "isBeaconBase": false,
     "enchantPowerBonus": 0.0,
     "plantsGrowOn": false,
-    "canProvidePower": true,
+    "canProvidePower": false,
     "lightOpacity": 255,
     "material": {
       "value": "ROCK"
@@ -56,7 +56,7 @@
     "reactionToPushing": "NORMAL",
     "isNotColidable": false,
     "soundOnStep": {
-      "value": "STONE"
+      "value": "GROUND"
     },
     "luminance": 0.0,
     "unbreakable": false,
@@ -77,12 +77,6 @@
     "inventoryDropWhenDestroyed": true,
     "inventoryComparatorPower": true,
     "inventoryOutSlotIDs": [],
-    "onBlockAdded": {
-      "name": "AndGateRedstoneOn"
-    },
-    "onNeighbourBlockChanges": {
-      "name": "AndGateRedstoneOn"
-    },
     "spawnWorldTypes": [],
     "restrictionBiomes": [],
     "blocksToReplace": [

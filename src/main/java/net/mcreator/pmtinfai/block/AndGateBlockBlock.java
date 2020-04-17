@@ -12,11 +12,11 @@ import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.LogicBlock;
 
 @PMTINFAIElements.ModElement.Tag
-public class TestInterfaceBlock extends PMTINFAIElements.ModElement {
-	@ObjectHolder("pmtinfai:testinterface")
+public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
+	@ObjectHolder("pmtinfai:andgateblock")
 	public static final Block block = null;
-	public TestInterfaceBlock(PMTINFAIElements instance) {
-		super(instance, 3);
+	public AndGateBlockBlock(PMTINFAIElements instance) {
+		super(instance, 1);
 	}
 
 	@Override
@@ -26,15 +26,11 @@ public class TestInterfaceBlock extends PMTINFAIElements.ModElement {
 	}
 	public static class CustomBlock extends LogicBlock {
 		public CustomBlock() {
-			setRegistryName("testinterface");
+			setRegistryName("andgateblock");
 		}
 
-		public int logic(int first_value, int second_value) {
-			if (first_value <= 0 || second_value <= 0)
-				return 0;
-			if (first_value < second_value)
-				return second_value;
-			return first_value;
+		protected int logic(int first_value, int second_value){
+			return first_value==0||second_value==0 ? 0 : first_value < second_value ? second_value : first_value;
 		}
 	}
 }

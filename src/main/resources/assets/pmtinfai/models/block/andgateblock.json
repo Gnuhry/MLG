@@ -3,10 +3,10 @@
   "textures": {
     "down": "pmtinfai:blocks/side_gate",
     "up": "pmtinfai:blocks/arrow_up",
-    "north": "pmtinfai:blocks/input_gate",
-    "east": "pmtinfai:blocks/output_gate",
-    "south": "pmtinfai:blocks/side_gate",
-    "west": "pmtinfai:blocks/output_gate",
+    "north": "pmtinfai:blocks/side_gate",
+    "east": "pmtinfai:blocks/input_gate",
+    "south": "pmtinfai:blocks/output_gate",
+    "west": "pmtinfai:blocks/input_gate",
     "particle": "pmtinfai:blocks/side_gate"
   }
 }
