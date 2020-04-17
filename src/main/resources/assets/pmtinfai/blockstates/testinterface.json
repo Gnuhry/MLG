@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "pmtinfai:block/testinterface"
+    },
+    "facing=east": {
+      "model": "pmtinfai:block/testinterface",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "pmtinfai:block/testinterface",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "pmtinfai:block/testinterface",
+      "y": 270
+    }
+  }
+}

@@ -71,7 +71,7 @@ public class AndGateBlock extends PMTINFAIElements.ModElement {
 		public int output = 0;
 		public CustomBlock() {
 			super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1f, 10f).lightValue(0));
-			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false);
+			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
 			setRegistryName("andgate");
 		}
 
