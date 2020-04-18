@@ -10,7 +10,7 @@
     "textureBack": "output_gate",
     "renderType": 10,
     "customModelName": "Normal",
-    "rotationMode": 0,
+    "rotationMode": 1,
     "hasTransparency": false,
     "transparencyType": "SOLID",
     "mx": 0.0,
@@ -26,7 +26,7 @@
     "resistance": 10.0,
     "hasGravity": false,
     "creativeTab": {
-      "value": "REDSTONE"
+      "value": "CUSTOM:LogicBlocks"
     },
     "destroyTool": "Not specified",
     "affectedBySilkTouch": true,

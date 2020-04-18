@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "pmtinfai:block/andgateblock"
+    },
+    "facing=east": {
+      "model": "pmtinfai:block/andgateblock",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "pmtinfai:block/andgateblock",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "pmtinfai:block/andgateblock",
+      "y": 270
     }
   }
 }

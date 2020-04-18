@@ -2,9 +2,17 @@
   "id_map": {},
   "mod_elements": [
     {
+      "name": "LogicBlocks",
+      "type": "tab",
+      "sortid": 2,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
       "name": "AndGateBlock",
       "type": "block",
-      "sortid": 1,
+      "sortid": 3,
       "compiles": true,
       "locked_code": true,
       "ids": {}
@@ -14,6 +22,7 @@
   "sound_elements": [],
   "language_map": {
     "en_us": {
+      "itemGroup.tablogicblocks": "Logic Block",
       "block.pmtinfai.andgateblock": "And Gate Block"
     }
   },
