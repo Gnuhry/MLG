@@ -5,9 +5,9 @@ loaderVersion="[28,)"
 modId="pmtinfai"
 version="1.0.0"
 displayName="PM_TINF19AI2"
-credits=""
-displayURL=""
-authors="Gnuh"
+credits="Created using mod maker MCreator - https://mcreator.net/about"
+displayURL="https://mcreator.net"
+authors="Gnuh, MCreator"
 
 [[dependencies.pmtinfai]]
     modId="minecraft"

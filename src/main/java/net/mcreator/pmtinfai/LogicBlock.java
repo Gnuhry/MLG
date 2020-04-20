@@ -16,16 +16,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.RedstoneWireBlock;
-import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Block;
 
 import java.util.List;
 import java.util.Collections;
-import net.minecraft.world.IWorld;
 
 public abstract class LogicBlock extends Block {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
@@ -37,16 +33,13 @@ public abstract class LogicBlock extends Block {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		builder.add(POWER);
+		builder.add(FACING).add(POWER);
 	}
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 		List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-		if (!dropsOriginal.isEmpty())
-			return dropsOriginal;
-		return Collections.singletonList(new ItemStack(this, 1));
+		return !dropsOriginal.isEmpty() ?  dropsOriginal :  Collections.singletonList(new ItemStack(this, 1));
 	}
 
 	public BlockState rotate(BlockState state, Rotation rot) {
@@ -82,25 +75,22 @@ public abstract class LogicBlock extends Block {
 		return blockState.getWeakPower(blockAccess, pos, side);
 	}
 
-	
-   @Deprecated
-   public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-      if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
-         world.removeTileEntity(pos);
-      }
-      Direction direction = state.get(FACING);
+	@Deprecated
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
+			world.removeTileEntity(pos);
+		}
+		Direction direction = state.get(FACING);
 		BlockPos blockpos = pos.offset(direction.getOpposite());
-		BlockState n = world.getBlockState(blockpos); 
-		if((!n.getBlock().canProvidePower(n))&&n.isSolid())
+		BlockState n = world.getBlockState(blockpos);
+		if ((!n.getBlock().canProvidePower(n)) && n.isSolid())
 			world.notifyNeighborsOfStateExcept(blockpos, this, direction);
-   }
-   
-	/*@Override
-	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state) {
-		System.out.println("Test");
-   	}*/
+	}
 
-
+	/*
+	 * @Override public void onPlayerDestroy(IWorld worldIn, BlockPos pos,
+	 * BlockState state) { System.out.println("Test"); }
+	 */
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
 		super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
@@ -110,9 +100,9 @@ public abstract class LogicBlock extends Block {
 				.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled())
 			return;
 		world.setBlockState(pos, world.getBlockState(pos).with(POWER, getPowerOnSides(world, pos, state)), 2);
-		world.neighborChanged(blockpos, this, pos); 
-		BlockState n = world.getBlockState(blockpos); 
-		if((!n.getBlock().canProvidePower(n))&&n.isSolid())
+		world.neighborChanged(blockpos, this, pos);
+		BlockState n = world.getBlockState(blockpos);
+		if ((!n.getBlock().canProvidePower(n)) && n.isSolid())
 			world.notifyNeighborsOfStateExcept(blockpos, this, direction);
 	}
 
@@ -130,39 +120,8 @@ public abstract class LogicBlock extends Block {
 	}
 
 	protected int getPowerOnSide(World worldIn, BlockPos pos, Direction side) {
-		BlockState blockstate = worldIn.getBlockState(pos);
-		Block block = blockstate.getBlock();
-		if (this.isAlternateInput(blockstate)) {
-			if (block == Blocks.REDSTONE_BLOCK) {
-				return 15;
-			} else if (block == Blocks.DAYLIGHT_DETECTOR) {
-				return block.getWeakPower(blockstate, null, pos, side);
-				// } else if (block == Blocks.TRAPPED_CHEST) {
-				// return block.getStrongPower(blockstate, null, pos, side);
-				// Don't work ------------------------
-			} else if (IsPreasurePlate(block) && blockstate.get(PressurePlateBlock.POWERED)) {
-				return block.getWeakPower(blockstate, null, pos, side);
-			} else {
-				return block == Blocks.REDSTONE_WIRE ? blockstate.get(RedstoneWireBlock.POWER) : worldIn.getStrongPower(pos, side);
-			}
-		} else if (blockstate.isSolid()) {
-			if (worldIn.isBlockPowered(pos)) {
-				return worldIn.getRedstonePower(pos, side);
-			}
-		}
-		return 0;
-	}
-
-	protected boolean isAlternateInput(BlockState state) {
-		return state.canProvidePower();
+		return (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid()) ? worldIn.getRedstonePower(pos, side) : 0;
 	}
 
 	protected abstract int logic(int first_value, int second_value);
-
-	private boolean IsPreasurePlate(Block block) {
-		return block == Blocks.STONE_PRESSURE_PLATE || block == Blocks.OAK_PRESSURE_PLATE || block == Blocks.SPRUCE_PRESSURE_PLATE
-				|| block == Blocks.BIRCH_PRESSURE_PLATE || block == Blocks.JUNGLE_PRESSURE_PLATE || block == Blocks.ACACIA_PRESSURE_PLATE
-				|| block == Blocks.DARK_OAK_PRESSURE_PLATE || block == Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE
-				|| block == Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE;
-	}
 }
