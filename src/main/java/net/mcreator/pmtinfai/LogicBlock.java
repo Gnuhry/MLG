@@ -25,6 +25,7 @@ import net.minecraft.block.Block;
 
 import java.util.List;
 import java.util.Collections;
+import net.minecraft.world.IWorld;
 
 public abstract class LogicBlock extends Block {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
@@ -81,6 +82,25 @@ public abstract class LogicBlock extends Block {
 		return blockState.getWeakPower(blockAccess, pos, side);
 	}
 
+	
+   @Deprecated
+   public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+      if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
+         world.removeTileEntity(pos);
+      }
+      Direction direction = state.get(FACING);
+		BlockPos blockpos = pos.offset(direction.getOpposite());
+		BlockState n = world.getBlockState(blockpos); 
+		if((!n.getBlock().canProvidePower(n))&&n.isSolid())
+			world.notifyNeighborsOfStateExcept(blockpos, this, direction);
+   }
+   
+	/*@Override
+	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state) {
+		System.out.println("Test");
+   	}*/
+
+
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
 		super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
@@ -90,8 +110,10 @@ public abstract class LogicBlock extends Block {
 				.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled())
 			return;
 		world.setBlockState(pos, world.getBlockState(pos).with(POWER, getPowerOnSides(world, pos, state)), 2);
-		world.neighborChanged(blockpos, this, pos);
-		world.notifyNeighborsOfStateExcept(blockpos, this, direction);
+		world.neighborChanged(blockpos, this, pos); 
+		BlockState n = world.getBlockState(blockpos); 
+		if((!n.getBlock().canProvidePower(n))&&n.isSolid())
+			world.notifyNeighborsOfStateExcept(blockpos, this, direction);
 	}
 
 	@Override
