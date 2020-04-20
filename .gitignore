@@ -12,3 +12,7 @@ run/
 # MCreator generator ignores
 *.project
 *.classpath
+*.mcreator/workspaceBackups
+*.mcreator/gradleCache
+*.mcreator/setupInfo
+
