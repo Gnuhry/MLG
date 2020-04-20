@@ -9,6 +9,8 @@ import net.minecraft.block.Block;
 
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.mcreator.pmtinfai.PMTINFAIElements;
+import java.util.Collections;
+import java.util.List;
 
 @PMTINFAIElements.ModElement.Tag
 public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
@@ -29,8 +31,8 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 			setRegistryName("andgateblock");
 		}
 
-		protected int logic(int first_value, int second_value) {
-			return first_value == 0 || second_value == 0 ? 0 : first_value < second_value ? second_value : first_value;
+		protected int logic(List<Integer> inputs) {
+			return inputs.contains(0) ? 0 : Collections.max(inputs);
 		}
 	}
 }

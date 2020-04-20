@@ -22,10 +22,15 @@ import net.minecraft.block.Block;
 
 import java.util.List;
 import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public abstract class LogicBlock extends Block {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 	public static final IntegerProperty POWER = BlockStateProperties.POWER_0_15;
+	private ArrayList<Direction> directions = new ArrayList();
+	
 	public LogicBlock() {
 		super(Block.Properties.create(Material.REDSTONE_LIGHT).sound(SoundType.STEM).hardnessAndResistance(1f, 10f).lightValue(0));
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWER, Integer.valueOf(0)));
@@ -57,7 +62,7 @@ public abstract class LogicBlock extends Block {
 
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return (state.get(FACING) == side || state.get(FACING).rotateY() == side || state.get(FACING).rotateYCCW() == side);
+		return (state.get(FACING) == side || directions.contains(side.getOpposite()));
 	}
 
 	@Override
@@ -109,19 +114,25 @@ public abstract class LogicBlock extends Block {
 	@Override
 	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		this.neighborChanged(state, worldIn, pos, null, null, false);
+		directions.clear();
+		
+		//directions.add(state.get(FACING).rotateY());
+		directions.add(state.get(FACING).rotateYCCW());
+		directions.add(state.get(FACING));
 	}
 
 	protected int getPowerOnSides(World worldIn, BlockPos pos, BlockState state) {
-		Direction direction = state.get(FACING);
-		Direction direction1 = direction.rotateY();
-		Direction direction2 = direction.rotateYCCW();
-		return logic(this.getPowerOnSide(worldIn, pos.offset(direction1), direction1),
-				this.getPowerOnSide(worldIn, pos.offset(direction2), direction2));
+		ArrayList<Integer> inputs = new ArrayList();
+		for(Direction direct : directions) {
+			inputs.add(this.getPowerOnSide(worldIn, pos.offset(direct), direct));
+		}
+
+		return inputs.size()<=0 ? 0 : logic(inputs);
 	}
 
 	protected int getPowerOnSide(World worldIn, BlockPos pos, Direction side) {
 		return (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid()) ? worldIn.getRedstonePower(pos, side) : 0;
 	}
 
-	protected abstract int logic(int first_value, int second_value);
+	protected abstract int logic(List<Integer> inputs);
 }
