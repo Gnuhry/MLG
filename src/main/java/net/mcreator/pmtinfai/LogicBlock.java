@@ -46,6 +46,7 @@ public abstract class LogicBlock extends Block {
 		List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 		if (!dropsOriginal.isEmpty())
 			return dropsOriginal;
+			//TODO:
 		return Collections.singletonList(new ItemStack(this, 1));
 	}
 
