@@ -124,9 +124,11 @@ public abstract class LogicBlock extends Block {
 		if(neighborBlock instanceof LogicBlock){
 			if(world.getBlockState(fromPos).get(FACING)==state.get(FACING).getOpposite()){//connected
 				System.out.println("Connected");
+				
 			}
 			else{ //maybe input
 				System.out.println("INPUT");
+				
 			}
 		}
 		else{
@@ -173,6 +175,16 @@ public abstract class LogicBlock extends Block {
 					break;
 			}
 	}
+	private void claerInput(Direction d, BlockPos pos, World world) {
+		directions.clear();
+		if (!RedstoneValue){
+					world.setBlockState(pos, world.getBlockState(pos).with(INPUT1, InputSide.NONE), 2);
+					world.setBlockState(pos, world.getBlockState(pos).with(INPUT2, InputSide.NONE), 2);
+					world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.NONE), 2);
+			}
+	}
+
+
 
 	private void SetInput_OutputSide(BlockPos pos, World world, ArrayList<Integer> input, int output) {
 		BlockState help = world.getBlockState(pos);
