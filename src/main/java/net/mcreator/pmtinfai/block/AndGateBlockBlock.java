@@ -28,6 +28,7 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 	}
 	public static class CustomBlock extends net.mcreator.pmtinfai.LogicBlock {
 		public CustomBlock() {
+			super();
 			setRegistryName("andgateblock");
 		}
 
