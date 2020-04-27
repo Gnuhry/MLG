@@ -46,7 +46,7 @@ public abstract class LogicBlock extends Block {
 	// weitere Variablen
 	private static final boolean RedstoneValue = true; // Angabe ob RedstoneValue angezeigt werden soll oder RedstoneSide
 	private static boolean aa = false, ab = false, ac = false, ad = false; // boolean Variablen zum Abfangen von Multithreading
-	private ArrayList<Direction> input_directions = new ArrayList<>(); // Speichern der Input Directions
+	private static ArrayList<Direction> input_directions = new ArrayList<>(); // Speichern der Input Directions
 	
 	// Konstrukter
 	public LogicBlock() {
@@ -136,7 +136,7 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		return blockState.getWeakPower(blockAccess, pos, side);
+		return this.getWeakPower(blockState, blockAccess, pos, side);
 	}
 
 	/**
@@ -199,13 +199,7 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		System.out.println(side == null);
-		if (side != null) {
-			System.out.println(state.get(FACING) == side);
-			System.out.println(input_directions.contains(side));
-		}
-		System.out.println("---------------------");
-		return side == null ? false : (state.get(FACING) == side || input_directions.contains(side));
+		return side == null ? false : (state.get(FACING) == side || input_directions.contains(side.getOpposite()));
 	}
 
 	/**
@@ -305,11 +299,11 @@ public abstract class LogicBlock extends Block {
 		}
 		if (state.has(HorizontalBlock.HORIZONTAL_FACING)) {
 			direction = state.get(HorizontalBlock.HORIZONTAL_FACING);
-			if (net.minecraftforge.event.ForgeEventFactory
+			/*if (net.minecraftforge.event.ForgeEventFactory
 					.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled()) {
 				ac = false;
 				return;
-			}
+			}*/
 		}
 		if (pos != null && fromPos != null)
 			System.out.println(pos.toString() + ", " + fromPos.toString());
@@ -478,7 +472,7 @@ public abstract class LogicBlock extends Block {
 		ab = true;
 		ArrayList<Integer> inputs = new ArrayList();
 		for (Direction direct : input_directions) {
-			inputs.add(this.getPowerOnSide(world, pos, direct));
+			inputs.add(this.getPowerOnSide2(world, pos, direct));
 		}
 		ab = false;
 		if (inputs.size() <= 0)
@@ -497,17 +491,17 @@ public abstract class LogicBlock extends Block {
 	 * @param side
 	 *            Seite an der der Redstonewert eingegeben wird
 	 */
-	/*protected int getPowerOnSide(World world, BlockPos pos, Direction side) {
-		BlockPos redstoneBlockPos = pos.offset(side.getOpposite());
+	protected int getPowerOnSide(World world, BlockPos pos, Direction side) {
+		BlockPos redstoneBlockPos = pos.offset(side);
 		BlockState redstoneBlockState = world.getBlockState(redstoneBlockPos);
 		Block redstoneBlock = redstoneBlockState.getBlock();
 
-		if(redstoneBlock==Blocks.REDSTONE_BLOCK){
+		if(redstoneBlock==Blocks.REDSTONE_BLOCK||(redstoneBlockState.has(BlockStateProperties.POWERED)&&redstoneBlockState.get(BlockStateProperties.POWERED))){
 			return 15;
 		} else if(redstoneBlock==Blocks.REDSTONE_WIRE){
 			return redstoneBlockState.get(RedstoneWireBlock.POWER);
 		} else if(redstoneBlockState.canProvidePower()){
-			
+			return Math.max(world.getRedstonePower(pos, side.getOpposite()),world.getStrongPower(redstoneBlockPos));
 		} else if(redstoneBlockState.isSolid()){
 			return world.isBlockPowered(redstoneBlockPos) ? world.getRedstonePower(pos, side) : 0;
 		} else{
@@ -515,9 +509,9 @@ public abstract class LogicBlock extends Block {
 		}
 		//if (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid())
 		//return (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid()) ? worldIn.getRedstonePower(pos, side) : 0;
-	}*/
+	}
 
-	protected int getPowerOnSide(World worldIn, BlockPos pos, Direction side) {
+	protected int getPowerOnSide2(World worldIn, BlockPos pos, Direction side) {
         Direction direction = side;
           BlockPos blockpos = pos.offset(direction);
           int i = worldIn.getRedstonePower(blockpos, direction);
