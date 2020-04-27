@@ -4,31 +4,50 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Direction;
 
 public enum InputSide implements IStringSerializable {
-   WEST("west"),
-   EAST("east"),
-   NORTH("north"),
-   SOUTH("south"),
-   NONE("none");
-   
+	//Enum
+	WEST("west"), EAST("east"), NORTH("north"), SOUTH("south"), NONE("none");
 
-   private final String name;
+	//Variablen
+	private final String name;
 
-   private InputSide(String name) {
-      this.name = name;
-   }
+	/**
+	 * Konstruktor
+	 */
+	private InputSide(String name) {
+		this.name = name;
+	}
 
-   public String toString() {
-      return this.getName();
-   }
+	/**
+	 * Wandelt das Enum in einen String
+	 * @return Name des Enums
+	 */
+	public String toString() {
+		return this.getName();
+	}
 
-   public String getName() {
-      return this.name;
-   }
-   public boolean isActive() {
-      return this != NONE;
-   }
-   public static InputSide GetEnum(Direction d){
-   		if (d == Direction.EAST)
+	/**
+	 * Gibt den Namen zurück
+	 * @return Name des Enums
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * Abfrage ob Enum Aktiv ist
+	 * @return Aktiv wenn die InputSeite existiert
+	 */
+	public boolean isActive() {
+		return this != NONE;
+	}
+
+	/**
+	 * Wandelt die Direction in das Enum um
+	 * @param d Direction zum Umwandeln
+	 * @return zugehöriges Enum
+	 */
+	public static InputSide GetEnum(Direction d) {
+		if (d == Direction.EAST)
 			return InputSide.EAST;
 		if (d == Direction.WEST)
 			return InputSide.WEST;
@@ -37,6 +56,5 @@ public enum InputSide implements IStringSerializable {
 		if (d == Direction.SOUTH)
 			return InputSide.SOUTH;
 		return InputSide.NONE;
-
-   }
+	}
 }

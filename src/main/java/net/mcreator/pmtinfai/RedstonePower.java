@@ -3,42 +3,51 @@ package net.mcreator.pmtinfai;
 import net.minecraft.util.IStringSerializable;
 
 public enum RedstonePower implements IStringSerializable {
-ZERO("0"),
-ONE("1"),
-TWO("2"),
-THREE("3"),
-FOUR("4"),
-FIVE("5"),
-SIX("6"),
-SEVEN("7"),
-EIGHT("8"),
-NINE("9"),
-TEN("10"),
-ELEVEN("11"),
-TWELVE("12"),
-THIRTEEN("13"),
-FOURTEEN("14"),
-FIFTEEN("15");
+	// Enums
+	NONE("none"), ZERO("0"), ONE("1"), TWO("2"), THREE("3"), FOUR("4"), FIVE("5"), SIX("6"), SEVEN("7"), EIGHT("8"), NINE("9"), TEN("10"), 
+	ELEVEN("11"), TWELVE("12"), THIRTEEN("13"), FOURTEEN("14"), FIFTEEN("15");
+	
+	//Variablen
+	private final String name;
 
+	/**
+	 * Konstruktor
+	 */
+	private RedstonePower(String name) {
+		this.name = name;
+	}
 
-   private final String name;
+	/**
+	 * Wandelt das Enum in einen String
+	 * @return Name des Enums
+	 */
+	public String toString() {
+		return this.getName();
+	}
+	
+	/**
+	 * Gibt den Namen zurück
+	 * @return Name des Enums
+	 */
+	public String getName() {
+		return this.name;
+	}
 
-   private RedstonePower(String name) {
-      this.name = name;
-   }
+	/**
+	 * Abfrage ob Enum Aktiv ist
+	 * @return Aktiv wenn der Redstonewert existiert und größer als 0 ist
+	 */
+	public boolean isActive() {
+		return this != ZERO&& this != NONE;
+	}
 
-   public String toString() {
-      return this.getName();
-   }
-
-   public String getName() {
-      return this.name;
-   }
-   public boolean isActive() {
-      return this != ZERO;
-   }
-   public static RedstonePower GetEnum(int x){
-   	switch (x) {
+	/**
+	 * Wandelt den Integer in das Enum um
+	 * @param x RedstoneValue
+	 * @return zugehöriges Enum
+	 */
+	public static RedstonePower GetEnum(int x) {
+		switch (x) {
 			case 1 :
 				return RedstonePower.ONE;
 			case 2 :
@@ -72,6 +81,5 @@ FIFTEEN("15");
 			default :
 				return RedstonePower.ZERO;
 		}
-
-  }
+	}
 }
