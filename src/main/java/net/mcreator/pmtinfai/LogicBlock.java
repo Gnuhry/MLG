@@ -44,7 +44,7 @@ public abstract class LogicBlock extends Block {
 	public static final EnumProperty<RedstonePower> INPUT3_VALUE = EnumProperty.create("input3_value", RedstonePower.class);
 	
 	// weitere Variablen
-	private static final boolean RedstoneValue = false; // Angabe ob RedstoneValue angezeigt werden soll oder RedstoneSide
+	private static final boolean RedstoneValue = true; // Angabe ob RedstoneValue angezeigt werden soll oder RedstoneSide
 	private static boolean aa = false, ab = false, ac = false, ad = false; // boolean Variablen zum Abfangen von Multithreading
 	private ArrayList<Direction> input_directions = new ArrayList<>(); // Speichern der Input Directions
 	
@@ -59,6 +59,8 @@ public abstract class LogicBlock extends Block {
 			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWER, Integer.valueOf(0))
 					.with(INPUT1, InputSide.NONE).with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE));
 	}
+
+
 
 	/**
 	 * Initalisiert die Parameter
@@ -75,6 +77,18 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
+	 * Gibt den Default State beim plazieren zurück
+	 * 
+	 * @param context
+	 *            Context des Blockes beim Plazieren
+	 * @return Gibt den default Blockstate zurück
+	 */
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+	}
+
+	/**
 	 * Gibt den Block als Item zurück
 	 * 
 	 * @param state
@@ -88,81 +102,7 @@ public abstract class LogicBlock extends Block {
 		List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 		return !dropsOriginal.isEmpty() ? dropsOriginal : Collections.singletonList(new ItemStack(this, 1));
 	}
-
-	/**
-	 * Rotiert den Block und ändert den Facing Parameter
-	 * 
-	 * @param state
-	 *            Blockstate des Blockes
-	 * @param Rotation
-	 *            die der Block durchführen soll
-	 * @return Gibt den neuen Blockstate zurück
-	 */
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
-	}
-
-	/**
-	 * Spiegelt den Block und ändert den Facing Parameter
-	 * 
-	 * @param state
-	 *            Blockstate des Blockes
-	 * @param Rotation
-	 *            die der Block durchführen soll
-	 * @return Gibt den neuen Blockstate zurück
-	 */
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
-	}
-
-	/**
-	 * Gibt den Default State beim plazieren zurück
-	 * 
-	 * @param context
-	 *            Context des Blockes beim Plazieren
-	 * @return Gibt den default Blockstate zurück
-	 */
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
-	}
-
-	/**
-	 * Abfrage ob Redstone sich an der Seite verbinden kann
-	 * 
-	 * @param state
-	 *            Blockstate des Blockes
-	 * @param world
-	 *            Angabe welche Art der Block ist
-	 * @param pos
-	 *            Position des Blockes
-	 * @param side
-	 *            Seite die Abgefragt wird
-	 * @return Gibt zurück ob der Redstone sich verbinden kann
-	 */
-	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		System.out.println(side == null);
-		if (side != null) {
-			System.out.println(state.get(FACING) == side);
-			System.out.println(input_directions.contains(side));
-		}
-		System.out.println("---------------------");
-		return side == null ? false : (state.get(FACING) == side || input_directions.contains(side));
-	}
-
-	/**
-	 * Abfrage ob der Block RedstonePower ausgeben kann
-	 * 
-	 * @param state
-	 *            Blockstate des Blockes
-	 * @return Gibt an ob der Block RedstonePower ausgeben kann
-	 */
-	@Override
-	public boolean canProvidePower(BlockState state) {
-		return true;
-	}
-
+	
 	/**
 	 * Abfgage wie stark die WeakPower(direkte Redstoneansteuerung) ist
 	 * 
@@ -200,6 +140,115 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
+	 * Gibt den VoxelShape(Aussehen) des Blockes zurück
+	 * 
+	 * @param state
+	 *            Blockstate des Blockes
+	 * @param worldIn
+	 *            Teil der Welt des Blockes
+	 * @param pos
+	 *            Position des Blockes
+	 * @param context
+	 *            Kontext
+	 * @return VoxelShape des Blockes
+	 */
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		return Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
+	}
+
+	/**
+	 * Rotiert den Block und ändert den Facing Parameter
+	 * 
+	 * @param state
+	 *            Blockstate des Blockes
+	 * @param Rotation
+	 *            die der Block durchführen soll
+	 * @return Gibt den neuen Blockstate zurück
+	 */
+	public BlockState rotate(BlockState state, Rotation rot) {
+		return state.with(FACING, rot.rotate(state.get(FACING)));
+	}
+
+	/**
+	 * Spiegelt den Block und ändert den Facing Parameter
+	 * 
+	 * @param state
+	 *            Blockstate des Blockes
+	 * @param Rotation
+	 *            die der Block durchführen soll
+	 * @return Gibt den neuen Blockstate zurück
+	 */
+	public BlockState mirror(BlockState state, Mirror mirrorIn) {
+		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+	}
+
+	
+	
+	/**
+	 * Abfrage ob Redstone sich an der Seite verbinden kann
+	 * 
+	 * @param state
+	 *            Blockstate des Blockes
+	 * @param world
+	 *            Angabe welche Art der Block ist
+	 * @param pos
+	 *            Position des Blockes
+	 * @param side
+	 *            Seite die Abgefragt wird
+	 * @return Gibt zurück ob der Redstone sich verbinden kann
+	 */
+	@Override
+	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		System.out.println(side == null);
+		if (side != null) {
+			System.out.println(state.get(FACING) == side);
+			System.out.println(input_directions.contains(side));
+		}
+		System.out.println("---------------------");
+		return side == null ? false : (state.get(FACING) == side || input_directions.contains(side));
+	}
+
+	/**
+	 * Abfrage ob der Block RedstonePower ausgeben kann
+	 * 
+	 * @param state
+	 *            Blockstate des Blockes
+	 * @return Gibt an ob der Block RedstonePower ausgeben kann
+	 */
+	@Override
+	public boolean canProvidePower(BlockState state) {
+		return true;
+	}
+
+	/**
+	 * Abfrage ob es eine valide Position für den Block ist
+	 * 
+	 * @param state
+	 *            Blockstate des Blockes
+	 * @param worldIn
+	 *            Teil der Welt des Blockes
+	 * @param pos
+	 *            Position des Blockes
+	 * @return Gibt an ob der Platz des Blockes valide ist
+	 */
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		return func_220064_c(worldIn, pos.down());
+	}
+
+	/**
+	 * Abfrage ob Block fest ist
+	 * 
+	 * @param state
+	 *            BlockState des Blockes
+	 * @return Gibt an ob Block solid ist
+	 */
+	public boolean isSolid(BlockState state) {
+		return true;
+	}
+
+
+
+	/**
 	 * EventListener wenn Block ersetzt wird
 	 * 
 	 * @param state
@@ -222,38 +271,6 @@ public abstract class LogicBlock extends Block {
 		if ((!n.getBlock().canProvidePower(n)) && n.isSolid() && (!(n.getBlock() instanceof LogicBlock))) {
 			world.notifyNeighborsOfStateExcept(blockpos, this, direction);
 		}
-	}
-
-	/**
-	 * Abfrage ob es eine valide Position für den Block ist
-	 * 
-	 * @param state
-	 *            Blockstate des Blockes
-	 * @param worldIn
-	 *            Teil der Welt des Blockes
-	 * @param pos
-	 *            Position des Blockes
-	 * @return Gibt an ob der Platz des Blockes valide ist
-	 */
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return func_220064_c(worldIn, pos.down());
-	}
-
-	/**
-	 * Gibt den VoxelShape(Aussehen) des Blockes zurück
-	 * 
-	 * @param state
-	 *            Blockstate des Blockes
-	 * @param worldIn
-	 *            Teil der Welt des Blockes
-	 * @param pos
-	 *            Position des Blockes
-	 * @param context
-	 *            Kontext
-	 * @return VoxelShape des Blockes
-	 */
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
 	}
 
 	/**
@@ -364,20 +381,11 @@ public abstract class LogicBlock extends Block {
 		input_directions.clear();
 		this.addInput(state.get(FACING).rotateY(), pos, worldIn);
 		this.addInput(state.get(FACING).rotateYCCW(), pos, worldIn);
-		this.addInput(state.get(FACING).getOpposite(), pos, worldIn);
+		this.addInput(state.get(FACING), pos, worldIn);
 		aa = false;
 	}
 
-	/**
-	 * Abfrage ob Block fest ist
-	 * 
-	 * @param state
-	 *            BlockState des Blockes
-	 * @return Gibt an ob Block solid ist
-	 */
-	public boolean isSolid(BlockState state) {
-		return true;
-	}
+
 
 	/**
 	 *** privat*** Hinzufügen eines neuen Inputes
@@ -470,8 +478,7 @@ public abstract class LogicBlock extends Block {
 		ab = true;
 		ArrayList<Integer> inputs = new ArrayList();
 		for (Direction direct : input_directions) {
-			System.out.println(direct.toString());
-			inputs.add(this.getPowerOnSide(world, pos.offset(direct.getOpposite()), direct));
+			inputs.add(this.getPowerOnSide(world, pos, direct));
 		}
 		ab = false;
 		if (inputs.size() <= 0)
@@ -486,48 +493,41 @@ public abstract class LogicBlock extends Block {
 	 * @param world
 	 *            Welt des Blockes
 	 * @param pos
-	 *            Position des Blockes, der den Redstonewert hat
+	 *            Position des Blockes, der den Redstonewert bekommt
 	 * @param side
 	 *            Seite an der der Redstonewert eingegeben wird
 	 */
-	protected int getPowerOnSide(World worldIn, BlockPos pos, Direction side) {
-		System.out.println(worldIn.getBlockState(pos).canProvidePower());
-		if (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid())
-			System.out.println(worldIn.getRedstonePower(pos, side));
-		return (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid()) ? worldIn.getRedstonePower(pos, side) : 0;
-	}
+	/*protected int getPowerOnSide(World world, BlockPos pos, Direction side) {
+		BlockPos redstoneBlockPos = pos.offset(side.getOpposite());
+		BlockState redstoneBlockState = world.getBlockState(redstoneBlockPos);
+		Block redstoneBlock = redstoneBlockState.getBlock();
 
-	/*protected int getPowerOnSide2(World worldIn, BlockPos pos, Direction side) {
-		BlockState blockstate = worldIn.getBlockState(pos);
-		Block block = blockstate.getBlock();
-		if (blockstate.canProvidePower()) {
-			if (block == Blocks.REDSTONE_BLOCK) {
-				return 15;
-			} else if (block == Blocks.DAYLIGHT_DETECTOR) {
-				return block.getWeakPower(blockstate, null, pos, side);
-				//} else if (block ==
-				// Blocks.REDSTONE_TORCH&&blockstate.get(RedstoneTorchBlock.LIT))  return 15;
-				// } else if (block == Blocks.TRAPPED_CHEST) {
-				// return block.getStrongPower(blockstate, null, pos, side);
-				// Don't work ------------------------
-			} else if (IsPreasurePlate(block) && blockstate.get(PressurePlateBlock.POWERED)) {
-				return block.getWeakPower(blockstate, null, pos, side);
-			} else {
-				return block == Blocks.REDSTONE_WIRE ? blockstate.get(RedstoneWireBlock.POWER) : worldIn.getStrongPower(pos, side);
-			}
-		} else if (blockstate.isSolid()) {
-			if (worldIn.isBlockPowered(pos)) {
-				return worldIn.getRedstonePower(pos, side);
-			}
+		if(redstoneBlock==Blocks.REDSTONE_BLOCK){
+			return 15;
+		} else if(redstoneBlock==Blocks.REDSTONE_WIRE){
+			return redstoneBlockState.get(RedstoneWireBlock.POWER);
+		} else if(redstoneBlockState.canProvidePower()){
+			
+		} else if(redstoneBlockState.isSolid()){
+			return world.isBlockPowered(redstoneBlockPos) ? world.getRedstonePower(pos, side) : 0;
+		} else{
+			return 0;
 		}
-		return 0;
-
-	private boolean IsPreasurePlate(Block block) {
-		return block == Blocks.STONE_PRESSURE_PLATE || block == Blocks.OAK_PRESSURE_PLATE || block == Blocks.SPRUCE_PRESSURE_PLATE
-				|| block == Blocks.BIRCH_PRESSURE_PLATE || block == Blocks.JUNGLE_PRESSURE_PLATE || block == Blocks.ACACIA_PRESSURE_PLATE
-				|| block == Blocks.DARK_OAK_PRESSURE_PLATE || block == Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE
-				|| block == Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE;
+		//if (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid())
+		//return (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid()) ? worldIn.getRedstonePower(pos, side) : 0;
 	}*/
+
+	protected int getPowerOnSide(World worldIn, BlockPos pos, Direction side) {
+        Direction direction = side;
+          BlockPos blockpos = pos.offset(direction);
+          int i = worldIn.getRedstonePower(blockpos, direction);
+          if (i >= 15) {
+             return i;
+          } else {
+             BlockState blockstate = worldIn.getBlockState(blockpos);
+             return Math.max(i, blockstate.getBlock() == Blocks.REDSTONE_WIRE ? blockstate.get(RedstoneWireBlock.POWER) : 0);
+          }
+    }
 
 	/**
 	 * Abstrakte Methode Gibt die Logik des Blockes an
