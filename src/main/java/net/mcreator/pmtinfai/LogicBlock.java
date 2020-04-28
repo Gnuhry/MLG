@@ -42,12 +42,13 @@ public abstract class LogicBlock extends Block {
 	public static final EnumProperty<InputSide> INPUT3 = EnumProperty.create("input3_side", InputSide.class);
 	
 	// weitere Variablen
-	private static boolean aa = false, ab = false, ac = false, ad = false; // boolean Variablen zum Abfangen von Multithreading
+	private static boolean aa = false, ab = false;
+ // boolean Variablen zum Abfangen von Multithreading
 	
 	// Konstrukter
 	public LogicBlock() {
-		super(Block.Properties.create(Material.REDSTONE_LIGHT).sound(SoundType.STEM).hardnessAndResistance(1f, 10f).lightValue(0));
-		// Laden der Default Properties der Blöcke
+		super(Block.Properties.create(Material.MISCELLANEOUS).sound(SoundType.STEM).hardnessAndResistance(1f, 10f).lightValue(0));
+		// Laden der Default Properties der BlÃ¶cke
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWER, Integer.valueOf(0))
 				.with(INPUT1, InputSide.NONE).with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE));
 	}
@@ -64,11 +65,11 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 * Gibt den Default State beim plazieren zurück
+	 * Gibt den Default State beim plazieren zurÃ¼ck
 	 * 
 	 * @param context
 	 *            Context des Blockes beim Plazieren
-	 * @return Gibt den default Blockstate zurück
+	 * @return Gibt den default Blockstate zurÃ¼ck
 	 */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
@@ -87,7 +88,7 @@ public abstract class LogicBlock extends Block {
    }
 
 	/**
-	 * Gibt den Block als Item zurück
+	 * Gibt den Block als Item zurÃ¼ck
 	 * 
 	 * @param state
 	 *            BlockState des Blockes
@@ -112,7 +113,7 @@ public abstract class LogicBlock extends Block {
 	 *            Position des Blockes
 	 * @param side
 	 *            Seite an der die Power abgefragt wird
-	 * @return Gibt die RedstonePower(0-15) zurück
+	 * @return Gibt die RedstonePower(0-15) zurÃ¼ck
 	 */
 	@Override
 	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
@@ -130,7 +131,7 @@ public abstract class LogicBlock extends Block {
 	 *            Position des Blockes
 	 * @param side
 	 *            Seite an der die Power abgefragt wird
-	 * @return Gibt die RedstonePower(0-15) zurück
+	 * @return Gibt die RedstonePower(0-15) zurÃ¼ck
 	 */
 	@Override
 	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
@@ -138,7 +139,7 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 * Gibt den VoxelShape(Aussehen) des Blockes zurück
+	 * Gibt den VoxelShape(Aussehen) des Blockes zurÃ¼ck
 	 * 
 	 * @param state
 	 *            Blockstate des Blockes
@@ -155,26 +156,26 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 * Rotiert den Block und ändert den Facing Parameter
+	 * Rotiert den Block und Ã¤ndert den Facing Parameter
 	 * 
 	 * @param state
 	 *            Blockstate des Blockes
 	 * @param Rotation
-	 *            die der Block durchführen soll
-	 * @return Gibt den neuen Blockstate zurück
+	 *            die der Block durchfÃ¼hren soll
+	 * @return Gibt den neuen Blockstate zurÃ¼ck
 	 */
 	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	/**
-	 * Spiegelt den Block und ändert den Facing Parameter
+	 * Spiegelt den Block und Ã¤ndert den Facing Parameter
 	 * 
 	 * @param state
 	 *            Blockstate des Blockes
 	 * @param Rotation
-	 *            die der Block durchführen soll
-	 * @return Gibt den neuen Blockstate zurück
+	 *            die der Block durchfÃ¼hren soll
+	 * @return Gibt den neuen Blockstate zurÃ¼ck
 	 */
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
 		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
@@ -191,7 +192,7 @@ public abstract class LogicBlock extends Block {
 	 *            Position des Blockes
 	 * @param side
 	 *            Seite die Abgefragt wird
-	 * @return Gibt zurück ob der Redstone sich verbinden kann
+	 * @return Gibt zurÃ¼ck ob der Redstone sich verbinden kann
 	 */
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
@@ -211,7 +212,7 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 * Abfrage ob es eine valide Position für den Block ist
+	 * Abfrage ob es eine valide Position fÃ¼r den Block ist
 	 * 
 	 * @param state
 	 *            Blockstate des Blockes
@@ -262,8 +263,8 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 * EventListener wenn Nachbar des Blockes sich ändert - Aktualisiert weitere
-	 * Blöcke
+	 * EventListener wenn Nachbar des Blockes sich Ã¤ndert - Aktualisiert weitere
+	 * BlÃ¶cke
 	 * 
 	 * @param state
 	 *            Blockstate des Blockes
@@ -272,9 +273,9 @@ public abstract class LogicBlock extends Block {
 	 * @param pos
 	 *            Position des Blockes
 	 * @param neighborBlock
-	 *            Nachbarblock der sich ändert
+	 *            Nachbarblock der sich Ã¤ndert
 	 * @param fromPos
-	 *            Position von dem sich änderndem Block
+	 *            Position von dem sich Ã¤nderndem Block
 	 * @param isMoving
 	 *            Gibt an ob der Block sich bewegt
 	 */
@@ -299,15 +300,13 @@ public abstract class LogicBlock extends Block {
 				world.notifyNeighborsOfStateChange(pos.offset(d), this);
 			return;
 		}
+		System.out.println(".");
 		if (state.has(HorizontalBlock.HORIZONTAL_FACING)) {
 			direction = state.get(HorizontalBlock.HORIZONTAL_FACING);
 			if (net.minecraftforge.event.ForgeEventFactory
 					.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled()) {
 				return;
-			}
 		}
-		if (pos != null && fromPos != null)
-			System.out.println(pos.toString() + ", " + fromPos.toString());
 		getPowerOnSides(world, pos, state);
 		if (fromPos != null && world.getBlockState(fromPos).getBlock() instanceof LogicBlock) {
 			if (!(world.getBlockState(fromPos).has(FACING) && world.getBlockState(fromPos).get(FACING) == state.get(FACING).getOpposite())) {
@@ -315,12 +314,11 @@ public abstract class LogicBlock extends Block {
 			}
 		} else {
 			if (direction != null) {
-				System.out.println("--");
-				BlockPos blockpos = pos.offset(direction.getOpposite());
-				world.neighborChanged(blockpos, this, pos);
+				world.neighborChanged( pos.offset(direction.getOpposite()), this, pos);
 			}
 		}
-	}*/
+	}
+*/
 
 	/*protected void notifyNeighbors(World worldIn, BlockPos pos, BlockState state) {
       Direction direction = state.get(FACING);
@@ -362,12 +360,12 @@ public abstract class LogicBlock extends Block {
    }
 
 	/**
-	 *** privat*** Hinzufügen eines neuen Inputes
+	 *** privat*** HinzufÃ¼gen eines neuen Inputes
 	 * 
 	 * @param d
 	 *            Seite an der der neue Input ist
 	 * @param pos
-	 *            Position des Blockes, an dem der Input hinzugefügt wird
+	 *            Position des Blockes, an dem der Input hinzugefÃ¼gt wird
 	 * @param world
 	 *            Welt des Blockes
 	 */
@@ -383,10 +381,10 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 *** privat*** Löschen aller Inputs
+	 *** privat*** LÃ¶schen aller Inputs
 	 * 
 	 * @param pos
-	 *            Position des Blockes, an dem die Inputs gelöscht werden
+	 *            Position des Blockes, an dem die Inputs gelÃ¶scht werden
 	 * @param world
 	 *            Welt des Blockes
 	 */
@@ -407,7 +405,7 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 *** protected*** Ließt alle Redstone Inputs ein und gibt den neuen Output aus
+	 *** protected*** LieÃŸt alle Redstone Inputs ein und gibt den neuen Output aus
 	 * 
 	 * @param world
 	 *            Welt des Blockes
@@ -425,7 +423,8 @@ public abstract class LogicBlock extends Block {
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT2)).GetDirection()));
 		if (blockstate.has(INPUT3))
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT3)).GetDirection()));
-		if (inputs.size() <= 0) {
+		if (inputs.size() <= 0)
+ {
 			out = 0;
 			//world.setBlockState(pos, blockstate.with(POWER, 0), 2);
 		} else {
@@ -437,7 +436,7 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 *** protected*** Ließt den Redstone Input an einer Seite an
+	 *** protected*** LieÃŸt den Redstone Input an einer Seite an
 	 * 
 	 * @param world
 	 *            Welt des Blockes
