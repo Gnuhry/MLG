@@ -30,6 +30,8 @@ import net.minecraft.block.Block;
 import java.util.List;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Random;
+import net.minecraft.entity.LivingEntity;
 
 public abstract class LogicBlock extends Block {
 	// Properties des Blocks
@@ -75,6 +77,14 @@ public abstract class LogicBlock extends Block {
 				.with(INPUT2, InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateY()))
 				.with(INPUT3, InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateYCCW()));
 	}
+
+	
+   /**
+    * How many world ticks before ticking
+    */
+   public int tickRate(IWorldReader worldIn) {
+      return 2;
+   }
 
 	/**
 	 * Gibt den Block als Item zurück
@@ -269,7 +279,15 @@ public abstract class LogicBlock extends Block {
 	 *            Gibt an ob der Block sich bewegt
 	 */
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
+	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+      System.out.println("Neighbor Changed");
+      if (state.get(POWER) != this.getPowerOnSides(worldIn, pos, state) && !worldIn.getPendingBlockTicks().isTickPending(pos, this)) {
+      	System.out.println("NEW TICK");
+        worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+      }
+
+   }
+	/*public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
 		System.out.println(".");
 		super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
 		Direction direction = null;
@@ -285,7 +303,6 @@ public abstract class LogicBlock extends Block {
 			direction = state.get(HorizontalBlock.HORIZONTAL_FACING);
 			if (net.minecraftforge.event.ForgeEventFactory
 					.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled()) {
-				ac = false;
 				return;
 			}
 		}
@@ -303,7 +320,16 @@ public abstract class LogicBlock extends Block {
 				world.neighborChanged(blockpos, this, pos);
 			}
 		}
-	}
+	}*/
+
+	/*protected void notifyNeighbors(World worldIn, BlockPos pos, BlockState state) {
+      Direction direction = state.get(FACING);
+      BlockPos blockpos = pos.offset(direction.getOpposite());
+      if (net.minecraftforge.event.ForgeEventFactory.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled())
+         return;
+      worldIn.neighborChanged(blockpos, this, pos);
+      worldIn.notifyNeighborsOfStateExcept(blockpos, this, direction);
+   }*/
 
 	/**
 	 * EventListener wenn Block gesetzt wird
@@ -327,6 +353,13 @@ public abstract class LogicBlock extends Block {
 		this.neighborChanged(state, worldIn, pos, null, null, false);
 		aa = false;
 	}
+
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+      if (this.getPowerOnSides(worldIn, pos, state)>0) {
+         worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
+      }
+
+   }
 
 	/**
 	 *** privat*** Hinzufügen eines neuen Inputes
@@ -383,23 +416,24 @@ public abstract class LogicBlock extends Block {
 	 * @param state
 	 *            Blockstate des Blockes
 	 */
-	protected void getPowerOnSides(World world, BlockPos pos, BlockState blockstate) {
-		if (ab)
-			return;
-		ab = true;
+	protected int getPowerOnSides(World world, BlockPos pos, BlockState blockstate) {
 		ArrayList<Integer> inputs = new ArrayList();
+		int out;
 		if (blockstate.has(INPUT1))
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT1)).GetDirection()));
 		if (blockstate.has(INPUT2))
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT2)).GetDirection()));
 		if (blockstate.has(INPUT3))
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT3)).GetDirection()));
-		ab = false;
-		inputs.forEach(System.out::println);
-		if (inputs.size() <= 0)
-			world.setBlockState(pos, blockstate.with(POWER, 0), 2);
-		else
-			world.setBlockState(pos, blockstate.with(POWER, logic(inputs)), 2);
+		if (inputs.size() <= 0) {
+			out = 0;
+			//world.setBlockState(pos, blockstate.with(POWER, 0), 2);
+		} else {
+			out = logic(inputs);
+			//world.setBlockState(pos, blockstate.with(POWER, out), 2);
+		}
+
+		return out;
 	}
 
 	/**
@@ -423,6 +457,21 @@ public abstract class LogicBlock extends Block {
 			return Math.max(i, blockstate.getBlock() == Blocks.REDSTONE_WIRE ? blockstate.get(RedstoneWireBlock.POWER) : 0);
 		}
 	}
+
+	public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
+    	update(state, worldIn, pos, random, this.getPowerOnSides(worldIn, pos, state));
+    }
+
+    public void update(BlockState state, World worldIn, BlockPos pos, Random random, int calculatedOutput) {
+
+      if (state.get(POWER)>0 && calculatedOutput==0) {
+        worldIn.setBlockState(pos, state.with(POWER, Integer.valueOf("0")), 3);
+        
+        worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
+      } else if (calculatedOutput > 0 && state.get(POWER)!=calculatedOutput) {
+         worldIn.setBlockState(pos, state.with(POWER, calculatedOutput), 3);
+      }
+   }
 
 	/**
 	 * Abstrakte Methode Gibt die Logik des Blockes an
