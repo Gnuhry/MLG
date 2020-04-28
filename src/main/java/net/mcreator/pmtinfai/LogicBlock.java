@@ -27,7 +27,6 @@ import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Block;
-
 import java.util.Random;
 import java.util.List;
 import java.util.Collections;
@@ -358,28 +357,6 @@ public abstract class LogicBlock extends Block {
 		}
 	}
 
-	/**
-	 * EventListener wenn Block gesetzt wird
-	 * 
-	 * @param state
-	 *            Blockstate des Blockes
-	 * @param world
-	 *            Welt in der der Block steht
-	 * @param pos
-	 *            Position des Blockes
-	 * @param oldstate
-	 *            alter Blockstate vor dem Ersetzen
-	 * @param isMoving
-	 *            Gibt an ob der Block sich bewegt
-	 */
-	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		if (aa)
-			return;
-		aa = true;
-		this.neighborChanged(state, worldIn, pos, null, null, false);
-		aa = false;
-	}
 
 	/**
 	 * EventListener wenn Block durch Entity gesetzt wurde
