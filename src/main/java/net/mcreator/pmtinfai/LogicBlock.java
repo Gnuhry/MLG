@@ -288,46 +288,6 @@ public abstract class LogicBlock extends Block {
       }
 
    }
-	/*public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-		System.out.println(".");
-		super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
-		Direction direction = null;
-		if (!state.isValidPosition(world, pos)) {
-			TileEntity tileentity = state.hasTileEntity() ? world.getTileEntity(pos) : null;
-			spawnDrops(state, world, pos, tileentity);
-			world.removeBlock(pos, false);
-			for (Direction d : Direction.values())
-				world.notifyNeighborsOfStateChange(pos.offset(d), this);
-			return;
-		}
-		System.out.println(".");
-		if (state.has(HorizontalBlock.HORIZONTAL_FACING)) {
-			direction = state.get(HorizontalBlock.HORIZONTAL_FACING);
-			if (net.minecraftforge.event.ForgeEventFactory
-					.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled()) {
-				return;
-		}
-		getPowerOnSides(world, pos, state);
-		if (fromPos != null && world.getBlockState(fromPos).getBlock() instanceof LogicBlock) {
-			if (!(world.getBlockState(fromPos).has(FACING) && world.getBlockState(fromPos).get(FACING) == state.get(FACING).getOpposite())) {
-				world.neighborChanged(pos.offset(direction.getOpposite()), this, pos);
-			}
-		} else {
-			if (direction != null) {
-				world.neighborChanged( pos.offset(direction.getOpposite()), this, pos);
-			}
-		}
-	}
-*/
-
-	/*protected void notifyNeighbors(World worldIn, BlockPos pos, BlockState state) {
-      Direction direction = state.get(FACING);
-      BlockPos blockpos = pos.offset(direction.getOpposite());
-      if (net.minecraftforge.event.ForgeEventFactory.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled())
-         return;
-      worldIn.neighborChanged(blockpos, this, pos);
-      worldIn.notifyNeighborsOfStateExcept(blockpos, this, direction);
-   }*/
 
 	/**
 	 * EventListener wenn Block gesetzt wird
