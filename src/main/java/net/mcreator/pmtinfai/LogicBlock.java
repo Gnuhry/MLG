@@ -19,6 +19,7 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.RedstoneWireBlock;
@@ -27,11 +28,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Block;
 
+import java.util.Random;
 import java.util.List;
 import java.util.Collections;
 import java.util.ArrayList;
-import java.util.Random;
-import net.minecraft.entity.LivingEntity;
 
 public abstract class LogicBlock extends Block {
 	// Properties des Blocks
@@ -40,11 +40,9 @@ public abstract class LogicBlock extends Block {
 	public static final EnumProperty<InputSide> INPUT1 = EnumProperty.create("input1_side", InputSide.class);
 	public static final EnumProperty<InputSide> INPUT2 = EnumProperty.create("input2_side", InputSide.class);
 	public static final EnumProperty<InputSide> INPUT3 = EnumProperty.create("input3_side", InputSide.class);
-	
 	// weitere Variablen
-	private static boolean aa = false, ab = false;
- // boolean Variablen zum Abfangen von Multithreading
-	
+	private static boolean aa = false;
+	// boolean Variablen zum Abfangen von Multithreading
 	// Konstrukter
 	public LogicBlock() {
 		super(Block.Properties.create(Material.MISCELLANEOUS).sound(SoundType.STEM).hardnessAndResistance(1f, 10f).lightValue(0));
@@ -79,13 +77,17 @@ public abstract class LogicBlock extends Block {
 				.with(INPUT3, InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateYCCW()));
 	}
 
-	
-   /**
-    * How many world ticks before ticking
-    */
-   public int tickRate(IWorldReader worldIn) {
-      return 2;
-   }
+	/**
+	 * Gibt die Tickrate des Blockes zur¸ck
+	 * 
+	 * @param worldIn
+	 * 
+	 *            Teil der Welt des Blockes
+	 * @return Die aktuelle Tickrate des Blockes
+	 */
+	public int tickRate(IWorldReader worldIn) {
+		return 1;
+	}
 
 	/**
 	 * Gibt den Block als Item zur√ºck
@@ -281,13 +283,18 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-      System.out.println("Neighbor Changed");
-      if (state.get(POWER) != this.getPowerOnSides(worldIn, pos, state) && !worldIn.getPendingBlockTicks().isTickPending(pos, this)) {
-      	System.out.println("NEW TICK");
-        worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-      }
-
-   }
+		if (!state.isValidPosition(worldIn, pos)) {
+			TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
+			spawnDrops(state, worldIn, pos, tileentity);
+			worldIn.removeBlock(pos, false);
+			for (Direction d : Direction.values())
+				worldIn.notifyNeighborsOfStateChange(pos.offset(d), this);
+			return;
+		}
+		if (state.get(POWER) != this.getPowerOnSides(worldIn, pos, state) && !worldIn.getPendingBlockTicks().isTickPending(pos, this)) {
+			update(state, worldIn, pos, null, this.getPowerOnSides(worldIn, pos, state));
+		}
+	}
 
 	/**
 	 * EventListener wenn Block gesetzt wird
@@ -312,12 +319,25 @@ public abstract class LogicBlock extends Block {
 		aa = false;
 	}
 
+	/**
+	 * EventListener wenn Block durch Entity gesetzt wurde
+	 * 
+	 * @param state
+	 *            Blockstate des Blockes
+	 * @param world
+	 *            Welt in der der Block steht
+	 * @param pos
+	 *            Position des Blockes
+	 * @param placer
+	 *            Entity die den Block gesetzt hat
+	 * @param stack
+	 *            Stack des Items
+	 */
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-      if (this.getPowerOnSides(worldIn, pos, state)>0) {
-         worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
-      }
-
-   }
+		if (this.getPowerOnSides(worldIn, pos, state) > 0) {
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
+		}
+	}
 
 	/**
 	 *** privat*** Hinzuf√ºgen eines neuen Inputes
@@ -383,15 +403,13 @@ public abstract class LogicBlock extends Block {
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT2)).GetDirection()));
 		if (blockstate.has(INPUT3))
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT3)).GetDirection()));
-		if (inputs.size() <= 0)
- {
+		if (inputs.size() <= 0) {
 			out = 0;
-			//world.setBlockState(pos, blockstate.with(POWER, 0), 2);
+			// world.setBlockState(pos, blockstate.with(POWER, 0), 2);
 		} else {
 			out = logic(inputs);
-			//world.setBlockState(pos, blockstate.with(POWER, out), 2);
+			// world.setBlockState(pos, blockstate.with(POWER, out), 2);
 		}
-
 		return out;
 	}
 
@@ -417,20 +435,44 @@ public abstract class LogicBlock extends Block {
 		}
 	}
 
+	/**
+	 * Wechselt den blockstate, fals
+	 * 
+	 * @param state
+	 *            Blockstate des Blockes
+	 * @param worldIn
+	 *            Welt des Blockes
+	 * @param pos
+	 *            Position des Blockes, der den Tick ausf¸hren soll
+	 * @param random
+	 *            Ein Java Random Element f¸r Zuf‰llige Ticks
+	 */
 	public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
-    	update(state, worldIn, pos, random, this.getPowerOnSides(worldIn, pos, state));
-    }
+		update(state, worldIn, pos, random, this.getPowerOnSides(worldIn, pos, state));
+	}
 
-    public void update(BlockState state, World worldIn, BlockPos pos, Random random, int calculatedOutput) {
-
-      if (state.get(POWER)>0 && calculatedOutput==0) {
-        worldIn.setBlockState(pos, state.with(POWER, Integer.valueOf("0")), 3);
-        
-        worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
-      } else if (calculatedOutput > 0 && state.get(POWER)!=calculatedOutput) {
-         worldIn.setBlockState(pos, state.with(POWER, calculatedOutput), 3);
-      }
-   }
+	/**
+	 * Wechselt den blockstate, fals
+	 * 
+	 * @param state
+	 *            Blockstate des Blockes
+	 * @param worldIn
+	 *            Welt des Blockes
+	 * @param pos
+	 *            Position des Blockes, der geupdated werden soll
+	 * @param random
+	 *            Ein Java Random Element f¸r Zuf‰llige Ticks
+	 * @param clalculatedOutput
+	 *            Auf diesen Wert soll der Output des blockes gesetzt werden
+	 */
+	public void update(BlockState state, World worldIn, BlockPos pos, Random random, int calculatedOutput) {
+		if (state.get(POWER) > 0 && calculatedOutput == 0) {
+			worldIn.setBlockState(pos, state.with(POWER, Integer.valueOf("0")), 3);
+		} else if (calculatedOutput > 0 && state.get(POWER) != calculatedOutput) {
+			worldIn.setBlockState(pos, state.with(POWER, calculatedOutput), 3);
+		}
+		worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+	}
 
 	/**
 	 * Abstrakte Methode Gibt die Logik des Blockes an
