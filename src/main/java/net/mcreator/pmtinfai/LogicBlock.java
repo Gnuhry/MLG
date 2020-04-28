@@ -39,23 +39,14 @@ public abstract class LogicBlock extends Block {
 	public static final EnumProperty<InputSide> INPUT1 = EnumProperty.create("input1_side", InputSide.class);
 	public static final EnumProperty<InputSide> INPUT2 = EnumProperty.create("input2_side", InputSide.class);
 	public static final EnumProperty<InputSide> INPUT3 = EnumProperty.create("input3_side", InputSide.class);
-	public static final EnumProperty<RedstonePower> INPUT1_VALUE = EnumProperty.create("input1_value", RedstonePower.class);
-	public static final EnumProperty<RedstonePower> INPUT2_VALUE = EnumProperty.create("input2_value", RedstonePower.class);
-	public static final EnumProperty<RedstonePower> INPUT3_VALUE = EnumProperty.create("input3_value", RedstonePower.class);
 	
 	// weitere Variablen
-	private static final boolean RedstoneValue = true; // Angabe ob RedstoneValue angezeigt werden soll oder RedstoneSide
 	private static boolean aa = false, ab = false, ac = false, ad = false; // boolean Variablen zum Abfangen von Multithreading
-	private static ArrayList<Direction> input_directions = new ArrayList<>(); // Speichern der Input Directions
 	
 	// Konstrukter
 	public LogicBlock() {
 		super(Block.Properties.create(Material.REDSTONE_LIGHT).sound(SoundType.STEM).hardnessAndResistance(1f, 10f).lightValue(0));
 		// Laden der Default Properties der Blöcke
-		if (RedstoneValue)
-			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWER, Integer.valueOf(0))
-					.with(INPUT1_VALUE, RedstonePower.ZERO).with(INPUT2_VALUE, RedstonePower.ZERO).with(INPUT3_VALUE, RedstonePower.ZERO));
-		else
 			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWER, Integer.valueOf(0))
 					.with(INPUT1, InputSide.NONE).with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE));
 	}
@@ -70,9 +61,6 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		if (RedstoneValue)
-			builder.add(FACING).add(POWER).add(INPUT1_VALUE).add(INPUT2_VALUE).add(INPUT3_VALUE);
-		else
 			builder.add(FACING).add(POWER).add(INPUT1).add(INPUT2).add(INPUT3);
 	}
 
@@ -85,7 +73,7 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(INPUT1, InputSide.GetEnum(context.getPlacementHorizontalFacing())).with(INPUT2,  InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateY())).with(INPUT3,  InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateYCCW())); 
 	}
 
 	/**
@@ -199,7 +187,7 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return side == null ? false : (state.get(FACING) == side || input_directions.contains(side.getOpposite()));
+		return side == null ? false : (state.get(FACING) == side || existInputDirections(state, side));
 	}
 
 	/**
@@ -299,11 +287,11 @@ public abstract class LogicBlock extends Block {
 		}
 		if (state.has(HorizontalBlock.HORIZONTAL_FACING)) {
 			direction = state.get(HorizontalBlock.HORIZONTAL_FACING);
-			/*if (net.minecraftforge.event.ForgeEventFactory
+			if (net.minecraftforge.event.ForgeEventFactory
 					.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled()) {
 				ac = false;
 				return;
-			}*/
+				}
 		}
 		if (pos != null && fromPos != null)
 			System.out.println(pos.toString() + ", " + fromPos.toString());
@@ -372,10 +360,9 @@ public abstract class LogicBlock extends Block {
 			return;
 		aa = true;
 		this.neighborChanged(state, worldIn, pos, null, null, false);
-		input_directions.clear();
-		this.addInput(state.get(FACING).rotateY(), pos, worldIn);
+		/*this.addInput(state.get(FACING).rotateY(), pos, worldIn);
 		this.addInput(state.get(FACING).rotateYCCW(), pos, worldIn);
-		this.addInput(state.get(FACING), pos, worldIn);
+		this.addInput(state.get(FACING), pos, worldIn);*/
 		aa = false;
 	}
 
@@ -392,22 +379,16 @@ public abstract class LogicBlock extends Block {
 	 *            Welt des Blockes
 	 */
 	private void addInput(Direction d, BlockPos pos, World world) {
-		input_directions.add(d);
-		if (!RedstoneValue)
-			switch (input_directions.size()) {
-				case 1 :
-					world.setBlockState(pos, world.getBlockState(pos).with(INPUT1, InputSide.GetEnum(d)), 2);
-					world.setBlockState(pos, world.getBlockState(pos).with(INPUT2, InputSide.NONE), 2);
-					world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.NONE), 2);
-					break;
-				case 2 :
-					world.setBlockState(pos, world.getBlockState(pos).with(INPUT2, InputSide.GetEnum(d)), 2);
-					world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.NONE), 2);
-					break;
-				case 3 :
-					world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.GetEnum(d)), 2);
-					break;
-			}
+		BlockState blockstate= world.getBlockState(pos);
+		if(blockstate.has(INPUT1)&&blockstate.get(INPUT1).equals(InputSide.NONE)){
+			world.setBlockState(pos,blockstate.with(INPUT1, InputSide.GetEnum(d)), 2);
+		}
+		else if(blockstate.has(INPUT2)&&blockstate.get(INPUT2).equals(InputSide.NONE)){
+			world.setBlockState(pos,blockstate.with(INPUT2, InputSide.GetEnum(d)), 2);
+		}
+		else if(blockstate.has(INPUT3)&&blockstate.get(INPUT3).equals(InputSide.NONE)){
+			world.setBlockState(pos,blockstate.with(INPUT3, InputSide.GetEnum(d)), 2);
+		}
 	}
 
 	/**
@@ -419,41 +400,20 @@ public abstract class LogicBlock extends Block {
 	 *            Welt des Blockes
 	 */
 	private void claerInput(BlockPos pos, World world) {
-		input_directions.clear();
-		if (!RedstoneValue) {
 			world.setBlockState(pos, world.getBlockState(pos).with(INPUT1, InputSide.NONE), 2);
 			world.setBlockState(pos, world.getBlockState(pos).with(INPUT2, InputSide.NONE), 2);
 			world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.NONE), 2);
-		}
 	}
 
-	/**
-	 *** privat*** Aktualisieren der Parameter
-	 * 
-	 * @param pos
-	 *            Position des Blockes
-	 * @param world
-	 *            Welt des Blockes
-	 * @param input
-	 *            Redstone Werte der Inputs
-	 * @param output
-	 *            Derzeitiger REdstoneWert des Outputs
-	 */
-	private void SetInput_OutputSide(BlockPos pos, World world, ArrayList<Integer> input, int output) {
-		BlockState help = world.getBlockState(pos);
-		if (RedstoneValue && help.has(INPUT3_VALUE) && help.has(INPUT2_VALUE) && help.has(INPUT1_VALUE)) {
-			switch (input_directions.size()) {
-				case 3 :
-					help = help.with(INPUT3_VALUE, RedstonePower.GetEnum(input.get(2)));
-				case 2 :
-					help = help.with(INPUT2_VALUE, RedstonePower.GetEnum(input.get(1)));
-				case 1 :
-					help = help.with(INPUT1_VALUE, RedstonePower.GetEnum(input.get(0)));
-			}
-		}
-		if (help.has(POWER)) {
-			world.setBlockState(pos, help.with(POWER, output), 2);
-		}
+
+	private boolean existInputDirections(BlockState blockstate, Direction d){
+		if(blockstate.has(INPUT1)&&d==((InputSide)blockstate.get(INPUT1)).GetDirection())
+			return true;
+		if(blockstate.has(INPUT2)&&d==((InputSide)blockstate.get(INPUT2)).GetDirection())
+			return true;
+		if(blockstate.has(INPUT3)&&d==((InputSide)blockstate.get(INPUT3)).GetDirection())
+			return true;
+		return false;
 	}
 
 	/**
@@ -466,19 +426,23 @@ public abstract class LogicBlock extends Block {
 	 * @param state
 	 *            Blockstate des Blockes
 	 */
-	protected void getPowerOnSides(World world, BlockPos pos, BlockState state) {
+	protected void getPowerOnSides(World world, BlockPos pos, BlockState blockstate) {
 		if (ab)
 			return;
 		ab = true;
 		ArrayList<Integer> inputs = new ArrayList();
-		for (Direction direct : input_directions) {
-			inputs.add(this.getPowerOnSide2(world, pos, direct));
-		}
+		if(blockstate.has(INPUT1))
+			inputs.add(this.getPowerOnSide2(world, pos, ((InputSide)blockstate.get(INPUT1)).GetDirection()));
+		if(blockstate.has(INPUT2))
+			inputs.add(this.getPowerOnSide2(world, pos, ((InputSide)blockstate.get(INPUT2)).GetDirection()));
+		if(blockstate.has(INPUT3))
+			inputs.add(this.getPowerOnSide2(world, pos, ((InputSide)blockstate.get(INPUT3)).GetDirection()));
 		ab = false;
+		inputs.forEach(System.out::println);
 		if (inputs.size() <= 0)
-			SetInput_OutputSide(pos, world, inputs, 0);
+			world.setBlockState(pos,  blockstate.with(POWER, 0), 2);
 		else
-			SetInput_OutputSide(pos, world, inputs, logic(inputs));
+			world.setBlockState(pos,  blockstate.with(POWER, logic(inputs)), 2);
 	}
 
 	/**
@@ -512,7 +476,8 @@ public abstract class LogicBlock extends Block {
 	}
 
 	protected int getPowerOnSide2(World worldIn, BlockPos pos, Direction side) {
-        Direction direction = side;
+		System.out.println(side);
+        Direction direction = side.getOpposite();
           BlockPos blockpos = pos.offset(direction);
           int i = worldIn.getRedstonePower(blockpos, direction);
           if (i >= 15) {

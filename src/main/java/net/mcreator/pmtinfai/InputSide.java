@@ -57,4 +57,17 @@ public enum InputSide implements IStringSerializable {
 			return InputSide.SOUTH;
 		return InputSide.NONE;
 	}
+
+	public Direction GetDirection() {
+		if (this == InputSide.EAST)
+			return Direction.EAST;
+		if (this == InputSide.WEST)
+			return Direction.WEST;
+		if (this == InputSide.NORTH)
+			return Direction.NORTH;
+		if (this == InputSide.SOUTH)
+			return Direction.SOUTH;
+		return null;
+	}
+
 }
