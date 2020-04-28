@@ -40,11 +40,11 @@ public abstract class LogicBlock extends Block {
 	public static final EnumProperty<InputSide> INPUT3 = EnumProperty.create("input3_side", InputSide.class);
 	
 	// weitere Variablen
-	private static boolean aa = false, ab = false, ac = false, ad = false; // boolean Variablen zum Abfangen von Multithreading
+	private static boolean aa = false, ab = false; // boolean Variablen zum Abfangen von Multithreading
 	
 	// Konstrukter
 	public LogicBlock() {
-		super(Block.Properties.create(Material.REDSTONE_LIGHT).sound(SoundType.STEM).hardnessAndResistance(1f, 10f).lightValue(0));
+		super(Block.Properties.create(Material.MISCELLANEOUS).sound(SoundType.STEM).hardnessAndResistance(1f, 10f).lightValue(0));
 		// Laden der Default Properties der Blöcke
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWER, Integer.valueOf(0))
 				.with(INPUT1, InputSide.NONE).with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE));
@@ -270,7 +270,6 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-		System.out.println(".");
 		super.neighborChanged(state, world, pos, neighborBlock, fromPos, moving);
 		Direction direction = null;
 		if (!state.isValidPosition(world, pos)) {
@@ -281,16 +280,13 @@ public abstract class LogicBlock extends Block {
 				world.notifyNeighborsOfStateChange(pos.offset(d), this);
 			return;
 		}
+		System.out.println(".");
 		if (state.has(HorizontalBlock.HORIZONTAL_FACING)) {
 			direction = state.get(HorizontalBlock.HORIZONTAL_FACING);
 			if (net.minecraftforge.event.ForgeEventFactory
-					.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled()) {
-				ac = false;
+					.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled()) 
 				return;
-			}
 		}
-		if (pos != null && fromPos != null)
-			System.out.println(pos.toString() + ", " + fromPos.toString());
 		getPowerOnSides(world, pos, state);
 		if (fromPos != null && world.getBlockState(fromPos).getBlock() instanceof LogicBlock) {
 			if (!(world.getBlockState(fromPos).has(FACING) && world.getBlockState(fromPos).get(FACING) == state.get(FACING).getOpposite())) {
@@ -298,9 +294,7 @@ public abstract class LogicBlock extends Block {
 			}
 		} else {
 			if (direction != null) {
-				System.out.println("--");
-				BlockPos blockpos = pos.offset(direction.getOpposite());
-				world.neighborChanged(blockpos, this, pos);
+				world.neighborChanged( pos.offset(direction.getOpposite()), this, pos);
 			}
 		}
 	}
@@ -395,7 +389,6 @@ public abstract class LogicBlock extends Block {
 		if (blockstate.has(INPUT3))
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT3)).GetDirection()));
 		ab = false;
-		inputs.forEach(System.out::println);
 		if (inputs.size() <= 0)
 			world.setBlockState(pos, blockstate.with(POWER, 0), 2);
 		else
