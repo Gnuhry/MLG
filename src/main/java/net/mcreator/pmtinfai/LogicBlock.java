@@ -22,17 +22,16 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.RedstoneWireBlock;
-import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Block;
+
 import java.util.List;
 import java.util.Collections;
 import java.util.ArrayList;
 
 public abstract class LogicBlock extends Block {
-
 	// Properties des Blocks
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 	public static final IntegerProperty POWER = BlockStateProperties.POWER_0_15;
@@ -47,11 +46,9 @@ public abstract class LogicBlock extends Block {
 	public LogicBlock() {
 		super(Block.Properties.create(Material.REDSTONE_LIGHT).sound(SoundType.STEM).hardnessAndResistance(1f, 10f).lightValue(0));
 		// Laden der Default Properties der Blöcke
-			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWER, Integer.valueOf(0))
-					.with(INPUT1, InputSide.NONE).with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE));
+		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWER, Integer.valueOf(0))
+				.with(INPUT1, InputSide.NONE).with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE));
 	}
-
-
 
 	/**
 	 * Initalisiert die Parameter
@@ -61,7 +58,7 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-			builder.add(FACING).add(POWER).add(INPUT1).add(INPUT2).add(INPUT3);
+		builder.add(FACING).add(POWER).add(INPUT1).add(INPUT2).add(INPUT3);
 	}
 
 	/**
@@ -73,7 +70,10 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(INPUT1, InputSide.GetEnum(context.getPlacementHorizontalFacing())).with(INPUT2,  InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateY())).with(INPUT3,  InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateYCCW())); 
+		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite())
+				.with(INPUT1, InputSide.GetEnum(context.getPlacementHorizontalFacing()))
+				.with(INPUT2, InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateY()))
+				.with(INPUT3, InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateYCCW()));
 	}
 
 	/**
@@ -90,7 +90,7 @@ public abstract class LogicBlock extends Block {
 		List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 		return !dropsOriginal.isEmpty() ? dropsOriginal : Collections.singletonList(new ItemStack(this, 1));
 	}
-	
+
 	/**
 	 * Abfgage wie stark die WeakPower(direkte Redstoneansteuerung) ist
 	 * 
@@ -170,8 +170,6 @@ public abstract class LogicBlock extends Block {
 		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
 	}
 
-	
-	
 	/**
 	 * Abfrage ob Redstone sich an der Seite verbinden kann
 	 * 
@@ -227,8 +225,6 @@ public abstract class LogicBlock extends Block {
 	public boolean isSolid(BlockState state) {
 		return true;
 	}
-
-
 
 	/**
 	 * EventListener wenn Block ersetzt wird
@@ -291,45 +287,14 @@ public abstract class LogicBlock extends Block {
 					.onNeighborNotify(world, pos, world.getBlockState(pos), java.util.EnumSet.of(direction.getOpposite()), false).isCanceled()) {
 				ac = false;
 				return;
-				}
+			}
 		}
 		if (pos != null && fromPos != null)
 			System.out.println(pos.toString() + ", " + fromPos.toString());
-		/*
-		 * if(fromPos!=null&&pos.up().equals(fromPos)){ ac = false;
-		 * System.out.println("UP"); return;}
-		 * if(fromPos!=null&&pos.down().equals(fromPos)){ ac = false;
-		 * System.out.println("down"); return;}
-		 */
 		getPowerOnSides(world, pos, state);
 		if (fromPos != null && world.getBlockState(fromPos).getBlock() instanceof LogicBlock) {
-			if (world.getBlockState(fromPos).has(FACING) && world.getBlockState(fromPos).get(FACING) == state.get(FACING).getOpposite()) {
-				System.out.println("Connected");
-				// world.updateComparatorOutputLevel(pos, world.getBlockState(pos).getBlock());
-				// world.notifyNeighborsOfStateExcept(fromPos, neighborBlock,
-				// world.getBlockState(fromPos).get(FACING).getOpposite());
-				// world.notifyNeighborsOfStateChange(pos.up(),
-				// world.getBlockState(pos.up()).getBlock());
-				if (neighborBlock instanceof LogicBlock)
-					getPowerOnSides(world, pos, state);
-			} else if (world.getBlockState(fromPos).has(FACING) && world.getBlockState(fromPos).get(FACING) == state.get(FACING)) {
-				System.out.println("OtherSide");
-			} else {
-				System.out.println("INPUT");
-				// if (ac)
-				// return;
-				// ac = true;
-				// this.neighborChanged(state, world, pos, null, null, false);
-				BlockPos blockpos = pos.offset(direction.getOpposite());
-				world.neighborChanged(blockpos, this, pos);
-				// if(ad)
-				// world.notifyNeighborsOfStateExcept(fromPos, neighborBlock, direction);
-				// world.notifyNeighborsOfStateExcept(blockpos, this, direction);
-				// ad=!ad;
-				// this.notifyNeighborExceptFacingLogicBlock(world, blockpos, this);
-				// BlockPos blockpos = pos.offset(direction.getOpposite());
-				// this.notifyNeighborsOfStateExceptLogicBlock(world, blockpos, this);
-				// ac = false;
+			if (!(world.getBlockState(fromPos).has(FACING) && world.getBlockState(fromPos).get(FACING) == state.get(FACING).getOpposite())) {
+				world.neighborChanged(pos.offset(direction.getOpposite()), this, pos);
 			}
 		} else {
 			if (direction != null) {
@@ -360,13 +325,8 @@ public abstract class LogicBlock extends Block {
 			return;
 		aa = true;
 		this.neighborChanged(state, worldIn, pos, null, null, false);
-		/*this.addInput(state.get(FACING).rotateY(), pos, worldIn);
-		this.addInput(state.get(FACING).rotateYCCW(), pos, worldIn);
-		this.addInput(state.get(FACING), pos, worldIn);*/
 		aa = false;
 	}
-
-
 
 	/**
 	 *** privat*** Hinzufügen eines neuen Inputes
@@ -379,15 +339,13 @@ public abstract class LogicBlock extends Block {
 	 *            Welt des Blockes
 	 */
 	private void addInput(Direction d, BlockPos pos, World world) {
-		BlockState blockstate= world.getBlockState(pos);
-		if(blockstate.has(INPUT1)&&blockstate.get(INPUT1).equals(InputSide.NONE)){
-			world.setBlockState(pos,blockstate.with(INPUT1, InputSide.GetEnum(d)), 2);
-		}
-		else if(blockstate.has(INPUT2)&&blockstate.get(INPUT2).equals(InputSide.NONE)){
-			world.setBlockState(pos,blockstate.with(INPUT2, InputSide.GetEnum(d)), 2);
-		}
-		else if(blockstate.has(INPUT3)&&blockstate.get(INPUT3).equals(InputSide.NONE)){
-			world.setBlockState(pos,blockstate.with(INPUT3, InputSide.GetEnum(d)), 2);
+		BlockState blockstate = world.getBlockState(pos);
+		if (blockstate.has(INPUT1) && blockstate.get(INPUT1).equals(InputSide.NONE)) {
+			world.setBlockState(pos, blockstate.with(INPUT1, InputSide.GetEnum(d)), 2);
+		} else if (blockstate.has(INPUT2) && blockstate.get(INPUT2).equals(InputSide.NONE)) {
+			world.setBlockState(pos, blockstate.with(INPUT2, InputSide.GetEnum(d)), 2);
+		} else if (blockstate.has(INPUT3) && blockstate.get(INPUT3).equals(InputSide.NONE)) {
+			world.setBlockState(pos, blockstate.with(INPUT3, InputSide.GetEnum(d)), 2);
 		}
 	}
 
@@ -400,18 +358,17 @@ public abstract class LogicBlock extends Block {
 	 *            Welt des Blockes
 	 */
 	private void claerInput(BlockPos pos, World world) {
-			world.setBlockState(pos, world.getBlockState(pos).with(INPUT1, InputSide.NONE), 2);
-			world.setBlockState(pos, world.getBlockState(pos).with(INPUT2, InputSide.NONE), 2);
-			world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.NONE), 2);
+		world.setBlockState(pos, world.getBlockState(pos).with(INPUT1, InputSide.NONE), 2);
+		world.setBlockState(pos, world.getBlockState(pos).with(INPUT2, InputSide.NONE), 2);
+		world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.NONE), 2);
 	}
 
-
-	private boolean existInputDirections(BlockState blockstate, Direction d){
-		if(blockstate.has(INPUT1)&&d==((InputSide)blockstate.get(INPUT1)).GetDirection())
+	private boolean existInputDirections(BlockState blockstate, Direction d) {
+		if (blockstate.has(INPUT1) && d == ((InputSide) blockstate.get(INPUT1)).GetDirection())
 			return true;
-		if(blockstate.has(INPUT2)&&d==((InputSide)blockstate.get(INPUT2)).GetDirection())
+		if (blockstate.has(INPUT2) && d == ((InputSide) blockstate.get(INPUT2)).GetDirection())
 			return true;
-		if(blockstate.has(INPUT3)&&d==((InputSide)blockstate.get(INPUT3)).GetDirection())
+		if (blockstate.has(INPUT3) && d == ((InputSide) blockstate.get(INPUT3)).GetDirection())
 			return true;
 		return false;
 	}
@@ -431,18 +388,18 @@ public abstract class LogicBlock extends Block {
 			return;
 		ab = true;
 		ArrayList<Integer> inputs = new ArrayList();
-		if(blockstate.has(INPUT1))
-			inputs.add(this.getPowerOnSide2(world, pos, ((InputSide)blockstate.get(INPUT1)).GetDirection()));
-		if(blockstate.has(INPUT2))
-			inputs.add(this.getPowerOnSide2(world, pos, ((InputSide)blockstate.get(INPUT2)).GetDirection()));
-		if(blockstate.has(INPUT3))
-			inputs.add(this.getPowerOnSide2(world, pos, ((InputSide)blockstate.get(INPUT3)).GetDirection()));
+		if (blockstate.has(INPUT1))
+			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT1)).GetDirection()));
+		if (blockstate.has(INPUT2))
+			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT2)).GetDirection()));
+		if (blockstate.has(INPUT3))
+			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT3)).GetDirection()));
 		ab = false;
 		inputs.forEach(System.out::println);
 		if (inputs.size() <= 0)
-			world.setBlockState(pos,  blockstate.with(POWER, 0), 2);
+			world.setBlockState(pos, blockstate.with(POWER, 0), 2);
 		else
-			world.setBlockState(pos,  blockstate.with(POWER, logic(inputs)), 2);
+			world.setBlockState(pos, blockstate.with(POWER, logic(inputs)), 2);
 	}
 
 	/**
@@ -456,37 +413,16 @@ public abstract class LogicBlock extends Block {
 	 *            Seite an der der Redstonewert eingegeben wird
 	 */
 	protected int getPowerOnSide(World world, BlockPos pos, Direction side) {
-		BlockPos redstoneBlockPos = pos.offset(side);
-		BlockState redstoneBlockState = world.getBlockState(redstoneBlockPos);
-		Block redstoneBlock = redstoneBlockState.getBlock();
-
-		if(redstoneBlock==Blocks.REDSTONE_BLOCK||(redstoneBlockState.has(BlockStateProperties.POWERED)&&redstoneBlockState.get(BlockStateProperties.POWERED))){
-			return 15;
-		} else if(redstoneBlock==Blocks.REDSTONE_WIRE){
-			return redstoneBlockState.get(RedstoneWireBlock.POWER);
-		} else if(redstoneBlockState.canProvidePower()){
-			return Math.max(world.getRedstonePower(pos, side.getOpposite()),world.getStrongPower(redstoneBlockPos));
-		} else if(redstoneBlockState.isSolid()){
-			return world.isBlockPowered(redstoneBlockPos) ? world.getRedstonePower(pos, side) : 0;
-		} else{
-			return 0;
+		Direction direction = side.getOpposite();
+		BlockPos blockpos = pos.offset(direction);
+		int i = world.getRedstonePower(blockpos, direction);
+		if (i >= 15) {
+			return i;
+		} else {
+			BlockState blockstate = world.getBlockState(blockpos);
+			return Math.max(i, blockstate.getBlock() == Blocks.REDSTONE_WIRE ? blockstate.get(RedstoneWireBlock.POWER) : 0);
 		}
-		//if (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid())
-		//return (worldIn.getBlockState(pos).canProvidePower() || worldIn.getBlockState(pos).isSolid()) ? worldIn.getRedstonePower(pos, side) : 0;
 	}
-
-	protected int getPowerOnSide2(World worldIn, BlockPos pos, Direction side) {
-		System.out.println(side);
-        Direction direction = side.getOpposite();
-          BlockPos blockpos = pos.offset(direction);
-          int i = worldIn.getRedstonePower(blockpos, direction);
-          if (i >= 15) {
-             return i;
-          } else {
-             BlockState blockstate = worldIn.getBlockState(blockpos);
-             return Math.max(i, blockstate.getBlock() == Blocks.REDSTONE_WIRE ? blockstate.get(RedstoneWireBlock.POWER) : 0);
-          }
-    }
 
 	/**
 	 * Abstrakte Methode Gibt die Logik des Blockes an
