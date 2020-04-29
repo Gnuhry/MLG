@@ -86,43 +86,36 @@ public class ChangeItemProcedure extends PMTINFAIElements.ModElement {
 		}
 		else if (zero == OutputItem) {
 			directions_output.add(Direction.WEST);
-				//((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).addInput(Direction.WEST, pos, world);
 		}
 		if (one == InputItem) {
 				directions_input.add(Direction.NORTH);
-				//((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).addInput(Direction.WEST, pos, world);
 		}
 		else if (one == OutputItem) {
 			directions_output.add(Direction.NORTH);
-				//((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).addInput(Direction.WEST, pos, world);
 		}
 		if (two == InputItem) {
 				directions_input.add(Direction.EAST);
-				//((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).addInput(Direction.WEST, pos, world);
 		}
 		else if (two == OutputItem) {
 			directions_output.add(Direction.EAST);
-				//((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).addInput(Direction.WEST, pos, world);
 		}
 		if (three == InputItem) {
 				directions_input.add(Direction.SOUTH);
-				//((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).addInput(Direction.WEST, pos, world);
 		}
 		else if (three == OutputItem) {
 			directions_output.add(Direction.SOUTH);
-				//((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).addInput(Direction.WEST, pos, world);
 		}
 		if(directions_output.size()==1&&directions_input.size()>0&&directions_input.size()<4){
 			Direction[]d_help=new Direction[directions_input.size()];
 			for(int f=0;f<d_help.length;f++)
-				d_help[f]=directions_input.get(f);
-			((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).setPort(d_help,directions_output.get(0),world,pos);
+				d_help[f]=directions_input.get(f).getOpposite();
+			((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).setPort(d_help,directions_output.get(0).getOpposite(),world,pos);
 		}
 		else{
 			((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(pos).getBlock()).clearInput(pos, world);
 		}
 		
-		/*else if(new Object() {
+		/*if(new Object() {
 			public ItemStack getItemStack(int sltid) {
 				if (entity instanceof ServerPlayerEntity) {
 					Container _current = ((ServerPlayerEntity) entity).openContainer;
@@ -137,107 +130,6 @@ public class ChangeItemProcedure extends PMTINFAIElements.ModElement {
 			}
 		}.getItemStack(0).getItem() != new ItemStack(Items.REDSTONE,1).getItem()) {
 					((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock()).removeInput(Direction.WEST, new BlockPos((int) x, (int) y, (int) z), world);	
-	}*/
-	/*if (new Object() {
-			public ItemStack getItemStack(int sltid) {
-				if (entity instanceof ServerPlayerEntity) {
-					Container _current = ((ServerPlayerEntity) entity).openContainer;
-					if (_current instanceof Supplier) {
-						Object invobj = ((Supplier) _current).get();
-						if (invobj instanceof Map) {
-							return ((Slot) ((Map) invobj).get(sltid)).getStack();
-						}
-					}
-				}
-				return ItemStack.EMPTY;
-			}
-		}.getItemStack(1).getItem() == new ItemStack(Items.REDSTONE,1).getItem()) {
-			//world.notifyNeighborsOfStateChange(new BlockPos((int) x, (int) y, (int) z),
-			//		world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock());
-					((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock()).addInput(Direction.NORTH, new BlockPos((int) x, (int) y, (int) z), world);
-		}
-		else if(new Object() {
-			public ItemStack getItemStack(int sltid) {
-				if (entity instanceof ServerPlayerEntity) {
-					Container _current = ((ServerPlayerEntity) entity).openContainer;
-					if (_current instanceof Supplier) {
-						Object invobj = ((Supplier) _current).get();
-						if (invobj instanceof Map) {
-							return ((Slot) ((Map) invobj).get(sltid)).getStack();
-						}
-					}
-				}
-				return ItemStack.EMPTY;
-			}
-		}.getItemStack(1).getItem() != new ItemStack(Items.REDSTONE,1).getItem()) {
-					((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock()).removeInput(Direction.NORTH, new BlockPos((int) x, (int) y, (int) z), world);	
-	}
-	if (new Object() {
-			public ItemStack getItemStack(int sltid) {
-				if (entity instanceof ServerPlayerEntity) {
-					Container _current = ((ServerPlayerEntity) entity).openContainer;
-					if (_current instanceof Supplier) {
-						Object invobj = ((Supplier) _current).get();
-						if (invobj instanceof Map) {
-							return ((Slot) ((Map) invobj).get(sltid)).getStack();
-						}
-					}
-				}
-				return ItemStack.EMPTY;
-			}
-		}.getItemStack(2).getItem() == new ItemStack(Items.REDSTONE,1).getItem()) {
-			//world.notifyNeighborsOfStateChange(new BlockPos((int) x, (int) y, (int) z),
-			//		world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock());
-					((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock()).addInput(Direction.EAST, new BlockPos((int) x, (int) y, (int) z), world);
-		}
-		else if(new Object() {
-			public ItemStack getItemStack(int sltid) {
-				if (entity instanceof ServerPlayerEntity) {
-					Container _current = ((ServerPlayerEntity) entity).openContainer;
-					if (_current instanceof Supplier) {
-						Object invobj = ((Supplier) _current).get();
-						if (invobj instanceof Map) {
-							return ((Slot) ((Map) invobj).get(sltid)).getStack();
-						}
-					}
-				}
-				return ItemStack.EMPTY;
-			}
-		}.getItemStack(2).getItem() != new ItemStack(Items.REDSTONE,1).getItem()) {
-					((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock()).removeInput(Direction.EAST, new BlockPos((int) x, (int) y, (int) z), world);	
-	}if (new Object() {
-			public ItemStack getItemStack(int sltid) {
-				if (entity instanceof ServerPlayerEntity) {
-					Container _current = ((ServerPlayerEntity) entity).openContainer;
-					if (_current instanceof Supplier) {
-						Object invobj = ((Supplier) _current).get();
-						if (invobj instanceof Map) {
-							return ((Slot) ((Map) invobj).get(sltid)).getStack();
-						}
-					}
-				}
-				return ItemStack.EMPTY;
-			}
-		}.getItemStack(3).getItem() == new ItemStack(Items.REDSTONE,1).getItem()) {
-			//world.notifyNeighborsOfStateChange(new BlockPos((int) x, (int) y, (int) z),
-			//		world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock());
-					((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock()).addInput(Direction.SOUTH, new BlockPos((int) x, (int) y, (int) z), world);
-		}
-		else if(new Object() {
-			public ItemStack getItemStack(int sltid) {
-				if (entity instanceof ServerPlayerEntity) {
-					Container _current = ((ServerPlayerEntity) entity).openContainer;
-					if (_current instanceof Supplier) {
-						Object invobj = ((Supplier) _current).get();
-						if (invobj instanceof Map) {
-							return ((Slot) ((Map) invobj).get(sltid)).getStack();
-						}
-					}
-				}
-				return ItemStack.EMPTY;
-			}
-		}.getItemStack(3).getItem() != new ItemStack(Items.REDSTONE,1).getItem()) {
-					((net.mcreator.pmtinfai.LogicBlock)world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).getBlock()).removeInput(Direction.SOUTH, new BlockPos((int) x, (int) y, (int) z), world);	
 	}*/
 }
 }
