@@ -27,6 +27,7 @@ import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Block;
+
 import java.util.Random;
 import java.util.List;
 import java.util.Collections;
@@ -40,7 +41,8 @@ public abstract class LogicBlock extends Block {
 	public static final EnumProperty<InputSide> INPUT2 = EnumProperty.create("input2_side", InputSide.class);
 	public static final EnumProperty<InputSide> INPUT3 = EnumProperty.create("input3_side", InputSide.class);
 	// weitere Variablen
-	private static boolean aa = false; // boolean Variablen zum Abfangen von Multithreading
+	private static boolean aa = false;
+	// boolean Variablen zum Abfangen von Multithreading
 	// Konstrukter
 	public LogicBlock() {
 		super(Block.Properties.create(Material.MISCELLANEOUS).sound(SoundType.STEM).hardnessAndResistance(1f, 10f).lightValue(0));
@@ -69,10 +71,12 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite())
-				.with(INPUT1, InputSide.GetEnum(context.getPlacementHorizontalFacing()))
-				.with(INPUT2, InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateY()))
-				.with(INPUT3, InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateYCCW()));
+		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+		// .with(INPUT1, InputSide.GetEnum(context.getPlacementHorizontalFacing()))
+		// .with(INPUT2,
+		// InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateY()))
+		// .with(INPUT3,
+		// InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateYCCW()));
 	}
 
 	/**
@@ -275,7 +279,7 @@ public abstract class LogicBlock extends Block {
 	public boolean isSolid(BlockState state) {
 		return true;
 	}
-	
+
 	/**
 	 * Setzt neune In/Outputs
 	 * 
@@ -357,7 +361,6 @@ public abstract class LogicBlock extends Block {
 		}
 	}
 
-
 	/**
 	 * EventListener wenn Block durch Entity gesetzt wurde
 	 * 
@@ -379,7 +382,7 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 *** privat*** Hinzufügen eines neuen Inputes
+	 * Hinzufügen eines neuen Inputes
 	 * 
 	 * @param d
 	 *            Seite an der der neue Input ist
@@ -388,8 +391,10 @@ public abstract class LogicBlock extends Block {
 	 * @param world
 	 *            Welt des Blockes
 	 */
-	private void addInput(Direction d, BlockPos pos, World world) {
+	public void addInput(Direction d, BlockPos pos, World world) {
 		BlockState blockstate = world.getBlockState(pos);
+		if (this.existInputDirections(blockstate, d) || d == blockstate.get(FACING))
+			return;
 		if (blockstate.has(INPUT1) && blockstate.get(INPUT1).equals(InputSide.NONE)) {
 			world.setBlockState(pos, blockstate.with(INPUT1, InputSide.GetEnum(d)), 2);
 		} else if (blockstate.has(INPUT2) && blockstate.get(INPUT2).equals(InputSide.NONE)) {
@@ -397,20 +402,90 @@ public abstract class LogicBlock extends Block {
 		} else if (blockstate.has(INPUT3) && blockstate.get(INPUT3).equals(InputSide.NONE)) {
 			world.setBlockState(pos, blockstate.with(INPUT3, InputSide.GetEnum(d)), 2);
 		}
+		refreshInput(pos, world);
 	}
 
 	/**
-	 *** privat*** Löschen aller Inputs
+	 * Entfernen eines Inputes
+	 * 
+	 * @param d
+	 *            Seite an der der zu löschende Input ist
+	 * @param pos
+	 *            Position des Blockes, an dem der Input entfernt wird
+	 * @param world
+	 *            Welt des Blockes
+	 */
+	public void removeInput(Direction d, BlockPos pos, World world) {
+		BlockState blockstate = world.getBlockState(pos);
+		if (!this.existInputDirections(blockstate, d) || d == blockstate.get(FACING))
+			return;
+		if (blockstate.has(INPUT1) && blockstate.get(INPUT1).equals(InputSide.GetEnum(d))) {
+			world.setBlockState(pos, blockstate.with(INPUT1, InputSide.NONE), 2);
+		} else if (blockstate.has(INPUT2) && blockstate.get(INPUT2).equals(InputSide.GetEnum(d))) {
+			world.setBlockState(pos, blockstate.with(INPUT2, InputSide.NONE), 2);
+		} else if (blockstate.has(INPUT3) && blockstate.get(INPUT3).equals(InputSide.GetEnum(d))) {
+			world.setBlockState(pos, blockstate.with(INPUT3, InputSide.NONE), 2);
+		}
+		refreshInput(pos, world);
+	}
+	
+	/**
+	 * Set In-&Outputs
+	 * 
+	 * @param inputs
+	 *            Seiten des Inputes
+	 * @param output
+	 *            Seite des Outputs
+	 * @param pos
+	 *            Position des Blockes, an dem der Input entfernt wird
+	 * @param world
+	 *            Welt des Blockes
+	 */
+
+	public void setPort(Direction[] inputs, Direction output, World world, BlockPos pos) {
+		clearInput(pos, world);
+		world.setBlockState(pos, world.getBlockState(pos).with(FACING, output));
+		for (Direction input : inputs) {
+			addInput(input, pos, world);
+		}
+	}
+
+	/**
+	 * Löschen aller Inputs
 	 * 
 	 * @param pos
 	 *            Position des Blockes, an dem die Inputs gelöscht werden
 	 * @param world
 	 *            Welt des Blockes
 	 */
-	private void clearInput(BlockPos pos, World world) {
+	public void clearInput(BlockPos pos, World world) {
 		world.setBlockState(pos, world.getBlockState(pos).with(INPUT1, InputSide.NONE), 2);
 		world.setBlockState(pos, world.getBlockState(pos).with(INPUT2, InputSide.NONE), 2);
 		world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.NONE), 2);
+	}
+
+
+	/**
+	 ***private*** Refreshen der Inputs
+	 * 
+	 * @param pos
+	 *            Position des Blockes
+	 * @param world
+	 *            Welt des Blockes
+	 */
+
+	private void refreshInput(BlockPos pos, World world) {
+		BlockState blockstate = world.getBlockState(pos);
+		if (blockstate.has(INPUT1) && blockstate.get(INPUT1).equals(InputSide.NONE)) {
+			if (blockstate.has(INPUT2) && !blockstate.get(INPUT2).equals(InputSide.NONE))
+				world.setBlockState(pos, blockstate.with(INPUT1, blockstate.get(INPUT2)).with(INPUT2, InputSide.NONE));
+			else if (blockstate.has(INPUT3) && !blockstate.get(INPUT3).equals(InputSide.NONE))
+				world.setBlockState(pos, blockstate.with(INPUT1, blockstate.get(INPUT3)).with(INPUT3, InputSide.NONE));
+		}
+		if (blockstate.has(INPUT2) && blockstate.get(INPUT2).equals(InputSide.NONE)) {
+			if (blockstate.has(INPUT3) && !blockstate.get(INPUT3).equals(InputSide.NONE))
+				world.setBlockState(pos, blockstate.with(INPUT2, blockstate.get(INPUT3)).with(INPUT3, InputSide.NONE));
+		}
 	}
 
 	/**
@@ -444,11 +519,11 @@ public abstract class LogicBlock extends Block {
 	protected int getPowerOnSides(World world, BlockPos pos, BlockState blockstate) {
 		ArrayList<Integer> inputs = new ArrayList();
 		int out;
-		if (blockstate.has(INPUT1))
+		if (blockstate.has(INPUT1) && blockstate.get(INPUT1) != InputSide.NONE)
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT1)).GetDirection()));
-		if (blockstate.has(INPUT2))
+		if (blockstate.has(INPUT2) && blockstate.get(INPUT2) != InputSide.NONE)
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT2)).GetDirection()));
-		if (blockstate.has(INPUT3))
+		if (blockstate.has(INPUT3) && blockstate.get(INPUT3) != InputSide.NONE)
 			inputs.add(this.getPowerOnSide(world, pos, ((InputSide) blockstate.get(INPUT3)).GetDirection()));
 		if (inputs.size() <= 0)
 			return 0;
@@ -476,6 +551,25 @@ public abstract class LogicBlock extends Block {
 			BlockState blockstate = world.getBlockState(blockpos);
 			return Math.max(i, blockstate.getBlock() == Blocks.REDSTONE_WIRE ? blockstate.get(RedstoneWireBlock.POWER) : 0);
 		}
+	}
+
+	/**
+	 ***protected*** SlotId anhand der Direction
+	 * 
+	 * @param d
+	 *            Seite des SlotIds
+	 */
+
+	protected int DirectiontoSlotID(Direction d) {
+		if (d == Direction.WEST)
+			return 0;
+		if (d == Direction.NORTH)
+			return 1;
+		if (d == Direction.EAST)
+			return 2;
+		if (d == Direction.SOUTH)
+			return 3;
+		return -1;
 	}
 
 	/**
