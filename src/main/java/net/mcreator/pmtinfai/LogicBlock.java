@@ -448,6 +448,8 @@ public abstract class LogicBlock extends Block {
 		for (Direction input : inputs) {
 			addInput(input, pos, world);
 		}
+		BlockState state=world.getBlockState(pos);
+		update(state, world, pos, null, this.getPowerOnSides(world, pos, state));
 	}
 
 	/**
@@ -462,6 +464,8 @@ public abstract class LogicBlock extends Block {
 		world.setBlockState(pos, world.getBlockState(pos).with(INPUT1, InputSide.NONE), 2);
 		world.setBlockState(pos, world.getBlockState(pos).with(INPUT2, InputSide.NONE), 2);
 		world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.NONE), 2);
+		BlockState state=world.getBlockState(pos);
+		update(state, world, pos, null, this.getPowerOnSides(world, pos, state));
 	}
 
 
