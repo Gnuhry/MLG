@@ -30,13 +30,16 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.Minecraft;
 
-import net.mcreator.pmtinfai.procedures.ChangeItemProcedure;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.PMTINFAI;
 
 import java.util.function.Supplier;
 import java.util.Map;
 import java.util.HashMap;
+import net.mcreator.pmtinfai.LogicBlock;
+import net.minecraft.util.Direction;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 
 @PMTINFAIElements.ModElement.Tag
 public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
@@ -46,8 +49,6 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 		super(instance, 5);
 		elements.addNetworkMessage(ButtonPressedMessage.class, ButtonPressedMessage::buffer, ButtonPressedMessage::new,
 				ButtonPressedMessage::handler);
-		elements.addNetworkMessage(GUISlotChangedMessage.class, GUISlotChangedMessage::buffer, GUISlotChangedMessage::new,
-				GUISlotChangedMessage::handler);
 		containerType = new ContainerType<>(new GuiContainerModFactory());
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
@@ -68,11 +69,13 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 	}
 
 	public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
+
 		private World world;
 		private PlayerEntity entity;
 		private int x, y, z;
 		private IInventory internal;
 		private Map<Integer, Slot> customSlots = new HashMap<>();
+		private LogicBlock lb;
 		public GuiContainerMod(int id, PlayerInventory inv, PacketBuffer extraData) {
 			super(containerType, id);
 			this.entity = inv.player;
@@ -83,6 +86,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				this.x = pos.getX();
 				this.y = pos.getY();
 				this.z = pos.getZ();
+				lb=(LogicBlock)world.getBlockState(pos).getBlock();
 				TileEntity ent = inv.player != null ? inv.player.world.getTileEntity(pos) : null;
 				if (ent instanceof IInventory)
 					this.internal = (IInventory) ent;
@@ -92,81 +96,36 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-					GuiContainerMod.this.slotChanged(0, 0, 0);
-				}
-
-				@Override
-				public ItemStack onTake(PlayerEntity entity, ItemStack stack) {
-					ItemStack retval = super.onTake(entity, stack);
-					GuiContainerMod.this.slotChanged(0, 1, 0);
-					return retval;
-				}
-
-				@Override
-				public void onSlotChange(ItemStack a, ItemStack b) {
-					super.onSlotChange(a, b);
-					GuiContainerMod.this.slotChanged(0, 2, b.getCount() - a.getCount());
+						Item item = internal.getStackInSlot(0).getItem();
+						lb.changeInput(0, new BlockPos(x,y,z), world, item);
 				}
 			}));
 			this.customSlots.put(1, this.addSlot(new Slot(internal, 1, 53, 12) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-					GuiContainerMod.this.slotChanged(1, 0, 0);
+						Item item = internal.getStackInSlot(1).getItem();
+						lb.changeInput(1, new BlockPos(x,y,z), world, item);
 				}
 
-				@Override
-				public ItemStack onTake(PlayerEntity entity, ItemStack stack) {
-					ItemStack retval = super.onTake(entity, stack);
-					GuiContainerMod.this.slotChanged(1, 1, 0);
-					return retval;
-				}
-
-				@Override
-				public void onSlotChange(ItemStack a, ItemStack b) {
-					super.onSlotChange(a, b);
-					GuiContainerMod.this.slotChanged(1, 2, b.getCount() - a.getCount());
-				}
 			}));
 			this.customSlots.put(2, this.addSlot(new Slot(internal, 2, 71, 30) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-					GuiContainerMod.this.slotChanged(2, 0, 0);
+						Item item = internal.getStackInSlot(2).getItem();
+						lb.changeInput(2, new BlockPos(x,y,z), world, item);
 				}
 
-				@Override
-				public ItemStack onTake(PlayerEntity entity, ItemStack stack) {
-					ItemStack retval = super.onTake(entity, stack);
-					GuiContainerMod.this.slotChanged(2, 1, 0);
-					return retval;
-				}
-
-				@Override
-				public void onSlotChange(ItemStack a, ItemStack b) {
-					super.onSlotChange(a, b);
-					GuiContainerMod.this.slotChanged(2, 2, b.getCount() - a.getCount());
-				}
 			}));
 			this.customSlots.put(3, this.addSlot(new Slot(internal, 3, 53, 48) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-					GuiContainerMod.this.slotChanged(3, 0, 0);
+						Item item = internal.getStackInSlot(3).getItem();
+						lb.changeInput(3, new BlockPos(x,y,z), world, item);
 				}
 
-				@Override
-				public ItemStack onTake(PlayerEntity entity, ItemStack stack) {
-					ItemStack retval = super.onTake(entity, stack);
-					GuiContainerMod.this.slotChanged(3, 1, 0);
-					return retval;
-				}
-
-				@Override
-				public void onSlotChange(ItemStack a, ItemStack b) {
-					super.onSlotChange(a, b);
-					GuiContainerMod.this.slotChanged(3, 2, b.getCount() - a.getCount());
-				}
 			}));
 			int si;
 			int sj;
@@ -315,7 +274,6 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 
 		private void slotChanged(int slotid, int ctype, int meta) {
 			if (this.world != null && this.world.isRemote) {
-				PMTINFAI.PACKET_HANDLER.sendToServer(new GUISlotChangedMessage(slotid, x, y, z, ctype, meta));
 				handleSlotAction(entity, slotid, ctype, meta, x, y, z);
 			}
 		}
@@ -412,50 +370,6 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 		}
 	}
 
-	public static class GUISlotChangedMessage {
-		int slotID, x, y, z, changeType, meta;
-		public GUISlotChangedMessage(int slotID, int x, int y, int z, int changeType, int meta) {
-			this.slotID = slotID;
-			this.x = x;
-			this.y = y;
-			this.z = z;
-			this.changeType = changeType;
-			this.meta = meta;
-		}
-
-		public GUISlotChangedMessage(PacketBuffer buffer) {
-			this.slotID = buffer.readInt();
-			this.x = buffer.readInt();
-			this.y = buffer.readInt();
-			this.z = buffer.readInt();
-			this.changeType = buffer.readInt();
-			this.meta = buffer.readInt();
-		}
-
-		public static void buffer(GUISlotChangedMessage message, PacketBuffer buffer) {
-			buffer.writeInt(message.slotID);
-			buffer.writeInt(message.x);
-			buffer.writeInt(message.y);
-			buffer.writeInt(message.z);
-			buffer.writeInt(message.changeType);
-			buffer.writeInt(message.meta);
-		}
-
-		public static void handler(GUISlotChangedMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
-			NetworkEvent.Context context = contextSupplier.get();
-			context.enqueueWork(() -> {
-				PlayerEntity entity = context.getSender();
-				int slotID = message.slotID;
-				int changeType = message.changeType;
-				int meta = message.meta;
-				int x = message.x;
-				int y = message.y;
-				int z = message.z;
-				handleSlotAction(entity, slotID, changeType, meta, x, y, z);
-			});
-			context.setPacketHandled(true);
-		}
-	}
 	private static void handleButtonAction(PlayerEntity entity, int buttonID, int x, int y, int z) {
 		World world = entity.world;
 		// security measure to prevent arbitrary chunk generation
@@ -468,141 +382,5 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 		// security measure to prevent arbitrary chunk generation
 		if (!world.isBlockLoaded(new BlockPos(x, y, z)))
 			return;
-		if (slotID == 0 && changeType == 0) {
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 0 && changeType == 1) {
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 0 && changeType == 2) {
-			int amount = meta;
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 1 && changeType == 0) {
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 1 && changeType == 1) {
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 1 && changeType == 2) {
-			int amount = meta;
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 2 && changeType == 0) {
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 2 && changeType == 1) {
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 2 && changeType == 2) {
-			int amount = meta;
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 3 && changeType == 0) {
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 3 && changeType == 1) {
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
-		if (slotID == 3 && changeType == 2) {
-			int amount = meta;
-			{
-				java.util.HashMap<String, Object> $_dependencies = new java.util.HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				ChangeItemProcedure.executeProcedure($_dependencies);
-			}
-		}
 	}
 }
