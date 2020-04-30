@@ -8,22 +8,19 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.Mirror;
 import net.minecraft.util.Direction;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.EnumProperty;
-import net.minecraft.state.DirectionProperty;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.RedstoneWireBlock;
-import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Block;
@@ -32,14 +29,11 @@ import java.util.Random;
 import java.util.List;
 import java.util.Collections;
 import java.util.ArrayList;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 
 public abstract class LogicBlock extends Block {
-		private final Item InputItem=Items.REDSTONE;
-		private final Item OutputItem=Items.REDSTONE_TORCH;
+	private final Item InputItem = Items.REDSTONE;
+	private final Item OutputItem = Items.REDSTONE_TORCH;
 	// Properties des Blocks
-	//public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 	public static final IntegerProperty POWER = BlockStateProperties.POWER_0_15;
 	public static final EnumProperty<InputSide> INPUT1 = EnumProperty.create("input1_side", InputSide.class);
 	public static final EnumProperty<InputSide> INPUT2 = EnumProperty.create("input2_side", InputSide.class);
@@ -52,8 +46,8 @@ public abstract class LogicBlock extends Block {
 	public LogicBlock() {
 		super(Block.Properties.create(Material.MISCELLANEOUS).sound(SoundType.STEM).hardnessAndResistance(0f, 0f).lightValue(0));
 		// Laden der Default Properties der BlÃ¶cke
-		this.setDefaultState(this.stateContainer.getBaseState().with(POWER, Integer.valueOf(0))
-				.with(INPUT1, InputSide.NONE).with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE).with(OUTPUT, InputSide.NONE));//.with(FACING, Direction.NORTH)
+		this.setDefaultState(this.stateContainer.getBaseState().with(POWER, Integer.valueOf(0)).with(INPUT1, InputSide.NONE)
+				.with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE).with(OUTPUT, InputSide.NONE));
 	}
 
 	/**
@@ -64,24 +58,7 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(POWER).add(INPUT1).add(INPUT2).add(INPUT3).add(OUTPUT);//.add(FACING)
-	}
-
-	/**
-	 * Gibt den Default State beim plazieren zurück
-	 * 
-	 * @param context
-	 *            Context des Blockes beim Plazieren
-	 * @return Gibt den default Blockstate zurück
-	 */
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState();//.with(FACING, context.getPlacementHorizontalFacing().getOpposite());
-		// .with(INPUT1, InputSide.GetEnum(context.getPlacementHorizontalFacing()))
-		// .with(INPUT2,
-		// InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateY()))
-		// .with(INPUT3,
-		// InputSide.GetEnum(context.getPlacementHorizontalFacing().rotateYCCW()));
+		builder.add(POWER).add(INPUT1).add(INPUT2).add(INPUT3).add(OUTPUT);
 	}
 
 	/**
@@ -125,7 +102,7 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		return ((InputSide)blockState.get(OUTPUT)).GetDirection() == side ? blockState.get(POWER) : 0;
+		return ((InputSide) blockState.get(OUTPUT)).GetDirection() == side ? blockState.get(POWER) : 0;
 	}
 
 	/**
@@ -161,32 +138,6 @@ public abstract class LogicBlock extends Block {
 	 */
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
-	}
-
-	/**
-	 * Rotiert den Block und ändert den Facing Parameter
-	 * 
-	 * @param state
-	 *            Blockstate des Blockes
-	 * @param Rotation
-	 *            die der Block durchführen soll
-	 * @return Gibt den neuen Blockstate zurück
-	 */
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state;//.with(FACING, rot.rotate(state.get(FACING)));
-	}
-
-	/**
-	 * Spiegelt den Block und ändert den Facing Parameter
-	 * 
-	 * @param state
-	 *            Blockstate des Blockes
-	 * @param Rotation
-	 *            die der Block durchführen soll
-	 * @return Gibt den neuen Blockstate zurück
-	 */
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state;//.rotate(mirrorIn.toRotation(state.get(FACING)));
 	}
 
 	/**
@@ -244,7 +195,7 @@ public abstract class LogicBlock extends Block {
 	 */
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return side == null ? false : (((InputSide)state.get(OUTPUT)).GetDirection() == side || existInputDirections(state, side));
+		return side == null ? false : (((InputSide) state.get(OUTPUT)).GetDirection() == side || existInputDirections(state, side));
 	}
 
 	/**
@@ -326,7 +277,7 @@ public abstract class LogicBlock extends Block {
 	@Deprecated
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		super.onReplaced(state, world, pos, newState, isMoving);
-		Direction direction = ((InputSide)state.get(OUTPUT)).GetDirection();
+		Direction direction = ((InputSide) state.get(OUTPUT)).GetDirection();
 		BlockPos blockpos = pos.offset(direction.getOpposite());
 		BlockState n = world.getBlockState(blockpos);
 		if ((!n.getBlock().canProvidePower(n)) && n.isSolid() && (!(n.getBlock() instanceof LogicBlock))) {
@@ -387,7 +338,7 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 ***private*** Hinzufügen eines neuen Inputes
+	 *** private*** Hinzufügen eines neuen Inputes
 	 * 
 	 * @param d
 	 *            Seite an der der neue Input ist
@@ -411,7 +362,7 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 ***private*** Entfernen eines Inputes
+	 *** private*** Entfernen eines Inputes
 	 * 
 	 * @param d
 	 *            Seite an der der zu löschende Input ist
@@ -436,47 +387,45 @@ public abstract class LogicBlock extends Block {
 
 	/**
 	 * Input und Output Ändern
-	 * @param slot 
-	 * 				SlotID des ändernden Slot
-	 * @param world 
-	 * 				Welt des Blockes
-	 * @param pos 
-	 * 				Position des Blockes
-	 * @param item 
-	 * 				Item im GUI
+	 * 
+	 * @param slot
+	 *            SlotID des ändernden Slot
+	 * @param world
+	 *            Welt des Blockes
+	 * @param pos
+	 *            Position des Blockes
+	 * @param item
+	 *            Item im GUI
 	 */
-	public void changeInput(int slot, BlockPos pos, World world, Item item){
+	public void changeInput(int slot, BlockPos pos, World world, Item item) {
 		BlockState blockstate = world.getBlockState(pos);
-		Direction d=SlotIDtoDirection(slot).getOpposite();
-		if(item==InputItem){
-			if(existInputDirections(blockstate, d)){
+		Direction d = SlotIDtoDirection(slot).getOpposite();
+		if (item == InputItem) {
+			if (existInputDirections(blockstate, d)) {
 				return;
 			}
-			System.out.println("Change Input in slot \'"+slot+"\'");
-			if(d == ((InputSide)blockstate.get(OUTPUT)).GetDirection()){
-				world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.NONE)); 
-			}	
-			addInput(d, pos, world); 
-		}
-		else if(item==OutputItem){
-			if(d == ((InputSide)blockstate.get(OUTPUT)).GetDirection()){
+			System.out.println("Change Input in slot \'" + slot + "\'");
+			if (d == ((InputSide) blockstate.get(OUTPUT)).GetDirection()) {
+				world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.NONE));
+			}
+			addInput(d, pos, world);
+		} else if (item == OutputItem) {
+			if (d == ((InputSide) blockstate.get(OUTPUT)).GetDirection()) {
 				return;
 			}
-			System.out.println("Change Output in slot \'"+slot+"\'");
-			removeInput(d, pos, world); 
-			world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.GetEnum(d))); 
-			removeInput(d, pos, world); 	
-		}
-		else{
-			System.out.println("Change in slot \'"+slot+"\'");
-			if(d == ((InputSide)blockstate.get(OUTPUT)).GetDirection()){
-				world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.NONE)); 
+			System.out.println("Change Output in slot \'" + slot + "\'");
+			removeInput(d, pos, world);
+			world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.GetEnum(d)));
+			removeInput(d, pos, world);
+		} else {
+			System.out.println("Change in slot \'" + slot + "\'");
+			if (d == ((InputSide) blockstate.get(OUTPUT)).GetDirection()) {
+				world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.NONE));
 			}
 			removeInput(d, pos, world);
-			
 		}
 	}
-	
+
 	/**
 	 * Set In-&Outputs
 	 * 
@@ -496,12 +445,12 @@ public abstract class LogicBlock extends Block {
 		for (Direction input : inputs) {
 			addInput(input, pos, world);
 		}
-		BlockState state=world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		update(state, world, pos, null, this.getPowerOnSides(world, pos, state));
 	}
 
 	/**
-	 ***private*** Löschen aller Inputs
+	 *** private*** Löschen aller Inputs
 	 * 
 	 * @param pos
 	 *            Position des Blockes, an dem die Inputs gelöscht werden
@@ -512,13 +461,12 @@ public abstract class LogicBlock extends Block {
 		world.setBlockState(pos, world.getBlockState(pos).with(INPUT1, InputSide.NONE), 2);
 		world.setBlockState(pos, world.getBlockState(pos).with(INPUT2, InputSide.NONE), 2);
 		world.setBlockState(pos, world.getBlockState(pos).with(INPUT3, InputSide.NONE), 2);
-		BlockState state=world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		update(state, world, pos, null, this.getPowerOnSides(world, pos, state));
 	}
 
-
 	/**
-	 ***private*** Refreshen der Inputs
+	 *** private*** Refreshen der Inputs
 	 * 
 	 * @param pos
 	 *            Position des Blockes
@@ -528,9 +476,9 @@ public abstract class LogicBlock extends Block {
 	private void refreshInput(BlockPos pos, World world) {
 		BlockState blockstate = world.getBlockState(pos);
 		if (blockstate.has(INPUT1) && blockstate.get(INPUT1).equals(InputSide.NONE)) {
-			 if (blockstate.has(INPUT3) && !blockstate.get(INPUT3).equals(InputSide.NONE))
+			if (blockstate.has(INPUT3) && !blockstate.get(INPUT3).equals(InputSide.NONE))
 				world.setBlockState(pos, blockstate.with(INPUT1, blockstate.get(INPUT3)).with(INPUT3, InputSide.NONE));
-			 else if (blockstate.has(INPUT2) && !blockstate.get(INPUT2).equals(InputSide.NONE))
+			else if (blockstate.has(INPUT2) && !blockstate.get(INPUT2).equals(InputSide.NONE))
 				world.setBlockState(pos, blockstate.with(INPUT1, blockstate.get(INPUT2)).with(INPUT2, InputSide.NONE));
 		}
 		if (blockstate.has(INPUT2) && blockstate.get(INPUT2).equals(InputSide.NONE)) {
@@ -605,13 +553,12 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 ***protected*** SlotId anhand der Direction
+	 *** protected*** SlotId anhand der Direction
 	 * 
 	 * @param d
 	 *            Seite des SlotIds
 	 * @return SlotID
 	 */
-
 	protected int DirectiontoSlotID(Direction d) {
 		if (d == Direction.WEST)
 			return 0;
@@ -623,25 +570,28 @@ public abstract class LogicBlock extends Block {
 			return 3;
 		return -1;
 	}
-	
+
 	/**
-	 ***protected*** Direction anhand der SlotId
+	 *** protected*** Direction anhand der SlotId
 	 * 
 	 * @param slot
 	 *            ID des Slot
 	 * @return Direction des SlotIDs
 	 */
-	
 	protected Direction SlotIDtoDirection(int slot) {
-		switch(slot){
-			case 0: return Direction.WEST;
-			case 1: return Direction.NORTH;
-			case 2: return Direction.EAST;
-			case 3: return Direction.SOUTH;
-			default: return null;
+		switch (slot) {
+			case 0 :
+				return Direction.WEST;
+			case 1 :
+				return Direction.NORTH;
+			case 2 :
+				return Direction.EAST;
+			case 3 :
+				return Direction.SOUTH;
+			default :
+				return null;
 		}
 	}
-
 
 	/**
 	 * Abstrakte Methode Gibt die Logik des Blockes an
