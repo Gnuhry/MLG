@@ -1,15 +1,21 @@
 {
   "variants": {
-  		"output=south, input1_side=north": { "model": "pminfai:block/logicblock_north"},
-  		"output=south, input1_side=east": { "model": "pminfai:block/logicblock_east"},
-  		"output=south, input1_side=west": { "model": "pminfai:block/logicblock_west"},
-  		"output=west, input1_side=north": { "model": "pminfai:block/logicblock_north", "y": 90},
-  		"output=west, input1_side=east": { "model": "pminfai:block/logicblock_east", "y": 90},
-  		"output=west, input1_side=west": { "model": "pminfai:block/logicblock_west", "y": 90},
-  		"output=north, input1_side=north": { "model": "pminfai:block/logicblock_north", "y": 180},
-  		"output=north, input1_side=east": { "model": "pminfai:block/logicblock_east", "y": 180},
-  		"output=north, input1_side=west": { "model": "pminfai:block/logicblock_west", "y": 180},
-  		"output=east, input1_side=north": { "model": "pminfai:block/logicblock_north", "y": 270},
-  		"output=east, input1_side=east": { "model": "pminfai:block/logicblock_east", "y": 270},
-  		"output=east, input1_side=west": { "model": "pminfai:block/logicblock_west", "y": 270}
+  		"output=none,input1_side=none,input2_side=none,input3_side=none": { "model":"pmtinfai:block/andgateblock"},
+  		"output=south,input1_side=none,,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock"},
+  		"output=west,input1_side=none,,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock", "y":90},
+  		"output=north,input1_side=none,,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock", "y":180},
+  		"output=east,input1_side=none,,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock", "y":270},
+  		"output=south,input1_side=north,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_o"},
+  		"output=west,input1_side=east,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_o", "y":90},
+  		"output=north,input1_side=south,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_o", "y":180},
+  		"output=east,input1_side=west,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_o", "y":270},
+  		"output=south,input1_side=east,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_l"},
+  		"output=west,input1_side=sotuh,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_l", "y":90},
+  		"output=north,input1_side=west,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_l", "y":180},
+  		"output=east,input1_side=north,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_l", "y":270},
+  		"output=south,input1_side=west,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_r"},
+  		"output=west,input1_side=north,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_r", "y":90},
+  		"output=north,input1_side=east,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_r", "y":180},
+  		"output=east,input1_side=south,input2_side=none,input3_side=none": { "model":"pmtinfai:block/logicblock_r", "y":270}
+  		}
 }
