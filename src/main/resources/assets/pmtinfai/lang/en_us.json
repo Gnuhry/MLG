@@ -1,4 +1,8 @@
 {
+  "item.pmtinfai.standardcard": "Standardcard",
+  "item.pmtinfai.output": "Output",
+  "block.pmtinfai.workbench": "Workbench",
   "itemGroup.tablogicblocks": "Logic Block",
+  "item.pmtinfai.input": "Input",
   "block.pmtinfai.andgateblock": "And Gate Block"
 }
