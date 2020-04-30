@@ -38,7 +38,7 @@
       "type": "item",
       "sortid": 7,
       "compiles": true,
-      "locked_code": false,
+      "locked_code": true,
       "ids": {}
     },
     {
@@ -86,7 +86,7 @@
   "sound_elements": [],
   "language_map": {
     "en_us": {
-      "item.pmtinfai.standardcard": "Standardcard",
+      "item.pmtinfai.standardcard": "card",
       "item.pmtinfai.output": "Output",
       "block.pmtinfai.workbench": "Workbench",
       "itemGroup.tablogicblocks": "Logic Block",

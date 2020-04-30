@@ -22,6 +22,9 @@ public class OutputItem extends PMTINFAIElements.ModElement {
 	public void initElements() {
 		elements.items.add(() -> new ItemCustom());
 	}
+	public static Item GetItem(){
+		return new ItemCustom();
+	}
 	public static class ItemCustom extends Item {
 		public ItemCustom() {
 			super(new Item.Properties().group(LogicBlocksItemGroup.tab).maxStackSize(16));

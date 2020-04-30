@@ -14,7 +14,6 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.EnumProperty;
-import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.entity.LivingEntity;
@@ -25,15 +24,19 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Block;
 
+import net.mcreator.pmtinfai.item.OutputItem;
+import net.mcreator.pmtinfai.item.InputItem;
+
 import java.util.Random;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.ArrayList;
+import net.minecraft.item.Items;
 
 public abstract class LogicBlock extends Block {
-	private final Item InputItem = Items.REDSTONE;
-	private final Item OutputItem = Items.REDSTONE_TORCH;
+	private final String InputItem_ ="input";
+	private final String OutputItem_ ="output";
 	// Properties des Blocks
 	public static final IntegerProperty POWER = BlockStateProperties.POWER_0_15;
 	public static final EnumProperty<InputSide> INPUT1 = EnumProperty.create("input1_side", InputSide.class);
@@ -282,7 +285,7 @@ public abstract class LogicBlock extends Block {
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		super.onReplaced(state, world, pos, newState, isMoving);
 		Direction direction = ((InputSide) state.get(OUTPUT)).GetDirection();
-		if(direction==null)
+		if (direction == null)
 			return;
 		BlockPos blockpos = pos.offset(direction.getOpposite());
 		BlockState n = world.getBlockState(blockpos);
@@ -406,7 +409,8 @@ public abstract class LogicBlock extends Block {
 	public void changeInput(int slot, BlockPos pos, World world, Item item) {
 		BlockState blockstate = world.getBlockState(pos);
 		Direction d = SlotIDtoDirection(slot).getOpposite();
-		if (item == InputItem) {
+		//System.out.println(item.toString());
+		if (item.toString() == InputItem_) {
 			if (existInputDirections(blockstate, d)) {
 				return;
 			}
@@ -415,7 +419,7 @@ public abstract class LogicBlock extends Block {
 				world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.NONE));
 			}
 			addInput(d, pos, world);
-		} else if (item == OutputItem) {
+		} else if (item.toString() == OutputItem_) {
 			if (d == ((InputSide) blockstate.get(OUTPUT)).GetDirection()) {
 				return;
 			}
@@ -664,11 +668,12 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 ***private*** Parsed eine String Expression in eine Bool Expression
-	 * @param exp Expresion die geparsed werden soll
+	 *** private*** Parsed eine String Expression in eine Bool Expression
+	 * 
+	 * @param exp
+	 *            Expresion die geparsed werden soll
 	 * @return Boolisches Ergebnis der Expression
 	 */
-
 	private static boolean calculate(String exp) {
 		List<Character> allowed = new ArrayList<>();
 		allowed.add('T');
