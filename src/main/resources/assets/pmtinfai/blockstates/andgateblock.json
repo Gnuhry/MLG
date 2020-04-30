@@ -1,19 +1,15 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "pmtinfai:block/andgateblock"
-    },
-    "facing=east": {
-      "model": "pmtinfai:block/andgateblock",
-      "y": 90
-    },
-    "facing=south": {
-      "model": "pmtinfai:block/andgateblock",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "pmtinfai:block/andgateblock",
-      "y": 270
-    }
-  }
+  		"output=south, input1_side=north": { "model": "pminfai:block/logicblock_north"},
+  		"output=south, input1_side=east": { "model": "pminfai:block/logicblock_east"},
+  		"output=south, input1_side=west": { "model": "pminfai:block/logicblock_west"},
+  		"output=west, input1_side=north": { "model": "pminfai:block/logicblock_north", "y": 90},
+  		"output=west, input1_side=east": { "model": "pminfai:block/logicblock_east", "y": 90},
+  		"output=west, input1_side=west": { "model": "pminfai:block/logicblock_west", "y": 90},
+  		"output=north, input1_side=north": { "model": "pminfai:block/logicblock_north", "y": 180},
+  		"output=north, input1_side=east": { "model": "pminfai:block/logicblock_east", "y": 180},
+  		"output=north, input1_side=west": { "model": "pminfai:block/logicblock_west", "y": 180},
+  		"output=east, input1_side=north": { "model": "pminfai:block/logicblock_north", "y": 270},
+  		"output=east, input1_side=east": { "model": "pminfai:block/logicblock_east", "y": 270},
+  		"output=east, input1_side=west": { "model": "pminfai:block/logicblock_west", "y": 270}
 }
