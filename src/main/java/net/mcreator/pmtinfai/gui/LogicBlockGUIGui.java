@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Container;
@@ -32,13 +33,12 @@ import net.minecraft.client.Minecraft;
 
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.PMTINFAI;
+import net.mcreator.pmtinfai.LogicBlock;
 
 import java.util.function.Supplier;
 import java.util.Map;
 import java.util.HashMap;
-import net.mcreator.pmtinfai.LogicBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.item.Item;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.item.Items;
 
 @PMTINFAIElements.ModElement.Tag
@@ -69,7 +69,6 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 	}
 
 	public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
-
 		private World world;
 		private PlayerEntity entity;
 		private int x, y, z;
@@ -80,13 +79,13 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 			super(containerType, id);
 			this.entity = inv.player;
 			this.world = inv.player.world;
-			this.internal = new Inventory(4);
+			this.internal = new Inventory(5);
 			if (extraData != null) {
 				BlockPos pos = extraData.readBlockPos();
 				this.x = pos.getX();
 				this.y = pos.getY();
 				this.z = pos.getZ();
-				lb=(LogicBlock)world.getBlockState(pos).getBlock();
+				lb = (LogicBlock) world.getBlockState(pos).getBlock();
 				TileEntity ent = inv.player != null ? inv.player.world.getTileEntity(pos) : null;
 				if (ent instanceof IInventory)
 					this.internal = (IInventory) ent;
@@ -96,34 +95,54 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-						Item item = internal.getStackInSlot(0).getItem();
-						lb.changeInput(0, new BlockPos(x,y,z), world, item);
+					Item item = internal.getStackInSlot(0).getItem();
+					lb.changeInput(0, new BlockPos(x, y, z), world, item);
 				}
 			}));
 			this.customSlots.put(1, this.addSlot(new Slot(internal, 1, 53, 12) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-						Item item = internal.getStackInSlot(1).getItem();
-						lb.changeInput(1, new BlockPos(x,y,z), world, item);
+					Item item = internal.getStackInSlot(1).getItem();
+					lb.changeInput(1, new BlockPos(x, y, z), world, item);
 				}
-
 			}));
 			this.customSlots.put(2, this.addSlot(new Slot(internal, 2, 71, 30) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-						Item item = internal.getStackInSlot(2).getItem();
-						lb.changeInput(2, new BlockPos(x,y,z), world, item);
+					Item item = internal.getStackInSlot(2).getItem();
+					lb.changeInput(2, new BlockPos(x, y, z), world, item);
 				}
-
 			}));
 			this.customSlots.put(3, this.addSlot(new Slot(internal, 3, 53, 48) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-						Item item = internal.getStackInSlot(3).getItem();
-						lb.changeInput(3, new BlockPos(x,y,z), world, item);
+					Item item = internal.getStackInSlot(3).getItem();
+					lb.changeInput(3, new BlockPos(x, y, z), world, item);
+					
+					CompoundNBT nbt=new CompoundNBT();
+					nbt.putString("logic", "(A&(B&C)),(A&B),F");
+					internal.getStackInSlot(3).setTag(nbt);
+				}
+			}));
+			this.customSlots.put(4, this.addSlot(new Slot(internal, 4, 138, 31) {
+				@Override
+				public void onSlotChanged() {
+					super.onSlotChanged();
+					//System.out.println(internal.getStackInSlot(4).getItem().toString()+"-"+(internal.getStackInSlot(4).getItem().toString().equals("redstone")));
+					if(internal.getStackInSlot(4)!=null&&internal.getStackInSlot(4).getItem().toString().equals("redstone")){
+						try{
+							//System.out.println(internal.getStackInSlot(4).getTag().getString("logic"));
+							lb.GetAllStates(internal.getStackInSlot(4).getTag().getString("logic"), world, new BlockPos(x,y,z));
+						}catch(Exception ed){
+							lb.GetAllStates("none", world, new BlockPos(x,y,z));
+						}
+					}
+					else{
+						lb.GetAllStates("none", world, new BlockPos(x,y,z));
+					}
 				}
 
 			}));
@@ -152,18 +171,18 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 			if (slot != null && slot.getHasStack()) {
 				ItemStack itemstack1 = slot.getStack();
 				itemstack = itemstack1.copy();
-				if (index < 4) {
-					if (!this.mergeItemStack(itemstack1, 4, this.inventorySlots.size(), true)) {
+				if (index < 5) {
+					if (!this.mergeItemStack(itemstack1, 5, this.inventorySlots.size(), true)) {
 						return ItemStack.EMPTY;
 					}
 					slot.onSlotChange(itemstack1, itemstack);
-				} else if (!this.mergeItemStack(itemstack1, 0, 4, false)) {
-					if (index < 4 + 27) {
-						if (!this.mergeItemStack(itemstack1, 4 + 27, this.inventorySlots.size(), true)) {
+				} else if (!this.mergeItemStack(itemstack1, 0, 5, false)) {
+					if (index < 5 + 27) {
+						if (!this.mergeItemStack(itemstack1, 5 + 27, this.inventorySlots.size(), true)) {
 							return ItemStack.EMPTY;
 						}
 					} else {
-						if (!this.mergeItemStack(itemstack1, 4, 4 + 27, false)) {
+						if (!this.mergeItemStack(itemstack1, 5, 5 + 27, false)) {
 							return ItemStack.EMPTY;
 						}
 					}
@@ -318,6 +337,12 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 
 		@Override
 		protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+			this.font.drawString("N", 58, 1, -16777216);
+			this.font.drawString("E", 27, 33, -16777216);
+			this.font.drawString("S", 57, 65, -16777216);
+			this.font.drawString("W", 90, 33, -16777216);
+			this.font.drawString("I/O", 17, 6, -16777216);
+			this.font.drawString("Logic", 134, 6, -16777216);
 		}
 
 		@Override
@@ -369,7 +394,6 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 			context.setPacketHandled(true);
 		}
 	}
-
 	private static void handleButtonAction(PlayerEntity entity, int buttonID, int x, int y, int z) {
 		World world = entity.world;
 		// security measure to prevent arbitrary chunk generation
