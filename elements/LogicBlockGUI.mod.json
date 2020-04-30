@@ -1,0 +1,96 @@
+{
+  "_fv": 6,
+  "_type": "gui",
+  "definition": {
+    "type": 1,
+    "width": 352,
+    "height": 332,
+    "renderBgLayer": true,
+    "components": [
+      {
+        "type": "inputslot",
+        "data": {
+          "inputLimit": {
+            "value": ""
+          },
+          "id": 0,
+          "onSlotChanged": {
+            "name": "ChangeItem"
+          },
+          "onTakenFromSlot": {
+            "name": "ChangeItem"
+          },
+          "onStackTransfer": {
+            "name": "ChangeItem"
+          },
+          "name": "Slot #0",
+          "x": 318,
+          "y": 132
+        }
+      },
+      {
+        "type": "inputslot",
+        "data": {
+          "inputLimit": {
+            "value": ""
+          },
+          "id": 1,
+          "onSlotChanged": {
+            "name": "ChangeItem"
+          },
+          "onTakenFromSlot": {
+            "name": "ChangeItem"
+          },
+          "onStackTransfer": {
+            "name": "ChangeItem"
+          },
+          "name": "Slot #1",
+          "x": 354,
+          "y": 96
+        }
+      },
+      {
+        "type": "inputslot",
+        "data": {
+          "inputLimit": {
+            "value": ""
+          },
+          "id": 2,
+          "onSlotChanged": {
+            "name": "ChangeItem"
+          },
+          "onTakenFromSlot": {
+            "name": "ChangeItem"
+          },
+          "onStackTransfer": {
+            "name": "ChangeItem"
+          },
+          "name": "Slot #2",
+          "x": 390,
+          "y": 132
+        }
+      },
+      {
+        "type": "inputslot",
+        "data": {
+          "inputLimit": {
+            "value": ""
+          },
+          "id": 3,
+          "onSlotChanged": {
+            "name": "ChangeItem"
+          },
+          "onTakenFromSlot": {
+            "name": "ChangeItem"
+          },
+          "onStackTransfer": {
+            "name": "ChangeItem"
+          },
+          "name": "Slot #3",
+          "x": 354,
+          "y": 168
+        }
+      }
+    ]
+  }
+}

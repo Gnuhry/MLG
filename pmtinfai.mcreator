@@ -16,6 +16,14 @@
       "compiles": true,
       "locked_code": true,
       "ids": {}
+    },
+    {
+      "name": "LogicBlockGUI",
+      "type": "gui",
+      "sortid": 5,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
     }
   ],
   "variable_elements": [],
