@@ -27,6 +27,7 @@ import net.minecraft.block.Block;
 
 import java.util.Random;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Collections;
 import java.util.ArrayList;
 
@@ -41,6 +42,8 @@ public abstract class LogicBlock extends Block {
 	public static final EnumProperty<InputSide> OUTPUT = EnumProperty.create("output", InputSide.class);
 	// weitere Variablen
 	private static boolean aa = false;
+	private HashMap<String, Boolean> test = null;
+	private String test2 = null;
 	// boolean Variablen zum Abfangen von Multithreading
 	// Konstrukter
 	public LogicBlock() {
@@ -48,6 +51,7 @@ public abstract class LogicBlock extends Block {
 		// Laden der Default Properties der Blöcke
 		this.setDefaultState(this.stateContainer.getBaseState().with(POWER, Integer.valueOf(0)).with(INPUT1, InputSide.NONE)
 				.with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE).with(OUTPUT, InputSide.NONE));
+		// GetAllStates("(A&(B&C))");
 	}
 
 	/**
@@ -278,6 +282,8 @@ public abstract class LogicBlock extends Block {
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		super.onReplaced(state, world, pos, newState, isMoving);
 		Direction direction = ((InputSide) state.get(OUTPUT)).GetDirection();
+		if(direction==null)
+			return;
 		BlockPos blockpos = pos.offset(direction.getOpposite());
 		BlockState n = world.getBlockState(blockpos);
 		if ((!n.getBlock().canProvidePower(n)) && n.isSolid() && (!(n.getBlock() instanceof LogicBlock))) {
@@ -594,11 +600,139 @@ public abstract class LogicBlock extends Block {
 	}
 
 	/**
-	 * Abstrakte Methode Gibt die Logik des Blockes an
+	 *** protected*** Gibt die Logik des Blockes an
 	 * 
 	 * @param inputs
 	 *            Alle Redstone Input Values
 	 * @return Neuer Output
 	 */
-	protected abstract int logic(List<Integer> inputs);
+	protected int logic(List<Integer> inputs) {
+		if (test == null)
+			return 0;
+		String erg = "";
+		for (int f : inputs)
+			erg += f > 0 ? 'T' : 'F';
+		while (erg.length() < 3) {
+			erg += 'N';
+		}
+		return test != null && test.get(erg) ? Collections.max(inputs) : 0;
+	}
+
+	/**
+	 * Erstellt die neue Warheitstabelle
+	 * 
+	 * @param exp
+	 *            Expresion der neuen Logik
+	 * @param world
+	 *            Welt des Blockes
+	 * @param pos
+	 *            Position des Blockes
+	 */
+	public void GetAllStates(String exp, World world, BlockPos pos) {
+		if (exp == null || test2 == exp)
+			return;
+		test2 = exp;
+		System.out.println("Change output to: " + exp);
+		if (exp == "none") {
+			test = null;
+			return;
+		}
+		String[] exp_help = exp.split(",");
+		String[] cases3 = new String[]{"TFF", "TFT", "TTF", "TTT", "FFF", "FFT", "FTF", "FTT"};
+		String[] cases2 = new String[]{"TF", "TT", "FF", "FT"};
+		String[] cases1 = new String[]{"T", "F"};
+		List<String[]> cases = new ArrayList<>();
+		cases.add(cases3);
+		cases.add(cases2);
+		cases.add(cases1);
+		char[] replace = new char[]{'A', 'B', 'C'};
+		HashMap<String, Boolean> erg = new HashMap<>();
+		List<Integer> inputs = new ArrayList<>();
+		for (int e = 0; e < cases.size(); e++) {
+			for (int f = 0; f < cases.get(e).length; f++) {
+				String exp2 = exp_help[e];
+				inputs.clear();
+				char[] fchar = cases.get(e)[f].toCharArray();
+				for (int g = 0; g < fchar.length; g++) {
+					exp2 = exp2.replace(replace[g], fchar[g]);
+				}
+				erg.put(cases.get(e)[f], calculate(exp2));
+				System.out.println(cases.get(e)[f] + "-" + erg.get(cases.get(e)[f]));
+			}
+		}
+		test = erg;
+	}
+
+	/**
+	 ***private*** Parsed eine String Expression in eine Bool Expression
+	 * @param exp Expresion die geparsed werden soll
+	 * @return Boolisches Ergebnis der Expression
+	 */
+
+	private static boolean calculate(String exp) {
+		List<Character> allowed = new ArrayList<>();
+		allowed.add('T');
+		allowed.add('F');
+		allowed.add('(');
+		allowed.add(')');
+		allowed.add('&');
+		allowed.add('|');
+		allowed.add('!');
+		// Checking Expression
+		char[] help = exp.toCharArray();
+		List<Character> x = new ArrayList<>();
+		for (int f = 0; f < help.length; f++) {
+			if (!allowed.contains(help[f]))
+				return false;
+			x.add(help[f]);
+		}
+		// Calculate
+		for (int f = 0; f < x.size(); f++) {
+			if (x.get(f) == ')') {
+				for (int g = f - 1; g >= 0; g--) {
+					if (x.get(g) == '(') {
+						if (f - g == 4) {
+							if (x.get(g + 2) == '&') {
+								if (x.get(g + 1) == 'T' && x.get(g + 3) == 'T') {
+									x.set(f, 'T');
+								} else {
+									x.set(f, 'F');
+								}
+								for (int h = f - 1; h > g - 1; h--) {
+									x.remove(h);
+								}
+								f = 0;
+								g = -1;
+							} else if (x.get(g + 2) == '|') {
+								if (x.get(g + 1) == 'F' && x.get(g + 3) == 'F') {
+									x.set(f, 'F');
+								} else {
+									x.set(f, 'T');
+								}
+								for (int h = f - 1; h > g - 1; h--) {
+									x.remove(h);
+								}
+								f = 0;
+								g = -1;
+							}
+						} else {
+							if (x.get(g + 1) == '!') {
+								if (x.get(f - 1) == 'F')
+									x.set(f, 'T');
+								else {
+									x.set(f, 'F');
+								}
+								for (int h = f - 1; h > g - 1; h--) {
+									x.remove(h);
+								}
+								f = 0;
+								g = -1;
+							}
+						}
+					}
+				}
+			}
+		}
+		return x.get(0) == 'T' ? true : false;
+	}
 }

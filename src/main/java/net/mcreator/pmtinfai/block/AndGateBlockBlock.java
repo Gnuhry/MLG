@@ -54,7 +54,7 @@ import net.mcreator.pmtinfai.InputSide;
 public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 	@ObjectHolder("pmtinfai:andgateblock")
 	public static final Block block = null;
-	@ObjectHolder("pmtinfai:test")
+	@ObjectHolder("pmtinfai:andgateblock")
 	public static final TileEntityType<CustomTileEntity> tileEntityType = null;
 	public AndGateBlockBlock(PMTINFAIElements instance) {
 		super(instance, 7);
@@ -70,7 +70,7 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 
 	@SubscribeEvent
 	public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event) {
-		event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("test"));
+		event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("andgateblock"));
 	}
 	public static class CustomBlock extends LogicBlock {
 		public CustomBlock() {
@@ -78,9 +78,9 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 			setRegistryName("andgateblock");
 		}
 
-		protected int logic(List<Integer> inputs) {
+		/*protected int logic(List<Integer> inputs) {
 			return inputs.contains(0) ? 0 : Collections.max(inputs);
-		}
+		}*/
 
 		@Override
 		public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
@@ -92,7 +92,7 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 				NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
 					@Override
 					public ITextComponent getDisplayName() {
-						return new StringTextComponent("Erwrwe");
+						return new StringTextComponent("Andgateblock");
 					}
 
 					@Override
@@ -101,33 +101,9 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 								new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
 					}
 				}, new BlockPos(x, y, z));
-			/*	Container _current = ((PlayerEntity) entity).openContainer;
-			if (_current instanceof Supplier) {
-				Object invobj = ((Supplier) _current).get();
-				if (invobj instanceof Map) {
-					ItemStack _setstack = new ItemStack(Items.REDSTONE, (int) (1));
-					_setstack.setCount(1);
-					ItemStack _setstack2 = new ItemStack(Items.REDSTONE_TORCH, (int) (1));
-					_setstack2.setCount(1);
-					ItemStack _setstack3 = new ItemStack(Items.REDSTONE, (int) (1));
-					_setstack3.setCount(1);
-					ItemStack _setstack4 = new ItemStack(Items.REDSTONE, (int) (1));
-					_setstack4.setCount(1);
-					((Slot) ((Map) invobj).get((int) (this.DirectiontoSlotID(state.get(FACING))))).putStack(_setstack2);
-					if(state.has(LogicBlock.INPUT1)&&state.get(LogicBlock.INPUT1)!=InputSide.NONE)
-						((Slot) ((Map) invobj).get((int) (this.DirectiontoSlotID(((InputSide)state.get(LogicBlock.INPUT1)).GetDirection())))).putStack(_setstack);
-					if(state.has(LogicBlock.INPUT2)&&state.get(LogicBlock.INPUT2)!=InputSide.NONE)
-						((Slot) ((Map) invobj).get((int) (this.DirectiontoSlotID(((InputSide)state.get(LogicBlock.INPUT2)).GetDirection())))).putStack(_setstack3);
-					if(state.has(LogicBlock.INPUT3)&&state.get(LogicBlock.INPUT3)!=InputSide.NONE)
-						((Slot) ((Map) invobj).get((int) (this.DirectiontoSlotID(((InputSide)state.get(LogicBlock.INPUT3)).GetDirection())))).putStack(_setstack4);
-					_current.detectAndSendChanges();
-				}
-			}*/
 			}
-			
 			return true;
 		}
-
 
 		@Override
 		public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
@@ -166,7 +142,7 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 	}
 
 	public static class CustomTileEntity extends LockableLootTileEntity {
-		private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(4, ItemStack.EMPTY);
+		private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(5, ItemStack.EMPTY);
 		protected CustomTileEntity() {
 			super(tileEntityType);
 		}
@@ -202,7 +178,7 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 
 		@Override
 		public int getSizeInventory() {
-			return 4;
+			return 5;
 		}
 
 		@Override
@@ -225,7 +201,7 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 
 		@Override
 		public ITextComponent getDefaultName() {
-			return new StringTextComponent("erwrwe");
+			return new StringTextComponent("andgateblock");
 		}
 
 		@Override
@@ -240,7 +216,7 @@ public class AndGateBlockBlock extends PMTINFAIElements.ModElement {
 
 		@Override
 		public ITextComponent getDisplayName() {
-			return new StringTextComponent("Erwrwe");
+			return new StringTextComponent("Andgateblock");
 		}
 
 		@Override
