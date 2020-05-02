@@ -406,27 +406,30 @@ public abstract class LogicBlock extends Block {
 	 * @param item
 	 *            Item im GUI
 	 */
-	public void changeInput(int slot, BlockPos pos, World world, Item item) {
+	public boolean[] changeInput(int slot, BlockPos pos, World world, Item item) {
+		int[]help=new int[]{0,0};
 		BlockState blockstate = world.getBlockState(pos);
 		Direction d = SlotIDtoDirection(slot).getOpposite();
 		//System.out.println(item.toString());
 		if (item.toString() == InputItem_) {
 			if (existInputDirections(blockstate, d)) {
-				return;
+				return IO_State(blockstate, 0, 0);
 			}
 			System.out.println("Change Input in slot \'" + slot + "\'");
 			if (d == ((InputSide) blockstate.get(OUTPUT)).GetDirection()) {
 				world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.NONE));
 			}
 			addInput(d, pos, world);
+			help[0]=1;
 		} else if (item.toString() == OutputItem_) {
 			if (d == ((InputSide) blockstate.get(OUTPUT)).GetDirection()) {
-				return;
+				return IO_State(blockstate, 0, 0);
 			}
 			System.out.println("Change Output in slot \'" + slot + "\'");
 			removeInput(d, pos, world);
 			world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.GetEnum(d)));
 			removeInput(d, pos, world);
+			help[1]=1;
 		} else {
 			System.out.println("Change in slot \'" + slot + "\'");
 			if (d == ((InputSide) blockstate.get(OUTPUT)).GetDirection()) {
@@ -434,8 +437,18 @@ public abstract class LogicBlock extends Block {
 			}
 			removeInput(d, pos, world);
 		}
+		return IO_State(blockstate, help[0],help[1]);
 	}
 
+	private boolean[] IO_State(BlockState bs, int input, int output){
+		if(bs.get(INPUT1)!=InputSide.NONE)
+			input++;
+		if(bs.get(INPUT2)!=InputSide.NONE)
+			input++;
+		if(bs.get(INPUT3)!=InputSide.NONE)
+			input++;
+		return new boolean[]{input<3, bs.get(OUTPUT)==InputSide.NONE&&output==0};
+	}
 	/**
 	 * Set In-&Outputs
 	 * 

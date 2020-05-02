@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.inventory.container.Slot;
@@ -31,15 +32,13 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.Minecraft;
 
+import net.mcreator.pmtinfai.Slot_IO;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.PMTINFAI;
 import net.mcreator.pmtinfai.LogicBlock;
 
 import java.util.function.Supplier;
 import java.util.Map;
 import java.util.HashMap;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.item.Items;
 
 @PMTINFAIElements.ModElement.Tag
 public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
@@ -91,38 +90,57 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 					this.internal = (IInventory) ent;
 			}
 			internal.openInventory(inv.player);
-			this.customSlots.put(0, this.addSlot(new Slot(internal, 0, 35, 30) {
+			this.customSlots.put(0, this.addSlot(new Slot_IO(internal, 0, 35, 30) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					Item item = internal.getStackInSlot(0).getItem();
-					lb.changeInput(0, new BlockPos(x, y, z), world, item);
+					boolean[]io_boolean=lb.changeInput(0, new BlockPos(x, y, z), world, item);
+					for(int f=0;f<4;f++){
+						((Slot_IO)customSlots.get(f)).input=io_boolean[0];
+						((Slot_IO)customSlots.get(f)).output=io_boolean[1];
+					}
 				}
 			}));
-			this.customSlots.put(1, this.addSlot(new Slot(internal, 1, 53, 12) {
+			this.customSlots.put(1, this.addSlot(new Slot_IO(internal, 1, 53, 12) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					Item item = internal.getStackInSlot(1).getItem();
-					lb.changeInput(1, new BlockPos(x, y, z), world, item);
+					boolean[]io_boolean=lb.changeInput(1, new BlockPos(x, y, z), world, item);
+					for(int f=0;f<4;f++){
+						((Slot_IO)customSlots.get(f)).input=io_boolean[0];
+						((Slot_IO)customSlots.get(f)).output=io_boolean[1];
+					}
 				}
 			}));
-			this.customSlots.put(2, this.addSlot(new Slot(internal, 2, 71, 30) {
+			this.customSlots.put(2, this.addSlot(new Slot_IO(internal, 2, 71, 30) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					Item item = internal.getStackInSlot(2).getItem();
-					lb.changeInput(2, new BlockPos(x, y, z), world, item);
+					boolean[]io_boolean=lb.changeInput(2, new BlockPos(x, y, z), world, item);
+					for(int f=0;f<4;f++){
+						((Slot_IO)customSlots.get(f)).input=io_boolean[0];
+						((Slot_IO)customSlots.get(f)).output=io_boolean[1];
+					}
+					CompoundNBT nbt = new CompoundNBT();
+					nbt.putString("logic", "(A|(B|C)),(A|B),F");
+					internal.getStackInSlot(3).setTag(nbt);
+
 				}
 			}));
-			this.customSlots.put(3, this.addSlot(new Slot(internal, 3, 53, 48) {
+			this.customSlots.put(3, this.addSlot(new Slot_IO(internal, 3, 53, 48) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					Item item = internal.getStackInSlot(3).getItem();
-					lb.changeInput(3, new BlockPos(x, y, z), world, item);
-					
-					CompoundNBT nbt=new CompoundNBT();
+					boolean[]io_boolean=lb.changeInput(3, new BlockPos(x, y, z), world, item);
+					for(int f=0;f<4;f++){
+						((Slot_IO)customSlots.get(f)).input=io_boolean[0];
+						((Slot_IO)customSlots.get(f)).output=io_boolean[1];
+					}
+					CompoundNBT nbt = new CompoundNBT();
 					nbt.putString("logic", "(A&(B&C)),(A&B),F");
 					internal.getStackInSlot(3).setTag(nbt);
 				}
@@ -131,20 +149,18 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-					//System.out.println(internal.getStackInSlot(4).getItem().toString()+"-"+(internal.getStackInSlot(4).getItem().toString().equals("redstone")));
-					if(internal.getStackInSlot(4)!=null&&internal.getStackInSlot(4).getItem().toString().equals("redstone")){
-						try{
-							//System.out.println(internal.getStackInSlot(4).getTag().getString("logic"));
-							lb.GetAllStates(internal.getStackInSlot(4).getTag().getString("logic"), world, new BlockPos(x,y,z));
-						}catch(Exception ed){
-							lb.GetAllStates("none", world, new BlockPos(x,y,z));
+					// System.out.println(internal.getStackInSlot(4).getItem().toString()+"-"+(internal.getStackInSlot(4).getItem().toString().equals("redstone")));
+					if (internal.getStackInSlot(4) != null && internal.getStackInSlot(4).getItem().toString().equals("input")) {
+						try {
+							// System.out.println(internal.getStackInSlot(4).getTag().getString("logic"));
+							lb.GetAllStates(internal.getStackInSlot(4).getTag().getString("logic"), world, new BlockPos(x, y, z));
+						} catch (Exception ed) {
+							lb.GetAllStates("none", world, new BlockPos(x, y, z));
 						}
-					}
-					else{
-						lb.GetAllStates("none", world, new BlockPos(x,y,z));
+					} else {
+						lb.GetAllStates("none", world, new BlockPos(x, y, z));
 					}
 				}
-
 			}));
 			int si;
 			int sj;
