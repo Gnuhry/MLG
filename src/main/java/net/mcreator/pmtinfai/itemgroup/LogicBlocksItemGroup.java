@@ -6,8 +6,8 @@ import net.minecraftforge.api.distmarker.Dist;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.block.Blocks;
 
-import net.mcreator.pmtinfai.block.AndGateBlockBlock;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 
 @PMTINFAIElements.ModElement.Tag
@@ -22,7 +22,7 @@ public class LogicBlocksItemGroup extends PMTINFAIElements.ModElement {
 			@OnlyIn(Dist.CLIENT)
 			@Override
 			public ItemStack createIcon() {
-				return new ItemStack(AndGateBlockBlock.block, (int) (1));
+				return new ItemStack(Blocks.REDSTONE_WIRE, (int) (1));
 			}
 
 			@OnlyIn(Dist.CLIENT)

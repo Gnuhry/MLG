@@ -353,9 +353,9 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 		@Override
 		protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 			this.font.drawString("N", 58, 1, -16777216);
-			this.font.drawString("E", 27, 33, -16777216);
+			this.font.drawString("W", 27, 33, -16777216);
 			this.font.drawString("S", 57, 65, -16777216);
-			this.font.drawString("W", 90, 33, -16777216);
+			this.font.drawString("E", 90, 33, -16777216);
 			this.font.drawString("I/O", 17, 6, -16777216);
 			this.font.drawString("Logic", 134, 6, -16777216);
 		}

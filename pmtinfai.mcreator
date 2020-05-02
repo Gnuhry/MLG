@@ -10,14 +10,6 @@
       "ids": {}
     },
     {
-      "name": "AndGateBlock",
-      "type": "block",
-      "sortid": 3,
-      "compiles": true,
-      "locked_code": true,
-      "ids": {}
-    },
-    {
       "name": "LogicBlockGUI",
       "type": "gui",
       "sortid": 5,
@@ -74,14 +66,6 @@
       "ids": {}
     },
     {
-      "name": "Workbench",
-      "type": "block",
-      "sortid": 11,
-      "compiles": true,
-      "locked_code": false,
-      "ids": {}
-    },
-    {
       "name": "LogicBlock",
       "type": "block",
       "sortid": 12,
@@ -97,10 +81,8 @@
       "item.pmtinfai.standardcard": "card",
       "item.pmtinfai.output": "Output",
       "block.pmtinfai.logicblock": "Logic Block",
-      "block.pmtinfai.workbench": "Workbench",
       "itemGroup.tablogicblocks": "Logic Block",
-      "item.pmtinfai.input": "Input",
-      "block.pmtinfai.andgateblock": "And Gate Block"
+      "item.pmtinfai.input": "Input"
     }
   },
   "workspaceSettings": {

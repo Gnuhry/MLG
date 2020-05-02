@@ -96,8 +96,6 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		// weitere Variablen
 		private static boolean aa = false;
 		// boolean Variablen zum Abfangen von Multithreading
-		private HashMap<String, Boolean> test = null;
-		private String test2 = null;
 		public CustomBlock() {
 			super(Block.Properties.create(Material.MISCELLANEOUS).sound(SoundType.STEM).hardnessAndResistance(0f, 0f).lightValue(0));
 			setRegistryName("logicblock");
@@ -203,24 +201,26 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 *            Position des Blockes
 		 */
 		public void GetAllStates(String exp, World world, BlockPos pos) {
-			if (exp == null || test2 == exp)
+			if (exp == null || getTE(world, pos).GetTest2() == exp)
 				return;
-			test2 = exp;
-			System.out.println("Change output to: " + exp);
+			getTE(world, pos).SetTest2(exp);
+			System.out.println("Change Logic to: " + exp);
 			if (exp == "none") {
-				test = null;
+				getTE(world, pos).SetActive(false);
 				return;
 			}
+			getTE(world, pos).SetActive(true);
 			String[] exp_help = exp.split(",");
 			String[] cases3 = new String[]{"TFF", "TFT", "TTF", "TTT", "FFF", "FFT", "FTF", "FTT"};
 			String[] cases2 = new String[]{"TF", "TT", "FF", "FT"};
 			String[] cases1 = new String[]{"T", "F"};
 			List<String[]> cases = new ArrayList<>();
+			boolean max[] = new boolean[]{true, true, true};
 			cases.add(cases3);
 			cases.add(cases2);
 			cases.add(cases1);
 			char[] replace = new char[]{'A', 'B', 'C'};
-			HashMap<String, Boolean> erg = new HashMap<>();
+			List<Boolean> erg = new ArrayList<>();
 			List<Integer> inputs = new ArrayList<>();
 			for (int e = 0; e < cases.size(); e++) {
 				for (int f = 0; f < cases.get(e).length; f++) {
@@ -233,12 +233,28 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 					String help = cases.get(e)[f];
 					while (help.length() < 3)
 						help += "N";
-					erg.put(help, calculate(exp2));
-					System.out.println(help + "-" + erg.get(cases.get(e)[f]));
+					boolean erg_calculate=calculate(exp2);
+					erg.add(erg_calculate);
+					if (max[e] && erg_calculate) {
+						max[e] = false;
+					}
+					System.out.println(help + "-" + erg_calculate);
 				}
 			}
-			erg.put("NNN", false);
-			test = erg;
+			getTE(world, pos).SetHashMap(erg);
+			if (max[0]) {
+				if (max[1]) {
+					if (max[2]) {
+						getTE(world, pos).SetMaxInput(0);
+					} else {
+						getTE(world, pos).SetMaxInput(1);
+					}
+				} else {
+					getTE(world, pos).SetMaxInput(2);
+				}
+			} else {
+				getTE(world, pos).SetMaxInput(3);
+			}
 		}
 
 		// -------------------------------------Eventlistener----------------------
@@ -529,7 +545,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			// System.out.println(item.toString());
 			if (item.toString() == InputItem_) {
 				if (existInputDirections(blockstate, d)) {
-					return IO_State(blockstate, 0, 0);
+					return IO_State(blockstate, 0, 0, world, pos);
 				}
 				System.out.println("Change Input in slot \'" + slot + "\'");
 				if (d == ((InputSide) blockstate.get(OUTPUT)).GetDirection()) {
@@ -539,7 +555,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 				help[0] = 1;
 			} else if (item.toString() == OutputItem_) {
 				if (d == ((InputSide) blockstate.get(OUTPUT)).GetDirection()) {
-					return IO_State(blockstate, 0, 0);
+					return IO_State(blockstate, 0, 0, world, pos);
 				}
 				System.out.println("Change Output in slot \'" + slot + "\'");
 				removeInput(d, pos, world);
@@ -553,17 +569,21 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 				}
 				removeInput(d, pos, world);
 			}
-			return IO_State(blockstate, help[0], help[1]);
+			return IO_State(blockstate, help[0], help[1], world, pos);
 		}
 
-		private boolean[] IO_State(BlockState bs, int input, int output) {
+		/**
+		*
+		*
+		*/
+		private boolean[] IO_State(BlockState bs, int input, int output, World world, BlockPos pos) {
 			if (bs.get(INPUT1) != InputSide.NONE)
 				input++;
 			if (bs.get(INPUT2) != InputSide.NONE)
 				input++;
 			if (bs.get(INPUT3) != InputSide.NONE)
 				input++;
-			return new boolean[]{input < 3, bs.get(OUTPUT) == InputSide.NONE && output == 0};
+			return new boolean[]{input < getTE(world, pos).GetMaxInput(), bs.get(OUTPUT) == InputSide.NONE && output == 0};
 		}
 
 		// ----private----------------
@@ -693,7 +713,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			if (inputs.size() <= 0)
 				return 0;
 			else
-				return logic(inputs);
+				return logic(inputs, world, pos);
 		}
 
 		/**
@@ -766,8 +786,8 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 *            Alle Redstone Input Values
 		 * @return Neuer Output
 		 */
-		private int logic(List<Integer> inputs) {
-			if (test == null || inputs == null)
+		private int logic(List<Integer> inputs, World world, BlockPos pos) {
+			if (!getTE(world, pos).IsActive())
 				return 0;
 			String erg = "";
 			for (int f : inputs)
@@ -775,7 +795,16 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			while (erg.length() < 3) {
 				erg += 'N';
 			}
-			return test != null && test.get(erg) ? Collections.max(inputs) : 0;
+			return getTE(world, pos).GetBooleanAt(GetIdWithState(erg)) ? Collections.max(inputs) : 0;
+		}
+
+		private int GetIdWithState(String state) {
+			String[] cases3 = new String[]{"TFF", "TFT", "TTF", "TTT", "FFF", "FFT", "FTF", "FTT", "TFN", "TTN", "FFN", "FTN", "TNN", "FNN", "NNN"};
+			for (int f = 0; f < cases3.length; f++) {
+				if (cases3[f].equals(state))
+					return f;
+			}
+			return 14;
 		}
 
 		/**
@@ -851,10 +880,19 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			}
 			return x.get(0) == 'T' ? true : false;
 		}
+
+		private CustomTileEntity getTE(World world, BlockPos pos) {
+			return (CustomTileEntity) world.getTileEntity(pos);
+		}
 	}
 
 	public static class CustomTileEntity extends LockableLootTileEntity {
 		private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(5, ItemStack.EMPTY);
+		private HashMap<String, Boolean> test = null;
+		private boolean[] help = new boolean[]{false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+		private boolean isActive = true;
+		private String test2 = "null";
+		private int MaxInput = 3;
 		protected CustomTileEntity() {
 			super(tileEntityType);
 		}
@@ -862,6 +900,12 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		@Override
 		public void read(CompoundNBT compound) {
 			super.read(compound);
+			test2 = compound.getString("test2");
+			MaxInput = compound.getInt("input");
+			for (int f = 0; f < help.length; f++) {
+				help[f] = compound.getBoolean("HashMap" + f);
+			}
+			isActive = compound.getBoolean("active");
 			this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 			ItemStackHelper.loadAllItems(compound, this.stacks);
 		}
@@ -869,8 +913,52 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		@Override
 		public CompoundNBT write(CompoundNBT compound) {
 			super.write(compound);
+			compound.putString("test2", test2);
+			compound.putInt("input", MaxInput);
+			for (int f = 0; f < help.length; f++) {
+				compound.putBoolean("HashMap" + f, help[f]);
+			}
+			compound.putBoolean("active", isActive);
 			ItemStackHelper.saveAllItems(compound, this.stacks);
 			return compound;
+		}
+
+		public int GetMaxInput() {
+			return MaxInput;
+		}
+
+		public void SetMaxInput(int set) {
+			MaxInput = set;
+		}
+
+		public String GetTest2() {
+			if (test2 == "null")
+				return null;
+			return test2;
+		}
+
+		public void SetTest2(String set) {
+			test2 = set;
+		}
+
+		public void SetHashMap(List<Boolean> help_){
+			for(int f=0;f<help_.size();f++){
+				help[f]=help_.get(f);
+			}
+		}
+
+		public boolean GetBooleanAt(int id) {
+			if (id > 13)
+				return false;
+			return help[id];
+		}
+
+		public boolean IsActive() {
+			return isActive;
+		}
+
+		public void SetActive(boolean set) {
+			isActive = set;
 		}
 
 		@Override

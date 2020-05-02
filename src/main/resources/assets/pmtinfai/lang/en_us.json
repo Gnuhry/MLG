@@ -2,8 +2,6 @@
   "item.pmtinfai.standardcard": "card",
   "item.pmtinfai.output": "Output",
   "block.pmtinfai.logicblock": "Logic Block",
-  "block.pmtinfai.workbench": "Workbench",
   "itemGroup.tablogicblocks": "Logic Block",
-  "item.pmtinfai.input": "Input",
-  "block.pmtinfai.andgateblock": "And Gate Block"
+  "item.pmtinfai.input": "Input"
 }
