@@ -80,6 +80,14 @@
       "compiles": true,
       "locked_code": false,
       "ids": {}
+    },
+    {
+      "name": "LogicBlock",
+      "type": "block",
+      "sortid": 12,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
     }
   ],
   "variable_elements": [],
@@ -88,6 +96,7 @@
     "en_us": {
       "item.pmtinfai.standardcard": "card",
       "item.pmtinfai.output": "Output",
+      "block.pmtinfai.logicblock": "Logic Block",
       "block.pmtinfai.workbench": "Workbench",
       "itemGroup.tablogicblocks": "Logic Block",
       "item.pmtinfai.input": "Input",

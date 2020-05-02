@@ -32,9 +32,9 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.Minecraft;
 
+import net.mcreator.pmtinfai.block.LogicBlockBlock;
 import net.mcreator.pmtinfai.Slot_IO;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.LogicBlock;
 
 import java.util.function.Supplier;
 import java.util.Map;
@@ -73,7 +73,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 		private int x, y, z;
 		private IInventory internal;
 		private Map<Integer, Slot> customSlots = new HashMap<>();
-		private LogicBlock lb;
+		private LogicBlockBlock.CustomBlock lb;
 		public GuiContainerMod(int id, PlayerInventory inv, PacketBuffer extraData) {
 			super(containerType, id);
 			this.entity = inv.player;
@@ -84,7 +84,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				this.x = pos.getX();
 				this.y = pos.getY();
 				this.z = pos.getZ();
-				lb = (LogicBlock) world.getBlockState(pos).getBlock();
+				lb = (LogicBlockBlock.CustomBlock) world.getBlockState(pos).getBlock();
 				TileEntity ent = inv.player != null ? inv.player.world.getTileEntity(pos) : null;
 				if (ent instanceof IInventory)
 					this.internal = (IInventory) ent;
@@ -95,10 +95,10 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					Item item = internal.getStackInSlot(0).getItem();
-					boolean[]io_boolean=lb.changeInput(0, new BlockPos(x, y, z), world, item);
-					for(int f=0;f<4;f++){
-						((Slot_IO)customSlots.get(f)).input=io_boolean[0];
-						((Slot_IO)customSlots.get(f)).output=io_boolean[1];
+					boolean[] io_boolean = lb.changeInput(0, new BlockPos(x, y, z), world, item);
+					for (int f = 0; f < 4; f++) {
+						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
+						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
 					}
 				}
 			}));
@@ -107,10 +107,10 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					Item item = internal.getStackInSlot(1).getItem();
-					boolean[]io_boolean=lb.changeInput(1, new BlockPos(x, y, z), world, item);
-					for(int f=0;f<4;f++){
-						((Slot_IO)customSlots.get(f)).input=io_boolean[0];
-						((Slot_IO)customSlots.get(f)).output=io_boolean[1];
+					boolean[] io_boolean = lb.changeInput(1, new BlockPos(x, y, z), world, item);
+					for (int f = 0; f < 4; f++) {
+						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
+						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
 					}
 				}
 			}));
@@ -119,15 +119,14 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					Item item = internal.getStackInSlot(2).getItem();
-					boolean[]io_boolean=lb.changeInput(2, new BlockPos(x, y, z), world, item);
-					for(int f=0;f<4;f++){
-						((Slot_IO)customSlots.get(f)).input=io_boolean[0];
-						((Slot_IO)customSlots.get(f)).output=io_boolean[1];
+					boolean[] io_boolean = lb.changeInput(2, new BlockPos(x, y, z), world, item);
+					for (int f = 0; f < 4; f++) {
+						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
+						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
 					}
 					CompoundNBT nbt = new CompoundNBT();
 					nbt.putString("logic", "(A|(B|C)),(A|B),F");
-					internal.getStackInSlot(3).setTag(nbt);
-
+					internal.getStackInSlot(2).setTag(nbt);
 				}
 			}));
 			this.customSlots.put(3, this.addSlot(new Slot_IO(internal, 3, 53, 48) {
@@ -135,10 +134,10 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					Item item = internal.getStackInSlot(3).getItem();
-					boolean[]io_boolean=lb.changeInput(3, new BlockPos(x, y, z), world, item);
-					for(int f=0;f<4;f++){
-						((Slot_IO)customSlots.get(f)).input=io_boolean[0];
-						((Slot_IO)customSlots.get(f)).output=io_boolean[1];
+					boolean[] io_boolean = lb.changeInput(3, new BlockPos(x, y, z), world, item);
+					for (int f = 0; f < 4; f++) {
+						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
+						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
 					}
 					CompoundNBT nbt = new CompoundNBT();
 					nbt.putString("logic", "(A&(B&C)),(A&B),F");

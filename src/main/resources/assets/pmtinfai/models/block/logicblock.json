@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "pmtinfai:blocks/side_gate",
+    "up": "pmtinfai:blocks/side_gate",
+    "north": "pmtinfai:blocks/side_gate",
+    "east": "pmtinfai:blocks/side_gate",
+    "south": "pmtinfai:blocks/side_gate",
+    "west": "pmtinfai:blocks/side_gate",
+    "particle": "pmtinfai:blocks/side_gate"
+  }
+}
