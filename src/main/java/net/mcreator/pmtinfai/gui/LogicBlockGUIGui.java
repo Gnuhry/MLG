@@ -125,7 +125,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
 					}
 					CompoundNBT nbt = new CompoundNBT();
-					nbt.putString("logic", "(A|(B|C)),(A|B),F");
+					nbt.putString("logic", "(A|(B|C)), (A|B), F");
 					internal.getStackInSlot(2).setTag(nbt);
 				}
 			}));
@@ -140,7 +140,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
 					}
 					CompoundNBT nbt = new CompoundNBT();
-					nbt.putString("logic", "(A&(B&C)),(A&B),F");
+					nbt.putString("logic", "(A&(B&C)), (A&B), F");
 					internal.getStackInSlot(3).setTag(nbt);
 				}
 			}));

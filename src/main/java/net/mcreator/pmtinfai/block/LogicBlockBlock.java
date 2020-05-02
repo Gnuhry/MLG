@@ -52,6 +52,7 @@ import net.minecraft.block.Block;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.mcreator.pmtinfai.gui.LogicBlockGUIGui;
 import net.mcreator.pmtinfai.PMTINFAIElements;
+import net.mcreator.pmtinfai.LogicSpecies;
 import net.mcreator.pmtinfai.InputSide;
 
 import java.util.Random;
@@ -61,6 +62,7 @@ import java.util.Collections;
 import java.util.ArrayList;
 
 import io.netty.buffer.Unpooled;
+import sun.awt.windows.WPrinterJob;
 
 @PMTINFAIElements.ModElement.Tag
 public class LogicBlockBlock extends PMTINFAIElements.ModElement {
@@ -93,6 +95,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		public static final EnumProperty<InputSide> INPUT2 = EnumProperty.create("input2_side", InputSide.class);
 		public static final EnumProperty<InputSide> INPUT3 = EnumProperty.create("input3_side", InputSide.class);
 		public static final EnumProperty<InputSide> OUTPUT = EnumProperty.create("output", InputSide.class);
+		public static final EnumProperty<LogicSpecies> LOGIC = EnumProperty.create("logic", LogicSpecies.class);
 		// weitere Variablen
 		private static boolean aa = false;
 		// boolean Variablen zum Abfangen von Multithreading
@@ -101,7 +104,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			setRegistryName("logicblock");
 			// Laden der Default Properties der Blöcke
 			this.setDefaultState(this.stateContainer.getBaseState().with(POWER, Integer.valueOf(0)).with(INPUT1, InputSide.NONE)
-					.with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE).with(OUTPUT, InputSide.NONE));
+					.with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE).with(OUTPUT, InputSide.NONE).with(LOGIC, LogicSpecies.NONE));
 		}
 
 		// --------------------------------------------Getter------------
@@ -204,6 +207,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			if (exp == null || getTE(world, pos).GetTest2() == exp)
 				return;
 			getTE(world, pos).SetTest2(exp);
+			world.setBlockState(pos, world.getBlockState(pos).with(LOGIC, LogicSpecies.GetEnum(exp)));
 			System.out.println("Change Logic to: " + exp);
 			if (exp == "none") {
 				getTE(world, pos).SetActive(false);
@@ -233,7 +237,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 					String help = cases.get(e)[f];
 					while (help.length() < 3)
 						help += "N";
-					boolean erg_calculate=calculate(exp2);
+					boolean erg_calculate = calculate(exp2);
 					erg.add(erg_calculate);
 					if (max[e] && erg_calculate) {
 						max[e] = false;
@@ -255,6 +259,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			} else {
 				getTE(world, pos).SetMaxInput(3);
 			}
+		update(world.getBlockState(pos), world, pos, null, getPowerOnSides(world, pos, world.getBlockState(pos)));
 		}
 
 		// -------------------------------------Eventlistener----------------------
@@ -483,7 +488,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 */
 		@Override
 		protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-			builder.add(POWER).add(INPUT1).add(INPUT2).add(INPUT3).add(OUTPUT);
+			builder.add(POWER).add(INPUT1).add(INPUT2).add(INPUT3).add(OUTPUT).add(LOGIC);
 		}
 
 		/**
@@ -941,9 +946,9 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			test2 = set;
 		}
 
-		public void SetHashMap(List<Boolean> help_){
-			for(int f=0;f<help_.size();f++){
-				help[f]=help_.get(f);
+		public void SetHashMap(List<Boolean> help_) {
+			for (int f = 0; f < help_.size(); f++) {
+				help[f] = help_.get(f);
 			}
 		}
 
