@@ -38,7 +38,7 @@
       "type": "item",
       "sortid": 7,
       "compiles": true,
-      "locked_code": true,
+      "locked_code": false,
       "ids": {}
     },
     {

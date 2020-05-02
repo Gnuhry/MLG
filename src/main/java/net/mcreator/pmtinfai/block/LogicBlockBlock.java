@@ -72,7 +72,6 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		super(instance, 12);
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
-	
 
 	@Override
 	public void initElements() {
@@ -231,18 +230,34 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 					for (int g = 0; g < fchar.length; g++) {
 						exp2 = exp2.replace(replace[g], fchar[g]);
 					}
-					String help=cases.get(e)[f];
-					while(help.length()<3)
-						help+="N";
+					String help = cases.get(e)[f];
+					while (help.length() < 3)
+						help += "N";
 					erg.put(help, calculate(exp2));
 					System.out.println(help + "-" + erg.get(cases.get(e)[f]));
 				}
 			}
-			erg.put("NNN",false);
+			erg.put("NNN", false);
 			test = erg;
 		}
 
 		// -------------------------------------Eventlistener----------------------
+		/**
+		 * EventListener wenn ein Rechtsklick auf den Block durchgeführt wird
+		 * 
+		 * @param state
+		 *            BlockState des Blockes
+		 * @param world
+		 *            Welt des Blockes
+		 * @param pos
+		 *            Position des Blockes
+		 * @param entity
+		 *            Player der den Rechtsklick ausführt
+		 * @param hand
+		 *            Hand die das ausführt
+		 * @param hit
+		 *            Hit
+		 */
 		@Override
 		public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
 			boolean retval = super.onBlockActivated(state, world, pos, entity, hand, hit);
@@ -266,6 +281,21 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			return true;
 		}
 
+		/**
+		 * EventListener wenn der Block ersetzt wird
+		 * 
+		 * @param state
+		 *            BlockState des Blockes
+		 * @param world
+		 *            Welt des Blockes
+		 * @param pos
+		 *            Position des Blockes
+		 *
+		 * @param newState
+		 *            neuer BlockState des Blockes
+		 * @param isMoving
+		 *            Gibt an ob der Block sich bewegt
+		 */
 		@Override
 		public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 			if (state.getBlock() != newState.getBlock()) {
@@ -331,11 +361,35 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		}
 
 		// ----------------------------------Abfrage----------------------------
+		/**
+		 * Abfrage ob Block TileEntitys hat
+		 * 
+		 * @param state
+		 *            BlockState des Blockes
+		 * @return Gibt an ob Block TileEntitys hat
+		 */
 		@Override
 		public boolean hasTileEntity(BlockState state) {
 			return true;
 		}
 
+		/**
+		 *
+		 * Abfrage ob Block ein Event bekommen hat
+		 * 
+		 * @param state
+		 *            BlockState des Blockes
+		 * @param world
+		 *            Welt des Blockes
+		 *
+		 * @param pos
+		 *            Position des Blockes
+		 * @param eventID
+		 *            ID des Events
+		 * @param eventParam
+		 *            Parametes des Event
+		 * @return Gibt an ob Block Event bekommen hat
+		 */
 		@Override
 		public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
 			super.eventReceived(state, world, pos, eventID, eventParam);
@@ -713,7 +767,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 * @return Neuer Output
 		 */
 		private int logic(List<Integer> inputs) {
-			if (test == null||inputs==null)
+			if (test == null || inputs == null)
 				return 0;
 			String erg = "";
 			for (int f : inputs)
