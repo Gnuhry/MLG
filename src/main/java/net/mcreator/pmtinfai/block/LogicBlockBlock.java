@@ -800,7 +800,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			while (erg.length() < 3) {
 				erg += 'N';
 			}
-			return getTE(world, pos).GetBooleanAt(GetIdWithState(erg)) ? Collections.max(inputs) : 0;
+			return getTE(world, pos).GetBooleanAt(GetIdWithState(erg)) ? (Collections.max(inputs)==0?15:Collections.max(inputs)) : 0;
 		}
 
 		private int GetIdWithState(String state) {

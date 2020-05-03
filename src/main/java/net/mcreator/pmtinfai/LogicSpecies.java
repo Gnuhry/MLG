@@ -5,9 +5,9 @@ import net.minecraft.util.IStringSerializable;
 public enum LogicSpecies implements IStringSerializable {
 	// Enum
 	AND("and"), OR("or"), NOT("not"), NOR("nor"), NAND("nand"), XOR("xor"), XNOR("xnor"), NONE("none"), CUSTOM("custom");
-	private static final String[] help = new String[]{"(A&(B&C)), (A&B), F", "(A|(B|C)), (A|B), F", "F, F, (!A)", "(!(A|(B|C))), (!(A|B)), F",
-			"(!(A&(B&C))), (!(A&B)), F", "((A&(B&C))|((A&((!B)&(!C)))|(((!A)&(B&(!C)))|((!A)&((!B)&C))))), (((!A)&B)|((!B)&A)), F",
-			"(!((A&(B&C))|((A&((!B)&(!C)))|(((!A)&(B&(!C)))|((!A)&((!B)&C)))))), (!(((!A)&B)|((!B)&A))), F"};
+	private static final String[] help = new String[]{"(A&(B&C)),(A&B),F", "(A|(B|C)),(A|B),F", "F,F,(!A)", "(!(A|(B|C))),(!(A|B)),F",
+			"(!(A&(B&C))),(!(A&B)),F", "((A&(B&C))|((A&((!B)&(!C)))|(((!A)&(B&(!C)))|((!A)&((!B)&C))))),(((!A)&B)|((!B)&A)),F",
+			"(!((A&(B&C))|((A&((!B)&(!C)))|(((!A)&(B&(!C)))|((!A)&((!B)&C)))))),(!(((!A)&B)|((!B)&A))),F"};
 	// Variablen
 	private final String name;
 	/**
