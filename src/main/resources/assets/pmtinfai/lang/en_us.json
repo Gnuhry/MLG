@@ -1,6 +1,7 @@
 {
   "item.pmtinfai.standardcard": "card",
   "item.pmtinfai.output": "Output",
+  "block.pmtinfai.flipflopblock": "Logic Block",
   "block.pmtinfai.logicblock": "Logic Block",
   "itemGroup.tablogicblocks": "Logic Block",
   "item.pmtinfai.input": "Input"

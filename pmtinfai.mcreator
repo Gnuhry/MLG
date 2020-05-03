@@ -72,6 +72,22 @@
       "compiles": true,
       "locked_code": true,
       "ids": {}
+    },
+    {
+      "name": "FlipFlopGUI",
+      "type": "gui",
+      "sortid": 13,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "FlipFlopBlock",
+      "type": "block",
+      "sortid": 14,
+      "compiles": false,
+      "locked_code": true,
+      "ids": {}
     }
   ],
   "variable_elements": [],
@@ -80,6 +96,7 @@
     "en_us": {
       "item.pmtinfai.standardcard": "card",
       "item.pmtinfai.output": "Output",
+      "block.pmtinfai.flipflopblock": "Logic Block",
       "block.pmtinfai.logicblock": "Logic Block",
       "itemGroup.tablogicblocks": "Logic Block",
       "item.pmtinfai.input": "Input"
