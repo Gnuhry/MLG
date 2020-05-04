@@ -1,5 +1,5 @@
 
-package net.mcreator.pmtinfai;
+package net.mcreator.pmtinfai.slots;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.inventory.container.Slot;

@@ -1,4 +1,4 @@
-package net.mcreator.pmtinfai;
+package net.mcreator.pmtinfai.blockproperties;
 
 import net.minecraft.util.IStringSerializable;
 

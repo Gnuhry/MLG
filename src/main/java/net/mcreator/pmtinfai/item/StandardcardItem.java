@@ -14,7 +14,7 @@ import net.minecraft.block.BlockState;
 
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.LogicSpecies;
+import net.mcreator.pmtinfai.blockproperties.LogicSpecies;
 
 import javax.annotation.Nullable;
 

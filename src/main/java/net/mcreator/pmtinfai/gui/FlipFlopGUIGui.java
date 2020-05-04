@@ -33,8 +33,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.Minecraft;
 
 import net.mcreator.pmtinfai.block.FlipFlopBlockBlock;
-import net.mcreator.pmtinfai.Slot_IO;
-import net.mcreator.pmtinfai.Slot_FF_IO;
+import net.mcreator.pmtinfai.slots.Slot_FF_IO;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 
 import java.util.function.Supplier;
@@ -98,7 +97,7 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 					Item item = internal.getStackInSlot(0).getItem();
 					boolean[] io_boolean = lb.changeInput(0, new BlockPos(x, y, z), world, item);
 					for (int f = 0; f < 4; f++) {
-						Slot_FF_IO slot=((Slot_FF_IO) customSlots.get(f));
+						Slot_FF_IO slot = ((Slot_FF_IO) customSlots.get(f));
 						slot.set = io_boolean[0];
 						slot.reset = io_boolean[1];
 						slot.clock = io_boolean[2];
@@ -113,14 +112,14 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 					Item item = internal.getStackInSlot(1).getItem();
 					boolean[] io_boolean = lb.changeInput(1, new BlockPos(x, y, z), world, item);
 					for (int f = 0; f < 4; f++) {
-						Slot_FF_IO slot=((Slot_FF_IO) customSlots.get(f));
+						Slot_FF_IO slot = ((Slot_FF_IO) customSlots.get(f));
 						slot.set = io_boolean[0];
 						slot.reset = io_boolean[1];
 						slot.clock = io_boolean[2];
 						slot.output = io_boolean[3];
 					}
 					CompoundNBT nbt = new CompoundNBT();
-					nbt.putString("logic","master_slave_t_ff");
+					nbt.putString("logic", "master_slave_t_ff");
 					internal.getStackInSlot(1).setTag(nbt);
 				}
 			}));
@@ -131,7 +130,7 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 					Item item = internal.getStackInSlot(2).getItem();
 					boolean[] io_boolean = lb.changeInput(2, new BlockPos(x, y, z), world, item);
 					for (int f = 0; f < 4; f++) {
-						Slot_FF_IO slot=((Slot_FF_IO) customSlots.get(f));
+						Slot_FF_IO slot = ((Slot_FF_IO) customSlots.get(f));
 						slot.set = io_boolean[0];
 						slot.reset = io_boolean[1];
 						slot.clock = io_boolean[2];
@@ -140,7 +139,6 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 					CompoundNBT nbt = new CompoundNBT();
 					nbt.putString("logic", "rising_jk_ff");
 					internal.getStackInSlot(2).setTag(nbt);
-
 				}
 			}));
 			this.customSlots.put(3, this.addSlot(new Slot_FF_IO(internal, 3, 53, 48) {
@@ -150,7 +148,7 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 					Item item = internal.getStackInSlot(3).getItem();
 					boolean[] io_boolean = lb.changeInput(3, new BlockPos(x, y, z), world, item);
 					for (int f = 0; f < 4; f++) {
-						Slot_FF_IO slot=((Slot_FF_IO) customSlots.get(f));
+						Slot_FF_IO slot = ((Slot_FF_IO) customSlots.get(f));
 						slot.set = io_boolean[0];
 						slot.reset = io_boolean[1];
 						slot.clock = io_boolean[2];

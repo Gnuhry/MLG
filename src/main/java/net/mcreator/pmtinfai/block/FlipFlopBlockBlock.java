@@ -53,8 +53,8 @@ import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.mcreator.pmtinfai.gui.LogicBlockGUIGui;
 import net.mcreator.pmtinfai.gui.FlipFlopGUIGui;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.InputSide;
-import net.mcreator.pmtinfai.FFSpecies;
+import net.mcreator.pmtinfai.blockproperties.InputSide;
+import net.mcreator.pmtinfai.blockproperties.FFSpecies;
 
 import java.util.Random;
 import java.util.List;
@@ -522,8 +522,10 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 				System.out.println("Delete slot \'" + slot + "\'");
 				clearSlot(pos, world, d, -1);
 			}
-			return new boolean[]{!(((InputSide) blockstate.get(INPUT1)).isActive()||item.toString().equals(SetItem_)), !(((InputSide) blockstate.get(INPUT2)).isActive()||item.toString().equals(ResetItem_)),
-					!(((InputSide) blockstate.get(INPUT3)).isActive()||item.toString().equals(ClockItem_)), !(((InputSide) blockstate.get(OUTPUT)).isActive()||item.toString().equals(OutputItem_))};
+			return new boolean[]{!(((InputSide) blockstate.get(INPUT1)).isActive() || item.toString().equals(SetItem_)),
+					!(((InputSide) blockstate.get(INPUT2)).isActive() || item.toString().equals(ResetItem_)),
+					!(((InputSide) blockstate.get(INPUT3)).isActive() || item.toString().equals(ClockItem_)),
+					!(((InputSide) blockstate.get(OUTPUT)).isActive() || item.toString().equals(OutputItem_))};
 		}
 
 		// ----private----------------
@@ -706,9 +708,9 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 						return bs.get(POWER);
 					// No Clock
 				case 1 :
-					if(!((InputSide)bs.get(INPUT3)).isActive())
+					if (!((InputSide) bs.get(INPUT3)).isActive())
 						return 0;
-					if (inputs.remove(2) <= 0) 
+					if (inputs.remove(2) <= 0)
 						return bs.get(POWER);
 					if (help == 'T')
 						return Collections.max(inputs);
@@ -725,15 +727,15 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 						return bs.get(POWER);
 					// pegel Clock
 				case 2 :
-					if(!((InputSide)bs.get(INPUT3)).isActive())
+					if (!((InputSide) bs.get(INPUT3)).isActive())
 						return 0;
 					if (inputs.remove(2) <= 0) {
 						getTE(world, pos).SetHIGH(0);
 						return bs.get(POWER);
 					}
-					if (getTE(world, pos).GetHIGH()==2) 
+					if (getTE(world, pos).GetHIGH() == 2)
 						return bs.get(POWER);
-					getTE(world, pos).SetHIGH(getTE(world, pos).GetHIGH()+1);
+					getTE(world, pos).SetHIGH(getTE(world, pos).GetHIGH() + 1);
 					if (help == 'T')
 						return Collections.max(inputs);
 					if (help == 'F')
@@ -749,15 +751,15 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 						return bs.get(POWER);
 					// HF Clock
 				case 3 :
-					if(!((InputSide)bs.get(INPUT3)).isActive())
+					if (!((InputSide) bs.get(INPUT3)).isActive())
 						return 0;
 					if (inputs.remove(2) > 0) {
 						getTE(world, pos).SetLOW(0);
 						return bs.get(POWER);
 					}
-					if (getTE(world, pos).GetLOW()==2)
+					if (getTE(world, pos).GetLOW() == 2)
 						return bs.get(POWER);
-					getTE(world, pos).SetLOW(getTE(world, pos).GetLOW()+1);
+					getTE(world, pos).SetLOW(getTE(world, pos).GetLOW() + 1);
 					if (help == 'T')
 						return Collections.max(inputs);
 					if (help == 'F')
@@ -773,14 +775,14 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 						return bs.get(POWER);
 					// LF Clock
 				case 4 :
-					if(!((InputSide)bs.get(INPUT3)).isActive())
+					if (!((InputSide) bs.get(INPUT3)).isActive())
 						return 0;
 					if (inputs.remove(2) > 0) {
 						getTE(world, pos).SetLOW(0);
-						if (getTE(world, pos).GetHIGH()==2) {
+						if (getTE(world, pos).GetHIGH() == 2) {
 							return bs.get(POWER);
 						} else {
-							getTE(world, pos).SetHIGH(getTE(world, pos).GetHIGH()+1);
+							getTE(world, pos).SetHIGH(getTE(world, pos).GetHIGH() + 1);
 							if (help == 'T') {
 								getTE(world, pos).SetMS(Collections.max(inputs));
 								return bs.get(POWER);
@@ -805,11 +807,11 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 						}
 					} else {
 						getTE(world, pos).SetHIGH(0);
-						if (getTE(world, pos).GetLOW()==2) {
+						if (getTE(world, pos).GetLOW() == 2) {
 							return bs.get(POWER);
 						} else {
 							// Ausgabe
-							getTE(world, pos).SetLOW(getTE(world, pos).GetLOW()+1);
+							getTE(world, pos).SetLOW(getTE(world, pos).GetLOW() + 1);
 							return getTE(world, pos).GetMS();
 						}
 					} // MS Clock

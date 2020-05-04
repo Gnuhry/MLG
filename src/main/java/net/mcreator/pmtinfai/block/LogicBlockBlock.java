@@ -52,8 +52,8 @@ import net.minecraft.block.Block;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.mcreator.pmtinfai.gui.LogicBlockGUIGui;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.LogicSpecies;
-import net.mcreator.pmtinfai.InputSide;
+import net.mcreator.pmtinfai.blockproperties.LogicSpecies;
+import net.mcreator.pmtinfai.blockproperties.InputSide;
 
 import java.util.Random;
 import java.util.List;

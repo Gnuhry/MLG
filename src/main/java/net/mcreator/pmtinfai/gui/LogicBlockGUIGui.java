@@ -33,7 +33,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.Minecraft;
 
 import net.mcreator.pmtinfai.block.LogicBlockBlock;
-import net.mcreator.pmtinfai.Slot_IO;
+import net.mcreator.pmtinfai.slots.Slot_IO;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 
 import java.util.function.Supplier;
