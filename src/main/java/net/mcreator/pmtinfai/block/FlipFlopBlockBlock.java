@@ -522,8 +522,8 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 				System.out.println("Delete slot \'" + slot + "\'");
 				clearSlot(pos, world, d, -1);
 			}
-			return new boolean[]{!((InputSide) blockstate.get(INPUT1)).isActive(), !((InputSide) blockstate.get(INPUT2)).isActive(),
-					!((InputSide) blockstate.get(INPUT3)).isActive(), !((InputSide) blockstate.get(OUTPUT)).isActive()};
+			return new boolean[]{!(((InputSide) blockstate.get(INPUT1)).isActive()||item.toString().equals(SetItem_)), !(((InputSide) blockstate.get(INPUT2)).isActive()||item.toString().equals(ResetItem_)),
+					!(((InputSide) blockstate.get(INPUT3)).isActive()||item.toString().equals(ClockItem_)), !(((InputSide) blockstate.get(OUTPUT)).isActive()||item.toString().equals(OutputItem_))};
 		}
 
 		// ----private----------------
