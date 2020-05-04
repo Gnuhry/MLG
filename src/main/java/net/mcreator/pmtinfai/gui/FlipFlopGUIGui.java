@@ -32,8 +32,9 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.Minecraft;
 
-import net.mcreator.pmtinfai.block.LogicBlockBlock;
+import net.mcreator.pmtinfai.block.FlipFlopBlockBlock;
 import net.mcreator.pmtinfai.Slot_IO;
+import net.mcreator.pmtinfai.Slot_FF_IO;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 
 import java.util.function.Supplier;
@@ -41,11 +42,11 @@ import java.util.Map;
 import java.util.HashMap;
 
 @PMTINFAIElements.ModElement.Tag
-public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
+public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 	public static HashMap guistate = new HashMap();
 	private static ContainerType<GuiContainerMod> containerType = null;
-	public LogicBlockGUIGui(PMTINFAIElements instance) {
-		super(instance, 5);
+	public FlipFlopGUIGui(PMTINFAIElements instance) {
+		super(instance, 25);
 		elements.addNetworkMessage(ButtonPressedMessage.class, ButtonPressedMessage::buffer, ButtonPressedMessage::new,
 				ButtonPressedMessage::handler);
 		containerType = new ContainerType<>(new GuiContainerModFactory());
@@ -73,7 +74,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 		private int x, y, z;
 		private IInventory internal;
 		private Map<Integer, Slot> customSlots = new HashMap<>();
-		private LogicBlockBlock.CustomBlock lb;
+		private FlipFlopBlockBlock.CustomBlock lb;
 		public GuiContainerMod(int id, PlayerInventory inv, PacketBuffer extraData) {
 			super(containerType, id);
 			this.entity = inv.player;
@@ -84,7 +85,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				this.x = pos.getX();
 				this.y = pos.getY();
 				this.z = pos.getZ();
-				lb = (LogicBlockBlock.CustomBlock) world.getBlockState(pos).getBlock();
+				lb = (FlipFlopBlockBlock.CustomBlock) world.getBlockState(pos).getBlock();
 				TileEntity ent = inv.player != null ? inv.player.world.getTileEntity(pos) : null;
 				if (ent instanceof IInventory)
 					this.internal = (IInventory) ent;
@@ -97,9 +98,15 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 					Item item = internal.getStackInSlot(0).getItem();
 					boolean[] io_boolean = lb.changeInput(0, new BlockPos(x, y, z), world, item);
 					for (int f = 0; f < 4; f++) {
-						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
-						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
+						Slot_FF_IO slot=((Slot_FF_IO) customSlots.get(f));
+						slot.set = io_boolean[0];
+						slot.reset = io_boolean[1];
+						slot.clock = io_boolean[2];
+						slot.output = io_boolean[3];
 					}
+					CompoundNBT nbt = new CompoundNBT();
+					nbt.putString("logic","falling_d_ff");
+					internal.getStackInSlot(2).setTag(nbt);
 				}
 			}));
 			this.customSlots.put(1, this.addSlot(new Slot_FF_IO(internal, 1, 53, 12) {
@@ -109,9 +116,15 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 					Item item = internal.getStackInSlot(1).getItem();
 					boolean[] io_boolean = lb.changeInput(1, new BlockPos(x, y, z), world, item);
 					for (int f = 0; f < 4; f++) {
-						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
-						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
+						Slot_FF_IO slot=((Slot_FF_IO) customSlots.get(f));
+						slot.set = io_boolean[0];
+						slot.reset = io_boolean[1];
+						slot.clock = io_boolean[2];
+						slot.output = io_boolean[3];
 					}
+					CompoundNBT nbt = new CompoundNBT();
+					nbt.putString("logic","master_slace_t_ff");
+					internal.getStackInSlot(2).setTag(nbt);
 				}
 			}));
 			this.customSlots.put(2, this.addSlot(new Slot_FF_IO(internal, 2, 71, 30) {
@@ -121,9 +134,16 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 					Item item = internal.getStackInSlot(2).getItem();
 					boolean[] io_boolean = lb.changeInput(2, new BlockPos(x, y, z), world, item);
 					for (int f = 0; f < 4; f++) {
-						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
-						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
+						Slot_FF_IO slot=((Slot_FF_IO) customSlots.get(f));
+						slot.set = io_boolean[0];
+						slot.reset = io_boolean[1];
+						slot.clock = io_boolean[2];
+						slot.output = io_boolean[3];
 					}
+					CompoundNBT nbt = new CompoundNBT();
+					nbt.putString("logic", "rising_jk_ff");
+					internal.getStackInSlot(1).setTag(nbt);
+
 				}
 			}));
 			this.customSlots.put(3, this.addSlot(new Slot_FF_IO(internal, 3, 53, 48) {
@@ -133,9 +153,15 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 					Item item = internal.getStackInSlot(3).getItem();
 					boolean[] io_boolean = lb.changeInput(3, new BlockPos(x, y, z), world, item);
 					for (int f = 0; f < 4; f++) {
-						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
-						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
+						Slot_FF_IO slot=((Slot_FF_IO) customSlots.get(f));
+						slot.set = io_boolean[0];
+						slot.reset = io_boolean[1];
+						slot.clock = io_boolean[2];
+						slot.output = io_boolean[3];
 					}
+					CompoundNBT nbt = new CompoundNBT();
+					nbt.putString("logic", "rs_ff");
+					internal.getStackInSlot(3).setTag(nbt);
 				}
 			}));
 			this.customSlots.put(4, this.addSlot(new Slot(internal, 4, 138, 31) {

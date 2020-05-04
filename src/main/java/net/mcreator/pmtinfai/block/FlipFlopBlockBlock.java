@@ -64,13 +64,13 @@ import java.util.ArrayList;
 import io.netty.buffer.Unpooled;
 
 @PMTINFAIElements.ModElement.Tag
-public class LogicBlockBlock extends PMTINFAIElements.ModElement {
+public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 	@ObjectHolder("pmtinfai:flipflopblock")
 	public static final Block block = null;
 	@ObjectHolder("pmtinfai:flipflopblock")
 	public static final TileEntityType<CustomTileEntity> tileEntityType = null;
-	public LogicBlockBlock(PMTINFAIElements instance) {
-		super(instance, 12);
+	public FlipFlopBlockBlock(PMTINFAIElements instance) {
+		super(instance, 20);
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 
@@ -87,9 +87,9 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 	}
 	public static class CustomBlock extends Block {
 		private final String SetItem_ = "input";
-		private final String ResetItem_ = "input";
+		private final String ResetItem_ = "redstone";
 		private final String OutputItem_ = "output";
-		private final String ClockItem_ = "output";
+		private final String ClockItem_ = "redstone_torch";
 		// Properties des Blocks
 		public static final IntegerProperty POWER = BlockStateProperties.POWER_0_15;
 		public static final EnumProperty<InputSide> INPUT1 = EnumProperty.create("set_side", InputSide.class);
@@ -206,6 +206,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 */
 		public void GetAllStates(String exp, World world, BlockPos pos) {
 			BlockState bs = world.getBlockState(pos);
+			System.out.println(exp);
 			FFSpecies species = FFSpecies.GetEnum(exp);
 			if (species == bs.get(LOGIC))
 				return;
@@ -501,25 +502,28 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			BlockState blockstate = world.getBlockState(pos);
 			Direction d = SlotIDtoDirection(slot).getOpposite();
 			// System.out.println(item.toString());
-			if (item.toString() == SetItem_) {
+			if (item.toString().equals(SetItem_)) {
 				System.out.println("Change SET in slot \'" + slot + "\'");
-				clearSlot(pos, world, d, 0);
 				world.setBlockState(pos, blockstate.with(INPUT1, InputSide.GetEnum(d)));
-			} else if (item.toString() == ResetItem_) {
+				clearSlot(pos, world, d, 0);
+			} else if (item.toString().equals(ResetItem_)) {
 				System.out.println("Change RESET in slot \'" + slot + "\'");
-				clearSlot(pos, world, d, 1);
 				world.setBlockState(pos, blockstate.with(INPUT2, InputSide.GetEnum(d)));
-			} else if (item.toString() == ClockItem_) {
+				clearSlot(pos, world, d, 1);
+			} else if (item.toString().equals(ClockItem_)) {
 				System.out.println("Change CLOCK in slot \'" + slot + "\'");
-				clearSlot(pos, world, d, 2);
 				world.setBlockState(pos, blockstate.with(INPUT3, InputSide.GetEnum(d)));
-			} else if (item.toString() == OutputItem_) {
+				clearSlot(pos, world, d, 2);
+			} else if (item.toString().equals(OutputItem_)) {
 				System.out.println("Change OUTPUT in slot \'" + slot + "\'");
-				clearSlot(pos, world, d, 3);
 				world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.GetEnum(d)));
+				clearSlot(pos, world, d, 3);
+			} else {
+				System.out.println("Delete slot \'" + slot + "\'");
+				clearSlot(pos, world, d, -1);
 			}
-			return new boolean[]{((InputSide) blockstate.get(INPUT1)).isActive(), ((InputSide) blockstate.get(INPUT2)).isActive(),
-					((InputSide) blockstate.get(INPUT3)).isActive(), ((InputSide) blockstate.get(OUTPUT)).isActive()};
+			return new boolean[]{!((InputSide) blockstate.get(INPUT1)).isActive(), !((InputSide) blockstate.get(INPUT2)).isActive(),
+					!((InputSide) blockstate.get(INPUT3)).isActive(), !((InputSide) blockstate.get(OUTPUT)).isActive()};
 		}
 
 		// ----private----------------
@@ -536,27 +540,29 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 *            Die Exception die nicht ersetzt wird 0-2 INPUT1-3, 3-Output
 		 */
 		private void clearSlot(BlockPos pos, World world, Direction d, int except) {
-			BlockState bs = world.getBlockState(pos);
+			System.out.println(d.toString() + ", " + except);
+			BlockState blockstate = world.getBlockState(pos);
 			if (except != 0) {
 				if (((InputSide) blockstate.get(INPUT1)).GetDirection() == d) {
-					bs.with(INPUT1, InputSide.NONE);
+					blockstate = blockstate.with(INPUT1, InputSide.NONE);
 				}
 			}
 			if (except != 1) {
 				if (((InputSide) blockstate.get(INPUT2)).GetDirection() == d) {
-					bs.with(INPUT2, InputSide.NONE);
+					blockstate = blockstate.with(INPUT2, InputSide.NONE);
 				}
 			}
 			if (except != 2) {
 				if (((InputSide) blockstate.get(INPUT3)).GetDirection() == d) {
-					bs.with(INPUT3, InputSide.NONE);
+					blockstate = blockstate.with(INPUT3, InputSide.NONE);
 				}
 			}
 			if (except != 3) {
 				if (((InputSide) blockstate.get(OUTPUT)).GetDirection() == d) {
-					bs.with(OUTPUT, InputSide.NONE);
+					blockstate = blockstate.with(OUTPUT, InputSide.NONE);
 				}
 			}
+			world.setBlockState(pos, blockstate);
 		}
 
 		/**
@@ -675,14 +681,16 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		private int logic(List<Integer> inputs, World world, BlockPos pos) {
 			// set,reset,clock
 			BlockState bs = world.getBlockState(pos);
-			if (bs.get(LOGIC) == FFSpecies.NONE)
-				return;
+			if (bs.get(LOGIC) == FFSpecies.NONE || !((InputSide) bs.get(INPUT1)).isActive() || !((InputSide) bs.get(INPUT2)).isActive()
+					|| !((InputSide) bs.get(OUTPUT)).isActive())
+				return 0;
 			char[] table = ((FFSpecies) bs.get(LOGIC)).GetTable();
-			char help = '-';
+			int index1 = inputs.get(0) > 0 ? 1 : 0, index2 = inputs.get(1) > 0 ? 1 : 0;
+			char help = table[(2 * index1) + index2];
 			switch (((FFSpecies) bs.get(LOGIC)).GetClockMode()) {
 				case 0 :
-					inputs.remove(2);
-					help = table[(2 * inputs.get(0)) + inputs.get(1)];
+					if (((InputSide) bs.get(INPUT3)).isActive())
+						inputs.remove(2);
 					if (help == 'T')
 						return Collections.max(inputs);
 					if (help == 'F')
@@ -698,10 +706,10 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 						return bs.get(POWER);
 					// No Clock
 				case 1 :
-					if (inputs.remove(2) <= 0) {
+					if(!((InputSide)bs.get(INPUT3)).isActive())
+						return 0;
+					if (inputs.remove(2) <= 0) 
 						return bs.get(POWER);
-					}
-					help = table[(2 * inputs.get(0)) + inputs.get(1)];
 					if (help == 'T')
 						return Collections.max(inputs);
 					if (help == 'F')
@@ -717,15 +725,16 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 						return bs.get(POWER);
 					// pegel Clock
 				case 2 :
+					if(!((InputSide)bs.get(INPUT3)).isActive())
+						return 0;
 					if (inputs.remove(2) <= 0) {
 						getTE(world, pos).SetHIGH(false);
 						return bs.get(POWER);
 					}
-					if (getTE(world, pos).GetHIGH()) {
+					if (getTE(world, pos).GetHIGH()) 
 						return bs.get(POWER);
-					}
+					System.out.println("-------tt");
 					getTE(world, pos).SetHIGH(true);
-					help = table[(2 * inputs.get(0)) + inputs.get(1)];
 					if (help == 'T')
 						return Collections.max(inputs);
 					if (help == 'F')
@@ -741,15 +750,15 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 						return bs.get(POWER);
 					// HF Clock
 				case 3 :
+					if(!((InputSide)bs.get(INPUT3)).isActive())
+						return 0;
 					if (inputs.remove(2) > 0) {
 						getTE(world, pos).SetLOW(false);
 						return bs.get(POWER);
 					}
-					if (getTE(world, pos).GetLOW()) {
+					if (getTE(world, pos).GetLOW())
 						return bs.get(POWER);
-					}
 					getTE(world, pos).SetLOW(true);
-					help = table[(2 * inputs.get(0)) + inputs.get(1)];
 					if (help == 'T')
 						return Collections.max(inputs);
 					if (help == 'F')
@@ -765,13 +774,14 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 						return bs.get(POWER);
 					// LF Clock
 				case 4 :
+					if(!((InputSide)bs.get(INPUT3)).isActive())
+						return 0;
 					if (inputs.remove(2) > 0) {
 						getTE(world, pos).SetLOW(false);
 						if (getTE(world, pos).GetHIGH()) {
-							return;
+							return bs.get(POWER);
 						} else {
 							getTE(world, pos).SetHIGH(true);
-							help = table[(2 * inputs.get(0)) + inputs.get(1)];
 							if (help == 'T') {
 								getTE(world, pos).SetMS(Collections.max(inputs));
 								return bs.get(POWER);
@@ -797,7 +807,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 					} else {
 						getTE(world, pos).SetHIGH(false);
 						if (getTE(world, pos).GetLOW()) {
-							return;
+							return bs.get(POWER);
 						} else {
 							// Ausgabe
 							return getTE(world, pos).GetMS();
@@ -808,6 +818,14 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			}
 		}
 
+		/**
+		 *** private*** TileEntity des Blockes bekommen
+		 * 
+		 * @param world
+		 *            Welt des Blockes
+		 * @param pos
+		 *            Position des Blockes
+		 */
 		private CustomTileEntity getTE(World world, BlockPos pos) {
 			return (CustomTileEntity) world.getTileEntity(pos);
 		}

@@ -12,7 +12,7 @@ public class Slot_IO extends Slot {
 	
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		if ((input && stack.getItem().toString() == "input") || (output&&stack.getItem().toString() == "output")) {
+		if ((input && stack.getItem().toString().equals("input")) || (output&&stack.getItem().toString().equals("output"))) {
 			return true;
 		}
 		return false;

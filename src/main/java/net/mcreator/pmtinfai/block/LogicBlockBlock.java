@@ -62,7 +62,6 @@ import java.util.Collections;
 import java.util.ArrayList;
 
 import io.netty.buffer.Unpooled;
-import sun.awt.windows.WPrinterJob;
 
 @PMTINFAIElements.ModElement.Tag
 public class LogicBlockBlock extends PMTINFAIElements.ModElement {
@@ -259,7 +258,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			} else {
 				getTE(world, pos).SetMaxInput(3);
 			}
-		update(world.getBlockState(pos), world, pos, null, getPowerOnSides(world, pos, world.getBlockState(pos)));
+			update(world.getBlockState(pos), world, pos, null, getPowerOnSides(world, pos, world.getBlockState(pos)));
 		}
 
 		// -------------------------------------Eventlistener----------------------
@@ -578,9 +577,20 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		}
 
 		/**
-		*
-		*
-		*/
+		 *
+		 ** private*** Findet Heraus ob weitere Inputs oder Outputs Slot frei sind
+		 *
+		 * @param bs
+		 *            BlockState des Blockes
+		 * @param input
+		 *            Anzahl der Inputs
+		 * @param output
+		 *            Anzahl der Outputs
+		 * @param world
+		 *            Welt des Blockes
+		 * @param pos
+		 *            Position des Blockes
+		 */
 		private boolean[] IO_State(BlockState bs, int input, int output, World world, BlockPos pos) {
 			if (bs.get(INPUT1) != InputSide.NONE)
 				input++;
@@ -800,7 +810,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			while (erg.length() < 3) {
 				erg += 'N';
 			}
-			return getTE(world, pos).GetBooleanAt(GetIdWithState(erg)) ? (Collections.max(inputs)==0?15:Collections.max(inputs)) : 0;
+			return getTE(world, pos).GetBooleanAt(GetIdWithState(erg)) ? (Collections.max(inputs) == 0 ? 15 : Collections.max(inputs)) : 0;
 		}
 
 		private int GetIdWithState(String state) {
@@ -886,6 +896,14 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			return x.get(0) == 'T' ? true : false;
 		}
 
+		/**
+		 *** private*** TileEntity des Blockes bekommen
+		 * 
+		 * @param world
+		 *            Welt des Blockes
+		 * @param pos
+		 *            Position des Blockes
+		 */
 		private CustomTileEntity getTE(World world, BlockPos pos) {
 			return (CustomTileEntity) world.getTileEntity(pos);
 		}

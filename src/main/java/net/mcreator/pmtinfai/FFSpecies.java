@@ -1,26 +1,23 @@
 package net.mcreator.pmtinfai;
 
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.world.biome.WarmOceanBiome;
-import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 
 public enum FFSpecies implements IStringSerializable {
 	// Enum
-	RS("RS-FF"), P_RS("pegel RS-FF"), HF_RS("high_flank RS-FF"), LF_RS("low_flank RS-FF"), MS_RS("master_slave RS-FF"),
-	JK("JK-FF"), P_JK("pegel JK-FF"), HF_JK("high_flank JK-FF"), LF_JK("low_flank JK-FF"), MS_JK("master_slave JK-FF"),
-	D("D-FF"), P_D("pegel D-FF"), HF_D("high_flank D-FF"), LF_D("low_flank D-FF"), MS_D("master_slave D-FF"),
-	T("T-FF"), P_T("pegel T-FF"), HF_T("high_flank T-FF"), LF_T("low_flank T-FF"), MS_T("master_slave T-FF"),
-	NONE("none");
+	RS("rs_ff"), P_RS("gated_rs_ff"), HF_RS("rising_rs_ff"), LF_RS("falling_rs_ff"), MS_RS("master_slace_rs_ff"), JK("jk_ff"), P_JK(
+			"gated_jk_ff"), HF_JK("rising_jk_ff"), LF_JK("falling_jk_ff"), MS_JK("master_slace_jk_ff"), D("d_ff"), P_D("gated_d_ff"), HF_D(
+					"rising_d_ff"), LF_D("falling_d_ff"), MS_D("master_slace_f_ff"), T(
+							"t_ff"), P_T("gated_t_ff"), HF_T("rising_t_ff"), LF_T("falling_t_ff"), MS_T("master_slace_t_ff"), NONE("none");
 	// S | R
 	// 0 | 0
 	// 0 | 1
 	// 1 | 0
 	// 1 | 1
-	//Q=save, F=false, D=toggle, T=true
-	private final char[] TableRS=new String[]{"Q","T","F","F"}
-	private final char[] TableJK=new String[]{"Q","T","F","D"}
-	private final char[] TableD=new String[]{"F","F","T","T"}
-	private final char[] TableT=new String[]{"Q","Q","D","D"}
+	// Q=save, F=false, D=toggle, T=true
+	private final char[] TableRS = new char[]{'Q', 'T', 'F', 'F'};
+	private final char[] TableJK = new char[]{'Q', 'T', 'F', 'D'};
+	private final char[] TableD = new char[]{'F', 'F', 'T', 'T'};
+	private final char[] TableT = new char[]{'Q', 'Q', 'D', 'D'};
 	// Variablen
 	private final String name;
 	/**
@@ -65,38 +62,72 @@ public enum FFSpecies implements IStringSerializable {
 	 * @return zugehöriges Enum
 	 */
 	public static FFSpecies GetEnum(String d) {
-		if (d.equals(FFSpecies.RS))
+		if (d.equals("rs_ff"))
 			return FFSpecies.RS;
-		if (d.equals(FFSpecies.P_RS))
+		if (d.equals("gated_rs_ff"))
 			return FFSpecies.P_RS;
-		return LogicSpecies.NONE;
+		if (d.equals("rising_rs_ff"))
+			return FFSpecies.HF_RS;
+		if (d.equals("falling_rs_ff"))
+			return FFSpecies.LF_RS;
+		if (d.equals("master_slace_rs_ff"))
+			return FFSpecies.MS_RS;
+		if (d.equals("jk_ff"))
+			return FFSpecies.JK;
+		if (d.equals("gated_jk_ff"))
+			return FFSpecies.P_JK;
+		if (d.equals("rising_jk_ff"))
+			return FFSpecies.HF_JK;
+		if (d.equals("falling_jk_ff"))
+			return FFSpecies.LF_JK;
+		if (d.equals("master_slace_jk_ff"))
+			return FFSpecies.MS_JK;
+		if (d.equals("d_ff"))
+			return FFSpecies.D;
+		if (d.equals("gated_d_ff"))
+			return FFSpecies.P_D;
+		if (d.equals("rising_d_ff"))
+			return FFSpecies.HF_D;
+		if (d.equals("falling_d_ff"))
+			return FFSpecies.LF_D;
+		if (d.equals("master_slave_d_ff"))
+			return FFSpecies.MS_D;
+		if (d.equals("t_ff"))
+			return FFSpecies.T;
+		if (d.equals("gated_t_ff"))
+			return FFSpecies.P_D;
+		if (d.equals("rising_t_ff"))
+			return FFSpecies.HF_T;
+		if (d.equals("falling_t_ff"))
+			return FFSpecies.LF_T;
+		if (d.equals("master_slave_t_ff"))
+			return FFSpecies.MS_T;
+		return FFSpecies.NONE;
 	}
 
-	public char[] GetTable(){
-		if(this==RS||this==P_RS||this==HF_RS||this==LF_RS||this==MS_RS)
+	public char[] GetTable() {
+		if (this == RS || this == P_RS || this == HF_RS || this == LF_RS || this == MS_RS)
 			return TableRS;
-		if(this==JK||this==P_JK||this==HF_JK||this==LF_JK||this==MS_JK)
+		if (this == JK || this == P_JK || this == HF_JK || this == LF_JK || this == MS_JK)
 			return TableJK;
-		if(this==D||this==P_D||this==HF_D||this==LF_D||this==MS_D)
+		if (this == D || this == P_D || this == HF_D || this == LF_D || this == MS_D)
 			return TableD;
-		if(this==T||this==P_T||this==HF_T||this==LF_T||this==MS_T)
+		if (this == T || this == P_T || this == HF_T || this == LF_T || this == MS_T)
 			return TableT;
 		return null;
 	}
 
-	public int GetClockMode(){// 0-no Clock, 1-pegel, 2-High, 3- LOW, 4-MasterSlave
-		if(this==RS||this==JK||this==D||this==T)
+	public int GetClockMode() {// 0-no Clock, 1-pegel, 2-High, 3- LOW, 4-MasterSlave
+		if (this == RS || this == JK || this == D || this == T)
 			return 0;
-		if(this==P_RS||this==P_JK||this==P_D||this==P_T)
+		if (this == P_RS || this == P_JK || this == P_D || this == P_T)
 			return 1;
-		if(this==HF_RS||this==HF_JK||this==HF_D||this==HF_T)
+		if (this == HF_RS || this == HF_JK || this == HF_D || this == HF_T)
 			return 2;
-		if(this==LF_RS||this==LF_JK||this==LF_D||this==LF_T)
+		if (this == LF_RS || this == LF_JK || this == LF_D || this == LF_T)
 			return 3;
-		if(this==MS_RS||this==MS_JK||this==MS_D||this==MS_T)
+		if (this == MS_RS || this == MS_JK || this == MS_D || this == MS_T)
 			return 4;
 		return 0;
 	}
-
-	
 }
