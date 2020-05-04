@@ -211,8 +211,8 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 			if (species == bs.get(LOGIC))
 				return;
 			world.setBlockState(pos, bs.with(LOGIC, species));
-			getTE(world, pos).SetHIGH(false);
-			getTE(world, pos).SetLOW(false);
+			getTE(world, pos).SetHIGH(0);
+			getTE(world, pos).SetLOW(0);
 			getTE(world, pos).SetMS(0);
 			update(world.getBlockState(pos), world, pos, null, getPowerOnSides(world, pos, world.getBlockState(pos)));
 		}
@@ -728,13 +728,12 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 					if(!((InputSide)bs.get(INPUT3)).isActive())
 						return 0;
 					if (inputs.remove(2) <= 0) {
-						getTE(world, pos).SetHIGH(false);
+						getTE(world, pos).SetHIGH(0);
 						return bs.get(POWER);
 					}
-					if (getTE(world, pos).GetHIGH()) 
+					if (getTE(world, pos).GetHIGH()==2) 
 						return bs.get(POWER);
-					System.out.println("-------tt");
-					getTE(world, pos).SetHIGH(true);
+					getTE(world, pos).SetHIGH(getTE(world, pos).GetHIGH()+1);
 					if (help == 'T')
 						return Collections.max(inputs);
 					if (help == 'F')
@@ -753,12 +752,12 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 					if(!((InputSide)bs.get(INPUT3)).isActive())
 						return 0;
 					if (inputs.remove(2) > 0) {
-						getTE(world, pos).SetLOW(false);
+						getTE(world, pos).SetLOW(0);
 						return bs.get(POWER);
 					}
-					if (getTE(world, pos).GetLOW())
+					if (getTE(world, pos).GetLOW()==2)
 						return bs.get(POWER);
-					getTE(world, pos).SetLOW(true);
+					getTE(world, pos).SetLOW(getTE(world, pos).GetLOW()+1);
 					if (help == 'T')
 						return Collections.max(inputs);
 					if (help == 'F')
@@ -777,11 +776,11 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 					if(!((InputSide)bs.get(INPUT3)).isActive())
 						return 0;
 					if (inputs.remove(2) > 0) {
-						getTE(world, pos).SetLOW(false);
-						if (getTE(world, pos).GetHIGH()) {
+						getTE(world, pos).SetLOW(0);
+						if (getTE(world, pos).GetHIGH()==2) {
 							return bs.get(POWER);
 						} else {
-							getTE(world, pos).SetHIGH(true);
+							getTE(world, pos).SetHIGH(getTE(world, pos).GetHIGH()+1);
 							if (help == 'T') {
 								getTE(world, pos).SetMS(Collections.max(inputs));
 								return bs.get(POWER);
@@ -805,11 +804,12 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 							return bs.get(POWER);
 						}
 					} else {
-						getTE(world, pos).SetHIGH(false);
-						if (getTE(world, pos).GetLOW()) {
+						getTE(world, pos).SetHIGH(0);
+						if (getTE(world, pos).GetLOW()==2) {
 							return bs.get(POWER);
 						} else {
 							// Ausgabe
+							getTE(world, pos).SetLOW(getTE(world, pos).GetLOW()+1);
 							return getTE(world, pos).GetMS();
 						}
 					} // MS Clock
@@ -833,8 +833,8 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 
 	public static class CustomTileEntity extends LockableLootTileEntity {
 		private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(5, ItemStack.EMPTY);
-		private boolean HIGH = false;
-		private boolean LOW = false;
+		private int HIGH = 0;
+		private int LOW = 0;
 		private int MS = 0;
 		protected CustomTileEntity() {
 			super(tileEntityType);
@@ -844,8 +844,8 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 		public void read(CompoundNBT compound) {
 			super.read(compound);
 			this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-			HIGH = compound.getBoolean("HIGH");
-			LOW = compound.getBoolean("LOW");
+			HIGH = compound.getInt("HIGH");
+			LOW = compound.getInt("LOW");
 			MS = compound.getInt("MS");
 			ItemStackHelper.loadAllItems(compound, this.stacks);
 		}
@@ -854,25 +854,25 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 		public CompoundNBT write(CompoundNBT compound) {
 			super.write(compound);
 			ItemStackHelper.saveAllItems(compound, this.stacks);
-			compound.putBoolean("HIGH", HIGH);
-			compound.putBoolean("LOW", LOW);
+			compound.putInt("HIGH", HIGH);
+			compound.putInt("LOW", LOW);
 			compound.putInt("MS", MS);
 			return compound;
 		}
 
-		public boolean GetHIGH() {
+		public int GetHIGH() {
 			return HIGH;
 		}
 
-		public void SetHIGH(boolean set) {
+		public void SetHIGH(int set) {
 			HIGH = set;
 		}
 
-		public boolean GetLOW() {
+		public int GetLOW() {
 			return LOW;
 		}
 
-		public void SetLOW(boolean set) {
+		public void SetLOW(int set) {
 			LOW = set;
 		}
 

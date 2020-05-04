@@ -104,9 +104,6 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 						slot.clock = io_boolean[2];
 						slot.output = io_boolean[3];
 					}
-					CompoundNBT nbt = new CompoundNBT();
-					nbt.putString("logic","falling_d_ff");
-					internal.getStackInSlot(2).setTag(nbt);
 				}
 			}));
 			this.customSlots.put(1, this.addSlot(new Slot_FF_IO(internal, 1, 53, 12) {
@@ -123,8 +120,8 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 						slot.output = io_boolean[3];
 					}
 					CompoundNBT nbt = new CompoundNBT();
-					nbt.putString("logic","master_slace_t_ff");
-					internal.getStackInSlot(2).setTag(nbt);
+					nbt.putString("logic","master_slave_t_ff");
+					internal.getStackInSlot(1).setTag(nbt);
 				}
 			}));
 			this.customSlots.put(2, this.addSlot(new Slot_FF_IO(internal, 2, 71, 30) {
@@ -142,7 +139,7 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 					}
 					CompoundNBT nbt = new CompoundNBT();
 					nbt.putString("logic", "rising_jk_ff");
-					internal.getStackInSlot(1).setTag(nbt);
+					internal.getStackInSlot(2).setTag(nbt);
 
 				}
 			}));
