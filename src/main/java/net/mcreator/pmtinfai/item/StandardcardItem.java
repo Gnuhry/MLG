@@ -14,6 +14,7 @@ import net.minecraft.block.BlockState;
 
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.mcreator.pmtinfai.PMTINFAIElements;
+import net.mcreator.pmtinfai.LogicSpecies;
 
 import javax.annotation.Nullable;
 
@@ -54,11 +55,17 @@ public class StandardcardItem extends PMTINFAIElements.ModElement {
 
 		@OnlyIn(Dist.CLIENT)
 		public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		 super.addInformation(stack, worldIn, tooltip, flagIn);
-		         ITextComponent itextcomponent = stack.getDisplayName().deepCopy();
-		         if(stack.hasTag())
-                 itextcomponent.appendText("logic: ").appendText(stack.getTag().getString("logic"));
-                 tooltip.add(itextcomponent);
+			super.addInformation(stack, worldIn, tooltip, flagIn);
+			ITextComponent itextcomponent = stack.getDisplayName().deepCopy();
+			if (stack.hasTag()) {
+				String help = stack.getTag().getString("logic");
+				boolean b = stack.getTag().getBoolean("logic_");
+				if (b) {
+					help = LogicSpecies.GetEnum(help).toString();
+				}
+				itextcomponent.appendText("logic: ").appendText(help);
+			}
+			tooltip.add(itextcomponent);
 		}
 	}
 }
