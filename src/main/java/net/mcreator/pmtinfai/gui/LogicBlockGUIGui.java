@@ -149,7 +149,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					// System.out.println(internal.getStackInSlot(4).getItem().toString()+"-"+(internal.getStackInSlot(4).getItem().toString().equals("redstone")));
-					if (internal.getStackInSlot(4) != null && internal.getStackInSlot(4).getItem().toString().equals("input")) {
+					if (internal.getStackInSlot(4) != null && internal.getStackInSlot(4).getItem().toString().equals("standardcard")) {
 						try {
 							// System.out.println(internal.getStackInSlot(4).getTag().getString("logic"));
 							lb.GetAllStates(internal.getStackInSlot(4).getTag().getString("logic"), world, new BlockPos(x, y, z));

@@ -54,7 +54,7 @@
       "type": "item",
       "sortid": 10,
       "compiles": true,
-      "locked_code": false,
+      "locked_code": true,
       "ids": {}
     },
     {
@@ -94,7 +94,7 @@
   "sound_elements": [],
   "language_map": {
     "en_us": {
-      "item.pmtinfai.standardcard": "card",
+      "item.pmtinfai.standardcard": "Card",
       "item.pmtinfai.output": "Output",
       "block.pmtinfai.flipflopblock": "FlipFlop Block",
       "block.pmtinfai.logicblock": "Logic Block",

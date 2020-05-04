@@ -5,7 +5,7 @@
     "renderType": 0,
     "texture": "card",
     "customModelName": "Normal",
-    "name": "card",
+    "name": "_Card",
     "creativeTab": {
       "value": "CUSTOM:LogicBlocks"
     },
