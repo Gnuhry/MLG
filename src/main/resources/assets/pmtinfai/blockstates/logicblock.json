@@ -1,17 +1,81 @@
 {
-  "forge_marker": 1,
-  "variants": {
-  		"normal":{
-  			"textures": {
-      			"3": "pmtinfai:grundblock/texture_logicblock_pc_oben"
-    		},
-  			"model":"pmtinfai:logicblock_noout"
-  		}
-  		"logic": {
-  			"and": {"3":"pmtinfai:gate_top_pc/texture_logicblock_pc_oben_and"},
-  			"or": {"3":"pmtinfai:gate_top_pc/texture_logicblock_pc_oben_or"},
-  			"xor": {"3":"pmtinfai:gate_top_pc/texture_logicblock_pc_oben_xor"},
-  			"not": {"3":"pmtinfai:gate_top_pc/texture_logicblock_pc_oben_not"}
-  			}
-  		}
+  "multipart": [
+  	{ "apply": { "model": "pmtinfai:block/logicblock_base"}},
+  	{ 	"when": { "OR": [
+  		{"input1_side": "north"},
+  		{"input2_side": "north"},
+  		{"input3_side": "north"}
+  		]},
+  		"apply": { "model": "pmtinfai:block/logicblock_input", "y": 180}
+  	},
+  	{ 	"when": { "OR": [
+  		{"input1_side": "east"},
+  		{"input2_side": "east"},
+  		{"input3_side": "east"}
+  		]},
+  		"apply": { "model": "pmtinfai:block/logicblock_input" , "y": 270}
+  	},
+  	{ 	"when": { "OR": [
+  		{"input1_side": "south"},
+  		{"input2_side": "south"},
+  		{"input3_side": "south"}
+  		]},
+  		"apply": { "model": "pmtinfai:block/logicblock_input"}
+  	},
+  	{ 	"when": { "OR": [
+  		{"input1_side": "west"},
+  		{"input2_side": "west"},
+  		{"input3_side": "west"}
+  		]},
+  		"apply": { "model": "pmtinfai:block/logicblock_input", "y": 90}
+  	},
+  	{ 	"when": { "output": "north" },
+  		"apply": { "model": "pmtinfai:block/logicblock_output", "y": 180}
+  	},
+  	{ 	"when": { "output": "east" },
+  		"apply": { "model": "pmtinfai:block/logicblock_output", "y": 270}
+  	},
+  	{ 	"when": { "output": "south" },
+  		"apply": { "model": "pmtinfai:block/logicblock_output"}
+  	},
+  	{ 	"when": { "output": "west" },
+  		"apply": { "model": "pmtinfai:block/logicblock_output", "y": 90}
+  	},
+  	{	"when": {"output": "none|east|north|west", "input1_side": "none|east|north|west", "input2_side": "none|east|north|west", "input3_side": "none|east|north|west"},
+  		"apply": { "model": "pmtinfai:block/logicblock_blank"}
+  	},
+  	{	"when": {"output": "south|east|north|none", "input1_side": "south|east|north|none", "input2_side": "south|east|north|none", "input3_side": "south|east|north|none"},
+  		"apply": { "model": "pmtinfai:block/logicblock_blank", "y": 90}
+  	},
+  	{	"when": {"output": "south|east|none|west", "input1_side": "south|east|none|west", "input2_side": "south|east|none|west", "input3_side": "south|east|none|west"},
+  		"apply": { "model": "pmtinfai:block/logicblock_blank", "y": 180}
+  	},
+  	{	"when": {"output": "south|none|north|west", "input1_side": "south|none|north|west", "input2_side": "south|none|north|west", "input3_side": "south|none|north|west"},
+  		"apply": { "model": "pmtinfai:block/logicblock_blank", "y": 270}
+  	},
+  	{	"when": { "logic": "none" },
+  		"apply": { "model": "pmtinfai:block/logicblock_pc"}
+  	},
+  	{	"when": { "logic": "and" },
+  		"apply": { "model": "pmtinfai:block/logicblock_pc_and"}
+  	},
+  	{	"when": { "logic": "or" },
+  		"apply": { "model": "pmtinfai:block/logicblock_pc_or"}
+  	},
+  	{	"when": { "logic": "xor" },
+  		"apply": { "model": "pmtinfai:block/logicblock_pc_xor"}
+  	},
+  	{	"when": { "logic": "not" },
+  		"apply": { "model": "pmtinfai:block/logicblock_pc_not"}
+  	},
+  	{	"when": { "logic": "xnor" },
+  		"apply": { "model": "pmtinfai:block/logicblock_pc_xnor"}
+  	},
+  	{	"when": { "logic": "nand" },
+  		"apply": { "model": "pmtinfai:block/logicblock_pc_nand"}
+  	},
+  	{	"when": { "logic": "nor" },
+  		"apply": { "model": "pmtinfai:block/logicblock_pc_nor"}
+  	}
+  ]
 }

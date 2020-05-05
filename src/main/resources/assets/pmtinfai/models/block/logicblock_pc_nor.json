@@ -1,26 +1,11 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "pmtinfai:grundblock/logic-block-top",
 		"1": "pmtinfai:grundblock/model_logicblock_pc_seite",
-		"2": "pmtinfai:grundblock/texture_logic_block_seite",
-		"3": "pmtinfai:grundblock/texture_logicblock_pc_oben",
+		"3": "pmtinfai:gate_top_pc/texture_logicblock_pc_oben_nor",
 		"particle": "pmtinfai:grundblock/logic-block-top"
 	},
 	"elements": [
-		{
-			"from": [0, 0, 0],
-			"to": [16, 2, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [0, 2, 0]},
-			"faces": {
-				"north": {"uv": [0, 0, 0, 0], "rotation": 180, "texture": "#2"},
-				"east": {"uv": [0, 0, 1, 1], "rotation": 270, "texture": "#2"},
-				"south": {"uv": [0, 0, 1, 1], "texture": "#2"},
-				"west": {"uv": [0, 0, 1, 1], "rotation": 90, "texture": "#2"},
-				"up": {"uv": [0, 0, 16, 16], "rotation": 180, "texture": "#0"},
-				"down": {"uv": [0, 0, 1, 1], "texture": "#2"}
-			}
-		},
 		{
 			"from": [5, 1, 5],
 			"to": [11, 7, 11],
@@ -74,14 +59,9 @@
 	},
 	"groups": [
 		{
-			"name": "restonetorch",
-			"origin": [0, 0, 0],
-			"children": []
-		},
-		{
 			"name": "bone",
 			"origin": [0, 0, 0],
-			"children": [0, 1]
+			"children": [0]
 		}
 	]
 }
