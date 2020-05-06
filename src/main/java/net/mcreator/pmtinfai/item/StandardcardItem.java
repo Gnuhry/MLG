@@ -64,8 +64,8 @@ public class StandardcardItem extends PMTINFAIElements.ModElement {
 					help = LogicSpecies.GetEnum(help).toString();
 				}
 				itextcomponent.appendText("logic: ").appendText(help);
+				tooltip.add(itextcomponent);
 			}
-			tooltip.add(itextcomponent);
 		}
 	}
 }

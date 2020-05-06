@@ -71,7 +71,6 @@ public class TischGui extends PMTINFAIElements.ModElement {
 			return new GuiContainerMod(id, inv, extraData);
 		}
 	}
-
 	public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
 		private World world;
 		private PlayerEntity entity;
