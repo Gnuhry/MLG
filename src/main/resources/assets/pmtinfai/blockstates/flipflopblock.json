@@ -1,137 +1,175 @@
 {
-  "variants": {
-  		"output=none,set_side=none,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_noout"},
-  		"output=south,set_side=none,,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock"},
-  		"output=west,set_side=none,,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock", "y":90},
-  		"output=north,set_side=none,,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock", "y":180},
-  		"output=east,set_side=none,,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock", "y":270},
-  		"output=south,set_side=north,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_o"},
-  		"output=west,set_side=east,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_o", "y":90},
-  		"output=north,set_side=south,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_o", "y":180},
-  		"output=east,set_side=west,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_o", "y":270},
-  		"output=south,set_side=east,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_l"},
-  		"output=west,set_side=south,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_l", "y":90},
-  		"output=north,set_side=west,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_l", "y":180},
-  		"output=east,set_side=north,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_l", "y":270},
-  		"output=south,set_side=west,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_r"},
-  		"output=west,set_side=north,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_r", "y":90},
-  		"output=north,set_side=east,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_r", "y":180},
-  		"output=east,set_side=south,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_r", "y":270},
-  		"output=south,set_side=west,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_rl"},
-  		"output=west,set_side=north,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_rl", "y":90},
-  		"output=north,set_side=east,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_rl", "y":180},
-  		"output=east,set_side=south,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_rl", "y":270},
-  		"output=south,set_side=east,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_rl"},
-  		"output=west,set_side=south,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_rl", "y":90},
-  		"output=north,set_side=west,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_rl", "y":180},
-  		"output=east,set_side=north,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_rl", "y":270},
-  		"output=south,set_side=west,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_ro"},
-  		"output=west,set_side=north,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_ro", "y":90},
-  		"output=north,set_side=east,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_ro", "y":180},
-  		"output=east,set_side=south,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_ro", "y":270},
-  		"output=south,set_side=north,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_ro"},
-  		"output=west,set_side=east,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_ro", "y":90},
-  		"output=north,set_side=south,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_ro", "y":180},
-  		"output=east,set_side=west,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_ro", "y":270},
-  		"output=south,set_side=east,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_lo"},
-  		"output=west,set_side=south,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_lo", "y":90},
-  		"output=north,set_side=west,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_lo", "y":180},
-  		"output=east,set_side=north,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_lo", "y":270},
-  		"output=south,set_side=north,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_lo"},
-  		"output=west,set_side=east,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_lo", "y":90},
-  		"output=north,set_side=south,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_lo", "y":180},
-  		"output=east,set_side=west,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_lo", "y":270},
-  		"output=south,set_side=north,reset_side=east,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo"},
-  		"output=west,set_side=east,reset_side=south,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo", "y":90},
-  		"output=north,set_side=south,reset_side=west,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo", "y":180},
-  		"output=east,set_side=west,reset_side=north,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo", "y":270},
-  		"output=south,set_side=north,reset_side=west,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo"},
-  		"output=west,set_side=east,reset_side=north,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo", "y":90},
-  		"output=north,set_side=south,reset_side=east,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo", "y":180},
-  		"output=east,set_side=west,reset_side=south,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo", "y":270},
-  		"output=south,set_side=west,reset_side=north,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo"},
-  		"output=west,set_side=north,reset_side=east,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo", "y":90},
-  		"output=north,set_side=east,reset_side=south,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo", "y":180},
-  		"output=east,set_side=south,reset_side=west,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo", "y":270},
-  		"output=south,set_side=east,reset_side=north,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo"},
-  		"output=west,set_side=south,reset_side=east,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo", "y":90},
-  		"output=north,set_side=west,reset_side=south,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo", "y":180},
-  		"output=east,set_side=north,reset_side=west,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo", "y":270},
-  		"output=south,set_side=west,reset_side=east,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo"},
-  		"output=west,set_side=north,reset_side=south,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo", "y":90},
-  		"output=north,set_side=east,reset_side=west,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo", "y":180},
-  		"output=east,set_side=south,reset_side=north,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo", "y":270},
-  		"output=south,set_side=east,reset_side=west,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo"},
-  		"output=west,set_side=south,reset_side=north,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo", "y":90},
-  		"output=north,set_side=west,reset_side=east,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo", "y":180},
-  		"output=east,set_side=north,reset_side=south,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo", "y":270},
-  		"output=south,set_side=east,reset_side=north,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo"},
-  		"output=west,set_side=south,reset_side=east,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo", "y":90},
-  		"output=north,set_side=west,reset_side=south,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo", "y":180},
-  		"output=east,set_side=north,reset_side=west,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo", "y":270},
-  		"output=none,set_side=north,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_o_noout"},
-  		"output=none,set_side=east,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_o_noout", "y":90},
-  		"output=none,set_side=south,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_o_noout", "y":180},
-  		"output=none,set_side=west,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_o_noout", "y":270},
-  		"output=none,set_side=east,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_l_nooutd"},
-  		"output=none,set_side=south,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_l_noout", "y":90},
-  		"output=none,set_side=west,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_l_noout", "y":180},
-  		"output=none,set_side=north,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_l_noout", "y":270},
-  		"output=none,set_side=west,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_r_noout"},
-  		"output=none,set_side=north,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_r_noout", "y":90},
-  		"output=none,set_side=east,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_r_noout", "y":180},
-  		"output=none,set_side=south,reset_side=none,clock_side=none": { "model":"pmtinfai:block/logicblock_r_noout", "y":270},
-  		"output=none,set_side=west,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_rl_noout"},
-  		"output=none,set_side=north,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_rl_noout", "y":90},
-  		"output=none,set_side=east,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_rl_noout", "y":180},
-  		"output=none,set_side=south,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_rl_noout", "y":270},
-  		"output=none,set_side=east,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_rl_noout"},
-  		"output=none,set_side=south,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_rl_noout", "y":90},
-  		"output=none,set_side=west,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_rl_noout", "y":180},
-  		"output=none,set_side=north,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_rl_noout", "y":270},
-  		"output=none,set_side=west,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_ro_noout"},
-  		"output=none,set_side=north,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_ro_noout", "y":90},
-  		"output=none,set_side=east,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_ro_noout", "y":180},
-  		"output=none,set_side=south,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_ro_noout", "y":270},
-  		"output=none,set_side=north,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_ro_noout"},
-  		"output=none,set_side=east,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_ro_noout", "y":90},
-  		"output=none,set_side=south,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_ro_noout", "y":180},
-  		"output=none,set_side=west,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_ro_noout", "y":270},
-  		"output=none,set_side=east,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_lo_noout"},
-  		"output=none,set_side=south,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_lo_noout", "y":90},
-  		"output=none,set_side=west,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_lo_noout", "y":180},
-  		"output=none,set_side=north,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_lo_noout", "y":270},
-  		"output=none,set_side=north,reset_side=east,clock_side=none": { "model":"pmtinfai:block/logicblock_lo_noout"},
-  		"output=none,set_side=east,reset_side=south,clock_side=none": { "model":"pmtinfai:block/logicblock_lo_noout", "y":90},
-  		"output=none,set_side=south,reset_side=west,clock_side=none": { "model":"pmtinfai:block/logicblock_lo_noout", "y":180},
-  		"output=none,set_side=west,reset_side=north,clock_side=none": { "model":"pmtinfai:block/logicblock_lo_noout", "y":270},
-  		"output=none,set_side=north,reset_side=east,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo_noout"},
-  		"output=none,set_side=east,reset_side=south,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":90},
-  		"output=none,set_side=south,reset_side=west,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":180},
-  		"output=none,set_side=west,reset_side=north,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":270},
-  		"output=none,set_side=north,reset_side=west,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo_noout"},
-  		"output=none,set_side=east,reset_side=north,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":90},
-  		"output=none,set_side=south,reset_side=east,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":180},
-  		"output=none,set_side=west,reset_side=south,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":270},
-  		"output=none,set_side=west,reset_side=north,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo_noout"},
-  		"output=none,set_side=north,reset_side=east,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":90},
-  		"output=none,set_side=east,reset_side=south,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":180},
-  		"output=none,set_side=south,reset_side=west,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":270},
-  		"output=none,set_side=east,reset_side=north,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo_noout"},
-  		"output=none,set_side=south,reset_side=east,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":90},
-  		"output=none,set_side=west,reset_side=south,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":180},
-  		"output=none,set_side=north,reset_side=west,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":270},
-  		"output=none,set_side=west,reset_side=east,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo_noout"},
-  		"output=none,set_side=north,reset_side=south,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":90},
-  		"output=none,set_side=east,reset_side=west,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":180},
-  		"output=none,set_side=south,reset_side=north,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":270},
-  		"output=none,set_side=east,reset_side=west,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo_noout"},
-  		"output=none,set_side=south,reset_side=north,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":90},
-  		"output=none,set_side=west,reset_side=east,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":180},
-  		"output=none,set_side=north,reset_side=south,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":270},
-  		"output=none,set_side=east,reset_side=north,clock_side=west": { "model":"pmtinfai:block/logicblock_rlo_noout"},
-  		"output=none,set_side=south,reset_side=east,clock_side=north": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":90},
-  		"output=none,set_side=west,reset_side=south,clock_side=east": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":180},
-  		"output=none,set_side=north,reset_side=west,clock_side=south": { "model":"pmtinfai:block/logicblock_rlo_noout", "y":270}
-  		}
+	"multipart": [
+		{
+			"apply": {
+				"model": "pmtinfai:block/logicblock_base"
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"clock_side": "north"
+					},
+					{
+						"set_side": "north"
+					},
+					{
+						"reset_side": "north"
+					}
+				]
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_input",
+				"y": 180
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"clock_side": "east"
+					},
+					{
+						"set_side": "east"
+					},
+					{
+						"reset_side": "east"
+					}
+				]
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_input",
+				"y": 270
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"clock_side": "south"
+					},
+					{
+						"set_side": "south"
+					},
+					{
+						"reset_side": "south"
+					}
+				]
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_input"
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"clock_side": "west"
+					},
+					{
+						"set_side": "west"
+					},
+					{
+						"reset_side": "west"
+					}
+				]
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_input",
+				"y": 90
+			}
+		},
+		{
+			"when": {
+				"output": "north"
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_output",
+				"y": 180
+			}
+		},
+		{
+			"when": {
+				"output": "east"
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_output",
+				"y": 270
+			}
+		},
+		{
+			"when": {
+				"output": "south"
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_output"
+			}
+		},
+		{
+			"when": {
+				"output": "west"
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_output",
+				"y": 90
+			}
+		},
+		{
+			"when": {
+				"output": "none|east|north|west",
+				"clock_side": "none|east|north|west",
+				"set_side": "none|east|north|west",
+				"reset_side": "none|east|north|west"
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_blank"
+			}
+		},
+		{
+			"when": {
+				"output": "south|east|north|none",
+				"clock_side": "south|east|north|none",
+				"set_side": "south|east|north|none",
+				"reset_side": "south|east|north|none"
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_blank",
+				"y": 90
+			}
+		},
+		{
+			"when": {
+				"output": "south|east|none|west",
+				"clock_side": "south|east|none|west",
+				"set_side": "south|east|none|west",
+				"reset_side": "south|east|none|west"
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_blank",
+				"y": 180
+			}
+		},
+		{
+			"when": {
+				"output": "south|none|north|west",
+				"clock_side": "south|none|north|west",
+				"set_side": "south|none|north|west",
+				"reset_side": "south|none|north|west"
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_blank",
+				"y": 270
+			}
+		},
+		{
+			"when": {
+				"logic": "none"
+			},
+			"apply": {
+				"model": "pmtinfai:block/logicblock_pc",
+				"y": 270
+			}
+		}
+	]
 }
