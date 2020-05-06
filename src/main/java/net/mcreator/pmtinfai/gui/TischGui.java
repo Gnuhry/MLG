@@ -12,13 +12,19 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -76,6 +82,27 @@ public class TischGui extends PMTINFAIElements.ModElement {
 			super(containerType, id);
 			this.entity = inv.player;
 			this.world = inv.player.world;
+			addListener(new IContainerListener() {
+				@Override
+				public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {
+
+				}
+
+				@Override
+				public void sendSlotContents(Container containerToSend, int slotInd, ItemStack stack) {
+					System.out.println("2");
+					NonNullList<ItemStack> inventory=containerToSend.getInventory();
+					ItemStack help=Recipe_MKLG.CheckRecipe(inventory);
+					if(help!=null){
+						containerToSend.inventorySlots.get(0).putStack(help);
+					}
+				}
+
+				@Override
+				public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue) {
+
+				}
+			});
 			this.internal = new Inventory(29);
 			if (extraData != null) {
 				BlockPos pos = extraData.readBlockPos();
@@ -88,6 +115,16 @@ public class TischGui extends PMTINFAIElements.ModElement {
 			}
 			internal.openInventory(inv.player);
 			this.customSlots.put(0, this.addSlot(new Slot_Tisch(internal, 0, 8, 34) {
+				@Override
+				public void onSlotChanged() {
+					super.onSlotChanged();
+					Item item = internal.getStackInSlot(0).getItem();
+					if((!item.toString().equals(((Slot_Tisch)this).GetItem()))&&(!item.toString().equals("air"))){
+						for(int f=01;f<29;f++){
+							customSlots.get(f).putStack(ItemStack.EMPTY);
+						}
+					}
+				}
 			}));
 			this.customSlots.put(1, this.addSlot(new Slot_Tisch(internal, 1, 44, 7) {
 			}));
@@ -153,6 +190,16 @@ public class TischGui extends PMTINFAIElements.ModElement {
 			for (si = 0; si < 9; ++si)
 				this.addSlot(new Slot(inv, si, 0 + 8 + si * 18, 0 + 142));
 
+			/*this.customSlots.get(1).setBackgroundLocation(new net.minecraft.util.ResourceLocation("pmtinfai:textures/items/input_item.png"));
+			this.customSlots.get(2).setBackgroundLocation(new net.minecraft.util.ResourceLocation("pmtinfai:textures/items/input_item.png"));
+			this.customSlots.get(1).setBackgroundName("pmtinfai:textures/items/input_item.png");
+			this.customSlots.get(2).setBackgroundName("input_item");
+			this.customSlots.get(3).setBackgroundName("textures/other/input_item");
+			this.customSlots.get(4).setBackgroundName("textures/other/input_item.png");
+			this.customSlots.get(5).setBackgroundName("other/input_item");
+			this.customSlots.get(6).setBackgroundName("other/input_item.png");
+			System.out.println(this.customSlots.get(1).getBackgroundLocation());
+			System.out.println(this.customSlots.get(3).getSlotTexture());*/
 		}
 
 		public Map<Integer, Slot> get() {
@@ -448,3 +495,4 @@ public class TischGui extends PMTINFAIElements.ModElement {
 			return;
 	}
 }
+

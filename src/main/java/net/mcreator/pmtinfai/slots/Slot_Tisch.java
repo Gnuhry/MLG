@@ -7,14 +7,14 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.inventory.IInventory;
 
 public class Slot_Tisch extends Slot {
-	private String item;
+	private String item="input";
 	public Slot_Tisch(IInventory inventoryIn, int index, int xPosition, int yPosition) {
 		super(inventoryIn, index, xPosition, yPosition);
 	}
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		if ( stack.getItem().toString().equals(item)) {
+		if (stack.getItem().toString().equals(item)) {
 			return true;
 		}
 		return false;
@@ -23,5 +23,8 @@ public class Slot_Tisch extends Slot {
 	public void SetItem(String item){
 		this.item=item;
 		this.setBackgroundName("blocks:arrow_up");
+	}
+	public String GetItem(){
+		return item;
 	}
 }
