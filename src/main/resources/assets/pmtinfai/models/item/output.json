@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "pmtinfai:items/output"
+    "layer0": "pmtinfai:items/input_item"
   }
 }

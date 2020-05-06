@@ -3,7 +3,7 @@
   "_type": "item",
   "definition": {
     "renderType": 0,
-    "texture": "input",
+    "texture": "output_item",
     "customModelName": "Normal",
     "name": "Input",
     "creativeTab": {
