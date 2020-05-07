@@ -110,13 +110,34 @@
   "sound_elements": [],
   "language_map": {
     "en_us": {
+      "gui.pmtinfai.w": "W",
+      "gui.pmtinfai.s": "S",
+      "block.pmtinfai.logicblock": "Logic Block",
+      "gui.pmtinfai.n": "N",
+      "gui.pmtinfai.io": "I/O",
       "item.pmtinfai.standardcard": "Card",
+      "gui.pmtinfai.e": "E",
       "item.pmtinfai.output": "Output",
       "block.pmtinfai.flipflopblock": "FlipFlop Block",
-      "block.pmtinfai.logicblock": "Logic Block",
       "block.pmtinfai.workbench": "Workbench",
       "itemGroup.tablogicblocks": "Logic Block",
-      "item.pmtinfai.input": "Input"
+      "item.pmtinfai.input": "Input",
+      "gui.pmtinfai.logic": "Logic"
+    },
+    "de_de": {
+      "gui.pmtinfai.w": "W",
+      "gui.pmtinfai.s": "S",
+      "block.pmtinfai.logicblock": "Logik Block",
+      "gui.pmtinfai.n": "N",
+      "gui.pmtinfai.io": "E/A",
+      "item.pmtinfai.standardcard": "Karte",
+      "gui.pmtinfai.e": "O",
+      "item.pmtinfai.output": "Ausgang",
+      "block.pmtinfai.flipflopblock": "FlipFlop Block",
+      "block.pmtinfai.workbench": "Werkbank",
+      "itemGroup.tablogicblocks": "Logik Block",
+      "item.pmtinfai.input": "Eingang",
+      "gui.pmtinfai.logic": "Logik"
     }
   },
   "workspaceSettings": {

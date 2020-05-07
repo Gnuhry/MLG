@@ -40,6 +40,8 @@ import java.util.function.Supplier;
 import java.util.Map;
 import java.util.HashMap;
 
+import net.minecraft.client.resources.I18n;
+
 @PMTINFAIElements.ModElement.Tag
 public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 	public static HashMap guistate = new HashMap();
@@ -354,12 +356,12 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 
 		@Override
 		protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-			this.font.drawString("N", 58, 1, -16777216);
-			this.font.drawString("W", 27, 33, -16777216);
-			this.font.drawString("S", 57, 65, -16777216);
-			this.font.drawString("E", 90, 33, -16777216);
-			this.font.drawString("I/O", 17, 6, -16777216);
-			this.font.drawString("Logic", 134, 6, -16777216);
+			this.font.drawString(I18n.format("n"), 58, 1, -16777216);
+			this.font.drawString(I18n.format("w"), 27, 33, -16777216);
+			this.font.drawString(I18n.format("s"), 57, 65, -16777216);
+			this.font.drawString(I18n.format("e"), 90, 33, -16777216);
+			this.font.drawString(I18n.format("io"), 17, 6, -16777216);
+			this.font.drawString(I18n.format("logic"), 134, 6, -16777216);
 		}
 
 		@Override
