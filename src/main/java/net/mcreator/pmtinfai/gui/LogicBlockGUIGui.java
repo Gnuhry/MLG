@@ -124,10 +124,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
 						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
 					}
-					CompoundNBT nbt = new CompoundNBT();
-					nbt.putString("logic", "F,F,(!A)");
-					nbt.putBoolean("logic_", true);
-					internal.getStackInSlot(2).setTag(nbt);
+
 				}
 			}));
 			this.customSlots.put(3, this.addSlot(new Slot_IO(internal, 3, 53, 48) {
