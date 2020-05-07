@@ -166,7 +166,7 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					// System.out.println(internal.getStackInSlot(4).getItem().toString()+"-"+(internal.getStackInSlot(4).getItem().toString().equals("redstone")));
-					if (internal.getStackInSlot(4) != null && internal.getStackInSlot(4).getItem().toString().equals("standardcard")) {
+					if (internal.getStackInSlot(4) != null && internal.getStackInSlot(4).getItem().toString().equals("standardcard")&&!internal.getStackInSlot(4).getTag().contains("logic_")) {
 						try {
 							// System.out.println(internal.getStackInSlot(4).getTag().getString("logic"));
 							lb.GetAllStates(internal.getStackInSlot(4).getTag().getString("logic"), world, new BlockPos(x, y, z));

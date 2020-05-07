@@ -290,11 +290,11 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 		 * 
 		 * @param state
 		 *            Blockstate des Blockes
-		 * @param world
+		 * @param worldIn
 		 *            Welt in der der Block steht
 		 * @param pos
 		 *            Position des Blockes
-		 * @param neighborBlock
+		 * @param blockIn
 		 *            Nachbarblock der sich ändert
 		 * @param fromPos
 		 *            Position von dem sich änderndem Block

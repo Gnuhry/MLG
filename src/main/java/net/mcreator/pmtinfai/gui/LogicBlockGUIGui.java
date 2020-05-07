@@ -126,10 +126,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 						((Slot_IO) customSlots.get(f)).input = io_boolean[0];
 						((Slot_IO) customSlots.get(f)).output = io_boolean[1];
 					}
-					CompoundNBT nbt = new CompoundNBT();
-					nbt.putString("logic", "F,F,(!A)");
-					nbt.putBoolean("logic_", true);
-					internal.getStackInSlot(2).setTag(nbt);
+
 				}
 			}));
 			this.customSlots.put(3, this.addSlot(new Slot_IO(internal, 3, 53, 48) {
@@ -153,7 +150,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
 				public void onSlotChanged() {
 					super.onSlotChanged();
 					// System.out.println(internal.getStackInSlot(4).getItem().toString()+"-"+(internal.getStackInSlot(4).getItem().toString().equals("redstone")));
-					if (internal.getStackInSlot(4) != null && internal.getStackInSlot(4).getItem().toString().equals("standardcard")) {
+					if (internal.getStackInSlot(4) != null && internal.getStackInSlot(4).getItem().toString().equals("standardcard")&&internal.getStackInSlot(4).getTag().contains("logic_")) {
 						try {
 							// System.out.println(internal.getStackInSlot(4).getTag().getString("logic"));
 							lb.GetAllStates(internal.getStackInSlot(4).getTag().getString("logic"), world, new BlockPos(x, y, z));

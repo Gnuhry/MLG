@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import io.netty.buffer.Unpooled;
 
@@ -135,6 +136,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 *            Teil der Welt des Blockes
 		 * @return Die aktuelle Tickrate des Blockes
 		 */
+		@Override
 		public int tickRate(IWorldReader worldIn) {
 			return 1;
 		}
@@ -334,11 +336,11 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 * 
 		 * @param state
 		 *            Blockstate des Blockes
-		 * @param world
+		 * @param worldIn
 		 *            Welt in der der Block steht
 		 * @param pos
 		 *            Position des Blockes
-		 * @param neighborBlock
+		 * @param blockIn
 		 *            Nachbarblock der sich ändert
 		 * @param fromPos
 		 *            Position von dem sich änderndem Block
@@ -365,7 +367,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 * 
 		 * @param state
 		 *            Blockstate des Blockes
-		 * @param world
+		 * @param worldIn
 		 *            Welt in der der Block steht
 		 * @param pos
 		 *            Position des Blockes
@@ -517,7 +519,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 *            Position des Blockes, der geupdated werden soll
 		 * @param random
 		 *            Ein Java Random Element für Zufällige Ticks
-		 * @param clalculatedOutput
+		 * @param calculatedOutput
 		 *            Auf diesen Wert soll der Output des blockes gesetzt werden
 		 * 
 		 */
@@ -713,7 +715,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 *            Welt des Blockes
 		 * @param pos
 		 *            Position des Blockes
-		 * @param state
+		 * @param blockstate
 		 *            Blockstate des Blockes
 		 */
 		private int getPowerOnSides(World world, BlockPos pos, BlockState blockstate) {
@@ -804,22 +806,18 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		private int logic(List<Integer> inputs, World world, BlockPos pos) {
 			if (!getTE(world, pos).IsActive())
 				return 0;
-			String erg = "";
+			StringBuilder erg = new StringBuilder();
 			for (int f : inputs)
-				erg += f > 0 ? 'T' : 'F';
+				erg.append(f > 0 ? 'T' : 'F');
 			while (erg.length() < 3) {
-				erg += 'N';
+				erg.append('N');
 			}
-			return getTE(world, pos).GetBooleanAt(GetIdWithState(erg)) ? (Collections.max(inputs) == 0 ? 15 : Collections.max(inputs)) : 0;
+			return getTE(world, pos).GetBooleanAt(GetIdWithState(erg.toString())) ? (Collections.max(inputs) == 0 ? 15 : Collections.max(inputs)) : 0;
 		}
 
 		private int GetIdWithState(String state) {
 			String[] cases3 = new String[]{"TFF", "TFT", "TTF", "TTT", "FFF", "FFT", "FTF", "FTT", "TFN", "TTN", "FFN", "FTN", "TNN", "FNN", "NNN"};
-			for (int f = 0; f < cases3.length; f++) {
-				if (cases3[f].equals(state))
-					return f;
-			}
-			return 14;
+			return IntStream.range(0, cases3.length).filter(f -> cases3[f].equals(state)).findFirst().orElse(14);
 		}
 
 		/**
@@ -841,10 +839,10 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 			// Checking Expression
 			char[] help = exp.toCharArray();
 			List<Character> x = new ArrayList<>();
-			for (int f = 0; f < help.length; f++) {
-				if (!allowed.contains(help[f]))
+			for (char c : help) {
+				if (!allowed.contains(c))
 					return false;
-				x.add(help[f]);
+				x.add(c);
 			}
 			// Calculate
 			for (int f = 0; f < x.size(); f++) {
@@ -858,9 +856,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 									} else {
 										x.set(f, 'F');
 									}
-									for (int h = f - 1; h > g - 1; h--) {
-										x.remove(h);
-									}
+									x.subList(g, f).clear();
 									f = 0;
 									g = -1;
 								} else if (x.get(g + 2) == '|') {
@@ -869,9 +865,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 									} else {
 										x.set(f, 'T');
 									}
-									for (int h = f - 1; h > g - 1; h--) {
-										x.remove(h);
-									}
+									x.subList(g, f).clear();
 									f = 0;
 									g = -1;
 								}
@@ -882,8 +876,8 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 									else {
 										x.set(f, 'F');
 									}
-									for (int h = f - 1; h > g - 1; h--) {
-										x.remove(h);
+									if (f > g) {
+										x.subList(g, f).clear();
 									}
 									f = 0;
 									g = -1;
@@ -893,7 +887,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 					}
 				}
 			}
-			return x.get(0) == 'T' ? true : false;
+			return x.get(0) == 'T';
 		}
 
 		/**

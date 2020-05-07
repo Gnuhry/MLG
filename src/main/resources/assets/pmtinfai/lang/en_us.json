@@ -3,7 +3,9 @@
   "item.pmtinfai.output": "Output",
   "block.pmtinfai.flipflopblock": "FlipFlop Block",
   "block.pmtinfai.logicblock": "Logic Block",
+  "block.pmtinfai.codebench": "Codebench",
   "block.pmtinfai.workbench": "Workbench",
   "itemGroup.tablogicblocks": "Logic Block",
-  "item.pmtinfai.input": "Input"
+  "item.pmtinfai.input": "Input",
+  "block.pmtinfai.printer": "Printer"
 }

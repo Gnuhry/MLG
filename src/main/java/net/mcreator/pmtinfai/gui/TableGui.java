@@ -1,54 +1,57 @@
 
 package net.mcreator.pmtinfai.gui;
 
-import net.mcreator.pmtinfai.PMTINFAI;
-import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.slots.Slot_Tisch;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.IContainerListener;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.IContainerFactory;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.mcreator.pmtinfai.block.CodebenchBlock;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.lwjgl.opengl.GL11;
 
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.IContainerFactory;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+
+import net.minecraft.world.World;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.Minecraft;
+
+import net.mcreator.pmtinfai.PMTINFAIElements;
+import net.mcreator.pmtinfai.PMTINFAI;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
+import java.util.Map;
+import java.util.HashMap;
 
 @PMTINFAIElements.ModElement.Tag
-public class TischGui extends PMTINFAIElements.ModElement {
+public class TableGui extends PMTINFAIElements.ModElement {
 	public static HashMap guistate = new HashMap();
 	private static ContainerType<GuiContainerMod> containerType = null;
-	public TischGui(PMTINFAIElements instance) {
-		super(instance, 15);
+	public TableGui(PMTINFAIElements instance) {
+		super(instance, 17);
 		elements.addNetworkMessage(ButtonPressedMessage.class, ButtonPressedMessage::buffer, ButtonPressedMessage::new,
 				ButtonPressedMessage::handler);
 		elements.addNetworkMessage(GUISlotChangedMessage.class, GUISlotChangedMessage::buffer, GUISlotChangedMessage::new,
@@ -64,13 +67,14 @@ public class TischGui extends PMTINFAIElements.ModElement {
 
 	@SubscribeEvent
 	public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
-		event.getRegistry().register(containerType.setRegistryName("tisch"));
+		event.getRegistry().register(containerType.setRegistryName("table"));
 	}
 	public static class GuiContainerModFactory implements IContainerFactory {
 		public GuiContainerMod create(int id, PlayerInventory inv, PacketBuffer extraData) {
 			return new GuiContainerMod(id, inv, extraData);
 		}
 	}
+
 	public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
 		private World world;
 		private PlayerEntity entity;
@@ -81,28 +85,7 @@ public class TischGui extends PMTINFAIElements.ModElement {
 			super(containerType, id);
 			this.entity = inv.player;
 			this.world = inv.player.world;
-			addListener(new IContainerListener() {
-				@Override
-				public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {
-
-				}
-
-				@Override
-				public void sendSlotContents(Container containerToSend, int slotInd, ItemStack stack) {
-					System.out.println("2");
-					NonNullList<ItemStack> inventory=containerToSend.getInventory();
-					ItemStack help=Recipe_MKLG.CheckRecipe(inventory);
-					if(help!=null){
-						containerToSend.inventorySlots.get(0).putStack(help);
-					}
-				}
-
-				@Override
-				public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue) {
-
-				}
-			});
-			this.internal = new Inventory(29);
+			this.internal = new Inventory(1);
 			if (extraData != null) {
 				BlockPos pos = extraData.readBlockPos();
 				this.x = pos.getX();
@@ -113,74 +96,16 @@ public class TischGui extends PMTINFAIElements.ModElement {
 					this.internal = (IInventory) ent;
 			}
 			internal.openInventory(inv.player);
-			this.customSlots.put(0, this.addSlot(new Slot_Tisch(internal, 0, 8, 34) {
+			this.customSlots.put(0, this.addSlot(new Slot(internal, 0, 116, 50) {
 				@Override
 				public void onSlotChanged() {
 					super.onSlotChanged();
-					Item item = internal.getStackInSlot(0).getItem();
-					if((!item.toString().equals(((Slot_Tisch)this).GetItem()))&&(!item.toString().equals("air"))){
-						for(int f=01;f<29;f++){
-							customSlots.get(f).putStack(ItemStack.EMPTY);
-						}
+					if(!((CodebenchBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).getText().equals("")){
+						CompoundNBT nbt = new CompoundNBT();
+						nbt.putString("logic",((CodebenchBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).getText());
+						customSlots.get(0).getStack().setTag(nbt);
 					}
 				}
-			}));
-			((Slot_Tisch)this.customSlots.get(0)).SetItem("standardcard");
-			this.customSlots.put(1, this.addSlot(new Slot_Tisch(internal, 1, 44, 7) {
-			}));
-			this.customSlots.put(2, this.addSlot(new Slot_Tisch(internal, 2, 44, 25) {
-			}));
-			this.customSlots.put(3, this.addSlot(new Slot_Tisch(internal, 3, 44, 43) {
-			}));
-			this.customSlots.put(4, this.addSlot(new Slot_Tisch(internal, 4, 44, 61) {
-			}));
-			this.customSlots.put(5, this.addSlot(new Slot_Tisch(internal, 5, 62, 7) {
-			}));
-			this.customSlots.put(6, this.addSlot(new Slot_Tisch(internal, 6, 62, 25) {
-			}));
-			this.customSlots.put(7, this.addSlot(new Slot_Tisch(internal, 7, 62, 43) {
-			}));
-			this.customSlots.put(8, this.addSlot(new Slot_Tisch(internal, 8, 62, 61) {
-			}));
-			this.customSlots.put(9, this.addSlot(new Slot_Tisch(internal, 9, 80, 7) {
-			}));
-			this.customSlots.put(10, this.addSlot(new Slot_Tisch(internal, 10, 80, 25) {
-			}));
-			this.customSlots.put(11, this.addSlot(new Slot_Tisch(internal, 11, 80, 43) {
-			}));
-			this.customSlots.put(12, this.addSlot(new Slot_Tisch(internal, 12, 80, 61) {
-			}));
-			this.customSlots.put(13, this.addSlot(new Slot_Tisch(internal, 13, 98, 7) {
-			}));
-			this.customSlots.put(14, this.addSlot(new Slot_Tisch(internal, 14, 98, 25) {
-			}));
-			this.customSlots.put(15, this.addSlot(new Slot_Tisch(internal, 15, 98, 43) {
-			}));
-			this.customSlots.put(16, this.addSlot(new Slot_Tisch(internal, 16, 98, 61) {
-			}));
-			this.customSlots.put(17, this.addSlot(new Slot_Tisch(internal, 17, 116, 7) {
-			}));
-			this.customSlots.put(18, this.addSlot(new Slot_Tisch(internal, 18, 116, 25) {
-			}));
-			this.customSlots.put(19, this.addSlot(new Slot_Tisch(internal, 19, 116, 43) {
-			}));
-			this.customSlots.put(20, this.addSlot(new Slot_Tisch(internal, 20, 116, 61) {
-			}));
-			this.customSlots.put(21, this.addSlot(new Slot_Tisch(internal, 21, 134, 7) {
-			}));
-			this.customSlots.put(22, this.addSlot(new Slot_Tisch(internal, 22, 134, 25) {
-			}));
-			this.customSlots.put(23, this.addSlot(new Slot_Tisch(internal, 23, 134, 43) {
-			}));
-			this.customSlots.put(24, this.addSlot(new Slot_Tisch(internal, 24, 134, 61) {
-			}));
-			this.customSlots.put(25, this.addSlot(new Slot_Tisch(internal, 25, 152, 7) {
-			}));
-			this.customSlots.put(26, this.addSlot(new Slot_Tisch(internal, 26, 152, 25) {
-			}));
-			this.customSlots.put(27, this.addSlot(new Slot_Tisch(internal, 27, 152, 43) {
-			}));
-			this.customSlots.put(28, this.addSlot(new Slot_Tisch(internal, 28, 152, 61) {
 			}));
 			int si;
 			int sj;
@@ -189,17 +114,6 @@ public class TischGui extends PMTINFAIElements.ModElement {
 					this.addSlot(new Slot(inv, sj + (si + 1) * 9, 0 + 8 + sj * 18, 0 + 84 + si * 18));
 			for (si = 0; si < 9; ++si)
 				this.addSlot(new Slot(inv, si, 0 + 8 + si * 18, 0 + 142));
-
-			/*this.customSlots.get(1).setBackgroundLocation(new net.minecraft.util.ResourceLocation("pmtinfai:textures/items/input_item.png"));
-			this.customSlots.get(2).setBackgroundLocation(new net.minecraft.util.ResourceLocation("pmtinfai:textures/items/input_item.png"));
-			this.customSlots.get(1).setBackgroundName("pmtinfai:textures/items/input_item.png");
-			this.customSlots.get(2).setBackgroundName("input_item");
-			this.customSlots.get(3).setBackgroundName("textures/other/input_item");
-			this.customSlots.get(4).setBackgroundName("textures/other/input_item.png");
-			this.customSlots.get(5).setBackgroundName("other/input_item");
-			this.customSlots.get(6).setBackgroundName("other/input_item.png");
-			System.out.println(this.customSlots.get(1).getBackgroundLocation());
-			System.out.println(this.customSlots.get(3).getSlotTexture());*/
 		}
 
 		public Map<Integer, Slot> get() {
@@ -218,18 +132,18 @@ public class TischGui extends PMTINFAIElements.ModElement {
 			if (slot != null && slot.getHasStack()) {
 				ItemStack itemstack1 = slot.getStack();
 				itemstack = itemstack1.copy();
-				if (index < 29) {
-					if (!this.mergeItemStack(itemstack1, 29, this.inventorySlots.size(), true)) {
+				if (index < 1) {
+					if (!this.mergeItemStack(itemstack1, 1, this.inventorySlots.size(), true)) {
 						return ItemStack.EMPTY;
 					}
 					slot.onSlotChange(itemstack1, itemstack);
-				} else if (!this.mergeItemStack(itemstack1, 0, 29, false)) {
-					if (index < 29 + 27) {
-						if (!this.mergeItemStack(itemstack1, 29 + 27, this.inventorySlots.size(), true)) {
+				} else if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+					if (index < 1 + 27) {
+						if (!this.mergeItemStack(itemstack1, 1 + 27, this.inventorySlots.size(), true)) {
 							return ItemStack.EMPTY;
 						}
 					} else {
-						if (!this.mergeItemStack(itemstack1, 29, 29 + 27, false)) {
+						if (!this.mergeItemStack(itemstack1, 1, 1 + 27, false)) {
 							return ItemStack.EMPTY;
 						}
 					}
@@ -351,6 +265,7 @@ public class TischGui extends PMTINFAIElements.ModElement {
 		private World world;
 		private int x, y, z;
 		private PlayerEntity entity;
+		TextFieldWidget Logiccode;
 		public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
 			super(container, inventory, text);
 			this.world = container.world;
@@ -361,12 +276,13 @@ public class TischGui extends PMTINFAIElements.ModElement {
 			this.xSize = 176;
 			this.ySize = 166;
 		}
-		private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/tisch.png");
+		private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/table.png");
 		@Override
 		public void render(int mouseX, int mouseY, float partialTicks) {
 			this.renderBackground();
 			super.render(mouseX, mouseY, partialTicks);
 			this.renderHoveredToolTip(mouseX, mouseY);
+			Logiccode.render(mouseX, mouseY, partialTicks);
 		}
 
 		@Override
@@ -381,6 +297,7 @@ public class TischGui extends PMTINFAIElements.ModElement {
 		@Override
 		public void tick() {
 			super.tick();
+			Logiccode.tick();
 		}
 
 		@Override
@@ -397,6 +314,14 @@ public class TischGui extends PMTINFAIElements.ModElement {
 		public void init(Minecraft minecraft, int width, int height) {
 			super.init(minecraft, width, height);
 			minecraft.keyboardListener.enableRepeatEvents(true);
+			Logiccode = new TextFieldWidget(this.font, 150, 57, 120, 20, "Logic Code");
+			guistate.put("text:Logiccode", Logiccode);
+			Logiccode.setMaxStringLength(32767);
+			this.children.add(this.Logiccode);
+			this.addButton(new Button(this.guiLeft + 25, this.guiTop + 47, 50, 20, "check", e -> {
+				PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(0, x, y, z));
+				handleButtonAction(entity, 0, x, y, z);
+			}));
 		}
 	}
 
@@ -483,6 +408,21 @@ public class TischGui extends PMTINFAIElements.ModElement {
 	}
 	private static void handleButtonAction(PlayerEntity entity, int buttonID, int x, int y, int z) {
 		World world = entity.world;
+		String text=((TextFieldWidget)guistate.get("text:Logiccode")).getText();
+		String[] exp=text.split(",");
+		boolean b=true;
+		for(int f=0;f<exp.length;f++){
+			b = b && CheckExpression(exp[f] ,2-f);
+		}
+		MinecraftServer mcserv = ServerLifecycleHooks.getCurrentServer();
+		if(b){
+			if (mcserv != null)
+				mcserv.getPlayerList().sendMessage(new StringTextComponent("Saved"));
+			((CodebenchBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setText(text);}
+		else{
+			if (mcserv != null)
+				mcserv.getPlayerList().sendMessage(new StringTextComponent("Wrong entry"));
+		}
 		// security measure to prevent arbitrary chunk generation
 		if (!world.isBlockLoaded(new BlockPos(x, y, z)))
 			return;
@@ -494,5 +434,61 @@ public class TischGui extends PMTINFAIElements.ModElement {
 		if (!world.isBlockLoaded(new BlockPos(x, y, z)))
 			return;
 	}
+	private static boolean CheckExpression(String exp, int type){
+		List<Character> allowed = new ArrayList<>();
+		allowed.add('(');
+		allowed.add(')');
+		allowed.add('!');
+		List<Character> literal = new ArrayList<>();
+		literal.add('T');
+		literal.add('F');
+		literal.add('A');
+		if(type>=1)
+			literal.add('B');
+		if(type>=2)
+			literal.add('C');
+		List<Character> literal2 = new ArrayList<>();
+		literal2.add('&');
+		literal2.add('|');
+		// Checking Expression
+		char[] help = exp.toCharArray();
+		List<Character> x = new ArrayList<>();
+		for (char c : help) {
+			if (!literal.contains(c)&&!literal2.contains(c)&&!allowed.contains(c))
+				return false;
+			x.add(c);
+		}
+		for(int f=0;f<x.size();f++){
+			if(x.get(f)==')'){
+				for(int g=f-1; g>=0;g--){
+					if(x.get(g)=='('){
+						if(f - g == 4){
+							if(!literal.contains(x.get(g+1)))
+								return false;
+							if(!literal.contains(x.get(g+3)))
+								return false;
+							if(!literal2.contains(x.get(g+2)))
+								return false;
+							x.set(f, 'T');
+							x.subList(g, f).clear();
+							f = 0;
+							g = -1;
+						}
+						else if(f-g==3){
+							if(!literal.contains(x.get(g+2)))
+								return false;
+							if(x.get(g+1)!='!')
+								return false;
+							x.set(f, 'T');
+							x.subList(g, f).clear();
+						}
+						else{
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return (literal.contains(x.get(0)))&&x.size()==1;
+	}
 }
-
