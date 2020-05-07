@@ -1,6 +1,8 @@
 
 package net.mcreator.pmtinfai.block;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.IWorldReader;
 import net.minecraftforge.registries.ObjectHolder;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -44,6 +46,7 @@ import net.mcreator.pmtinfai.PMTINFAIElements;
 
 import java.util.List;
 import java.util.Collections;
+import java.util.Random;
 
 import io.netty.buffer.Unpooled;
 
@@ -76,13 +79,28 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
 		}
 
 		@Override
+		public int tickRate(IWorldReader worldIn) {
+			return 10;
+		}
+		@Override
+		public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
+			super.tick(state, worldIn, pos, random);
+			((PrinterBlock.CustomTileEntity)worldIn.getTileEntity(pos)).tick();
+			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
+		}
+
+		@Override
 		public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			if (!dropsOriginal.isEmpty())
 				return dropsOriginal;
 			return Collections.singletonList(new ItemStack(this, 1));
 		}
+		public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 
+				worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
+
+		}
 		@Override
 		public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
 			boolean retval = super.onBlockActivated(state, world, pos, entity, hand, hit);
@@ -147,24 +165,54 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
 		protected CustomTileEntity() {
 			super(tileEntityType);
 		}
+		private int cook=0;
 
 		@Override
 		public void read(CompoundNBT compound) {
 			super.read(compound);
 			this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 			ItemStackHelper.loadAllItems(compound, this.stacks);
+			cook=compound.getInt("cook");
 		}
 
 		@Override
 		public CompoundNBT write(CompoundNBT compound) {
 			super.write(compound);
 			ItemStackHelper.saveAllItems(compound, this.stacks);
+			compound.putInt("cook",cook);
 			return compound;
 		}
 
 		@Override
 		public SUpdateTileEntityPacket getUpdatePacket() {
 			return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
+		}
+		public void tick(){
+			if(cook>1){
+				cook--;
+			}
+			else if(cook==1){
+				if(stacks.get(2).isEmpty()){
+					ItemStack erg=getStackInSlot(1).copy();
+					CompoundNBT nbt = new CompoundNBT();
+					nbt.putString("logic", stacks.get(0).getTag().getString("logic"));
+					if (stacks.get(0).getTag().contains("logic_"))
+						nbt.putBoolean("logic_", stacks.get(0).getTag().getBoolean("logic_"));
+					erg.setTag(nbt);
+					erg.setCount(1);
+					stacks.set(2,erg);
+				}
+				else{
+					getStackInSlot(2).grow(1);
+				}
+				cook--;
+			}
+			else if(cook==0&&getStackInSlot(1).getCount()>0&&getStackInSlot(0).getTag().contains("logic")){
+				if(stacks.get(2).hasTag()&&!stacks.get(2).getTag().getString("logic").equals(getStackInSlot(0).getTag().getString("logic")))
+					return;
+					cook=200;
+				getStackInSlot(1).shrink(1);
+			}
 		}
 
 		@Override

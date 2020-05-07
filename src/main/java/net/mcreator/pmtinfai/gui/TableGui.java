@@ -2,7 +2,7 @@
 package net.mcreator.pmtinfai.gui;
 
 import net.mcreator.pmtinfai.block.CodebenchBlock;
-import net.mcreator.pmtinfai.slots.Slot_Tisch;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
@@ -74,6 +74,7 @@ public class TableGui extends PMTINFAIElements.ModElement {
 			return new GuiContainerMod(id, inv, extraData);
 		}
 	}
+
 	public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
 		private World world;
 		private PlayerEntity entity;
@@ -84,7 +85,7 @@ public class TableGui extends PMTINFAIElements.ModElement {
 			super(containerType, id);
 			this.entity = inv.player;
 			this.world = inv.player.world;
-			this.internal = new Inventory(11);
+			this.internal = new Inventory(1);
 			if (extraData != null) {
 				BlockPos pos = extraData.readBlockPos();
 				this.x = pos.getX();
@@ -95,28 +96,16 @@ public class TableGui extends PMTINFAIElements.ModElement {
 					this.internal = (IInventory) ent;
 			}
 			internal.openInventory(inv.player);
-			this.customSlots.put(0, this.addSlot(new Slot_Tisch(internal, 0, 9, 48) {
-			}));
-			((Slot_Tisch)this.customSlots.get(0)).SetItem("standardcard");
-			this.customSlots.put(1, this.addSlot(new Slot_Tisch(internal, 1, 44, 38) {
-			}));
-			this.customSlots.put(2, this.addSlot(new Slot_Tisch(internal, 2, 44, 56) {
-			}));
-			this.customSlots.put(3, this.addSlot(new Slot_Tisch(internal, 3, 67, 38) {
-			}));
-			this.customSlots.put(4, this.addSlot(new Slot_Tisch(internal, 4, 67, 56) {
-			}));
-			this.customSlots.put(6, this.addSlot(new Slot_Tisch(internal, 6, 91, 56) {
-			}));
-			this.customSlots.put(7, this.addSlot(new Slot_Tisch(internal, 7, 114, 38) {
-			}));
-			this.customSlots.put(5, this.addSlot(new Slot_Tisch(internal, 5, 91, 38) {
-			}));
-			this.customSlots.put(8, this.addSlot(new Slot_Tisch(internal, 8, 114, 56) {
-			}));
-			this.customSlots.put(9, this.addSlot(new Slot_Tisch(internal, 9, 138, 38) {
-			}));
-			this.customSlots.put(10, this.addSlot(new Slot_Tisch(internal, 10, 138, 56) {
+			this.customSlots.put(0, this.addSlot(new Slot(internal, 0, 116, 50) {
+				@Override
+				public void onSlotChanged() {
+					super.onSlotChanged();
+					if(!((CodebenchBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).getText().equals("")){
+						CompoundNBT nbt = new CompoundNBT();
+						nbt.putString("logic",((CodebenchBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).getText());
+						customSlots.get(0).getStack().setTag(nbt);
+					}
+				}
 			}));
 			int si;
 			int sj;
@@ -143,18 +132,18 @@ public class TableGui extends PMTINFAIElements.ModElement {
 			if (slot != null && slot.getHasStack()) {
 				ItemStack itemstack1 = slot.getStack();
 				itemstack = itemstack1.copy();
-				if (index < 11) {
-					if (!this.mergeItemStack(itemstack1, 11, this.inventorySlots.size(), true)) {
+				if (index < 1) {
+					if (!this.mergeItemStack(itemstack1, 1, this.inventorySlots.size(), true)) {
 						return ItemStack.EMPTY;
 					}
 					slot.onSlotChange(itemstack1, itemstack);
-				} else if (!this.mergeItemStack(itemstack1, 0, 11, false)) {
-					if (index < 11 + 27) {
-						if (!this.mergeItemStack(itemstack1, 11 + 27, this.inventorySlots.size(), true)) {
+				} else if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+					if (index < 1 + 27) {
+						if (!this.mergeItemStack(itemstack1, 1 + 27, this.inventorySlots.size(), true)) {
 							return ItemStack.EMPTY;
 						}
 					} else {
-						if (!this.mergeItemStack(itemstack1, 11, 11 + 27, false)) {
+						if (!this.mergeItemStack(itemstack1, 1, 1 + 27, false)) {
 							return ItemStack.EMPTY;
 						}
 					}
@@ -325,14 +314,11 @@ public class TableGui extends PMTINFAIElements.ModElement {
 		public void init(Minecraft minecraft, int width, int height) {
 			super.init(minecraft, width, height);
 			minecraft.keyboardListener.enableRepeatEvents(true);
-			Logiccode = new TextFieldWidget(this.font, 140, 44, 120, 20, "Logic Code");
+			Logiccode = new TextFieldWidget(this.font, 150, 57, 120, 20, "Logic Code");
 			guistate.put("text:Logiccode", Logiccode);
 			Logiccode.setMaxStringLength(32767);
-			String text=((CodebenchBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).getText();
-			if(text!=null)
-				Logiccode.setText(text);
 			this.children.add(this.Logiccode);
-			this.addButton(new Button(this.guiLeft + 141, this.guiTop + 8, 30, 20, "set", e -> {
+			this.addButton(new Button(this.guiLeft + 25, this.guiTop + 47, 50, 20, "check", e -> {
 				PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(0, x, y, z));
 				handleButtonAction(entity, 0, x, y, z);
 			}));
@@ -448,7 +434,6 @@ public class TableGui extends PMTINFAIElements.ModElement {
 		if (!world.isBlockLoaded(new BlockPos(x, y, z)))
 			return;
 	}
-
 	private static boolean CheckExpression(String exp, int type){
 		List<Character> allowed = new ArrayList<>();
 		allowed.add('(');

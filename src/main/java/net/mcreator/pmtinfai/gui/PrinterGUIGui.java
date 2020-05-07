@@ -95,26 +95,11 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
                     this.internal = (IInventory) ent;
             }
             internal.openInventory(inv.player);
-            this.customSlots.put(0, this.addSlot(new Slot_Tisch(internal, 0, 12, 38) {
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    GetNewItem();
-                }
+            this.customSlots.put(0, this.addSlot(new Slot_Tisch(internal, 0, 8, 29) {
             }));
-            this.customSlots.put(1, this.addSlot(new Slot_Tisch(internal, 1, 49, 37) {
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    GetNewItem();
-                }
+            this.customSlots.put(1, this.addSlot(new Slot_Tisch(internal, 1, 43, 29) {
             }));
-            this.customSlots.put(2, this.addSlot(new Slot_Tisch(internal, 2, 120, 38) {
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    GetNewItem();
-                }
+            this.customSlots.put(2, this.addSlot(new Slot_Tisch(internal, 2, 133, 29) {
             }));
             ((Slot_Tisch) this.customSlots.get(0)).SetItem("standardcard");
             ((Slot_Tisch) this.customSlots.get(1)).SetItem("standardcard");
@@ -129,28 +114,6 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
                 this.addSlot(new Slot(inv, si, 0 + 8 + si * 18, 0 + 142));
         }
 
-        private void GetNewItem() {
-            if (customSlots.get(2).getHasStack() || !customSlots.get(0).getHasStack() || !customSlots.get(1).getHasStack()) {
-                return;
-            }
-            if (!customSlots.get(0).getStack().getTag().contains("logic")) {
-                return;
-            }
-            Item item=customSlots.get(1).getStack().getItem();
-            if(customSlots.get(1).getStack().getCount()>1)
-                customSlots.get(1).decrStackSize(1);
-            else
-                customSlots.get(1).putStack(ItemStack.EMPTY);
-
-            ItemStack erg = new ItemStack(item, 1);
-            CompoundNBT nbt = new CompoundNBT();
-            nbt.putString("logic", customSlots.get(0).getStack().getTag().getString("logic"));
-            if (customSlots.get(0).getStack().getTag().contains("logic_"))
-                nbt.putBoolean("logic_", customSlots.get(0).getStack().getTag().getBoolean("logic_"));
-            erg.setTag(nbt);
-            customSlots.get(2).putStack(erg);
-
-        }
 
         public Map<Integer, Slot> get() {
             return customSlots;

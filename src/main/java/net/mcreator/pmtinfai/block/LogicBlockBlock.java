@@ -136,6 +136,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
 		 *            Teil der Welt des Blockes
 		 * @return Die aktuelle Tickrate des Blockes
 		 */
+		@Override
 		public int tickRate(IWorldReader worldIn) {
 			return 1;
 		}

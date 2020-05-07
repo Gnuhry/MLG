@@ -176,6 +176,7 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
 			return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
 		}
 
+
 		@Override
 		public CompoundNBT getUpdateTag() {
 			return this.write(new CompoundNBT());
