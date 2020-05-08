@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "pmtinfai:texture_logicblock_oben",
-		"2": "pmtinfai:grundblock/texture_logic_block_seite",
-		"particle": "pmtinfai:texture_logicblock_oben"
+		"0": "pmtinfai:blocks/texture_logicblock_oben",
+		"2": "pmtinfai:blocks/grundblock/texture_logic_block_seite",
+		"particle": "pmtinfai:blocks/texture_logicblock_oben"
 	},
 	"elements": [
 		{
