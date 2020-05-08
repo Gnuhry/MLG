@@ -117,53 +117,6 @@
     },
     {
       "when": {
-        "output": "none|east|north|west",
-        "clock_side": "none|east|north|west",
-        "set_side": "none|east|north|west",
-        "reset_side": "none|east|north|west"
-      },
-      "apply": {
-        "model": "pmtinfai:block/logicblock_blank"
-      }
-    },
-    {
-      "when": {
-        "output": "south|east|north|none",
-        "clock_side": "south|east|north|none",
-        "set_side": "south|east|north|none",
-        "reset_side": "south|east|north|none"
-      },
-      "apply": {
-        "model": "pmtinfai:block/logicblock_blank",
-        "y": 90
-      }
-    },
-    {
-      "when": {
-        "output": "south|east|none|west",
-        "clock_side": "south|east|none|west",
-        "set_side": "south|east|none|west",
-        "reset_side": "south|east|none|west"
-      },
-      "apply": {
-        "model": "pmtinfai:block/logicblock_blank",
-        "y": 180
-      }
-    },
-    {
-      "when": {
-        "output": "south|none|north|west",
-        "clock_side": "south|none|north|west",
-        "set_side": "south|none|north|west",
-        "reset_side": "south|none|north|west"
-      },
-      "apply": {
-        "model": "pmtinfai:block/logicblock_blank",
-        "y": 270
-      }
-    },
-    {
-      "when": {
         "logic": "none"
       },
       "apply": {
