@@ -13,7 +13,6 @@ public class Slot_FF_IO extends Slot {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		System.out.println(stack.getItem().toString());
 		if ((set && stack.getItem().toString().equals("input")) || (output && stack.getItem().toString().equals("output"))
 				|| (reset && stack.getItem().toString().equals("redstone")) || (clock && stack.getItem().toString().equals("redstone_torch"))
 				|| (output && stack.getItem().toString().equals("standardcard"))) {

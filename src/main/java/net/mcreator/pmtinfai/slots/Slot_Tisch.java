@@ -8,15 +8,14 @@ import net.minecraft.item.ItemStack;
 
 public class Slot_Tisch extends Slot {
     private Item item;
-    private int Stack_Limit = 64;
-
+    private boolean Tag=false;
     public Slot_Tisch(IInventory inventoryIn, int index, int xPosition, int yPosition) {
         super(inventoryIn, index, xPosition, yPosition);
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack) {
-        return item != null && stack.getItem() == item;
+    public boolean isItemValid(ItemStack stack)  {
+        return Tag ? item != null && stack.getItem() == item&&stack.hasTag()&&stack.getTag().contains("logic") : item != null && stack.getItem() == item;
     }
 
     public void SetItem(Item item) {
@@ -27,12 +26,7 @@ public class Slot_Tisch extends Slot {
         return item;
     }
 
-    public void SetSlotStackLimit(int set) {
-        Stack_Limit = set;
-    }
-
-    @Override
-    public int getSlotStackLimit() {
-        return Stack_Limit;
+    public void setTag(boolean tag) {
+        Tag = tag;
     }
 }

@@ -3,6 +3,7 @@ package net.mcreator.pmtinfai.gui;
 
 import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
+import net.mcreator.pmtinfai.block.PrinterBlock;
 import net.mcreator.pmtinfai.slots.Slot_Tisch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -89,15 +90,36 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             }
             internal.openInventory(inv.player);
             this.customSlots.put(0, this.addSlot(new Slot_Tisch(internal, 0, 8, 29) {
+                @Override
+                public void onSlotChanged() {
+                    super.onSlotChanged();
+                    ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
+                }
+
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
             }));
             this.customSlots.put(1, this.addSlot(new Slot_Tisch(internal, 1, 43, 29) {
+                @Override
+                public void onSlotChanged() {
+                    super.onSlotChanged();
+                    ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
+                }
             }));
             this.customSlots.put(2, this.addSlot(new Slot_Tisch(internal, 2, 133, 29) {
+                @Override
+                public void onSlotChanged() {
+                    super.onSlotChanged();
+                    ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
+                    internal.markDirty();
+                }
             }));
             ((Slot_Tisch) this.customSlots.get(0)).SetItem(MKLGItems.StandardcardItem);
+            ((Slot_Tisch) this.customSlots.get(0)).setTag(true);
             ((Slot_Tisch) this.customSlots.get(1)).SetItem(MKLGItems.StandardcardItem);
             ((Slot_Tisch) this.customSlots.get(2)).SetItem(null);
-            ((Slot_Tisch) this.customSlots.get(0)).SetSlotStackLimit(1);
             int si;
             int sj;
             for (si = 0; si < 3; ++si)

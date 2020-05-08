@@ -2,6 +2,7 @@
 package net.mcreator.pmtinfai.block;
 
 import io.netty.buffer.Unpooled;
+import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.gui.PrinterGUIGui;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
@@ -20,6 +21,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.PacketBuffer;
@@ -194,24 +196,32 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
         }
 
         public void tick() {
+            if (cook != 0 && !stacks.get(0).hasTag()) {
+                cook = 0;
+                if (getStackInSlot(1).getItem() == Items.AIR)
+                    stacks.set(1, new ItemStack(MKLGItems.StandardcardItem, 1));
+                else
+                    getStackInSlot(1).grow(1);
+            }
             if (cook > 1) {
                 cook--;
             } else if (cook == 1) {
-                if (stacks.get(2).isEmpty()) {
-                    ItemStack erg = getStackInSlot(1).copy();
+                if (!stacks.get(2).hasTag()) {
+                    ItemStack erg = new ItemStack(MKLGItems.StandardcardItem, 1);
                     CompoundNBT nbt = new CompoundNBT();
                     nbt.putString("logic", stacks.get(0).getTag().getString("logic"));
                     if (stacks.get(0).getTag().contains("logic_"))
                         nbt.putBoolean("logic_", stacks.get(0).getTag().getBoolean("logic_"));
                     erg.setTag(nbt);
-                    erg.setCount(1);
                     stacks.set(2, erg);
+                    getStackInSlot(0).grow(1);
+                    getStackInSlot(0).shrink(1);
                 } else {
                     getStackInSlot(2).grow(1);
                 }
                 cook--;
-            } else if (cook == 0 && getStackInSlot(1).getCount() > 0 && Objects.requireNonNull(getStackInSlot(0).getTag()).contains("logic")) {
-                if (stacks.get(2).hasTag() && !stacks.get(2).getTag().getString("logic").equals(Objects.requireNonNull(getStackInSlot(0).getTag()).getString("logic")))
+            } else if (cook == 0 && getStackInSlot(1).getCount() > 0 && stacks.get(0).hasTag() && stacks.get(0).getTag().contains("logic")) {
+                if (stacks.get(2).hasTag() && !stacks.get(2).getTag().getString("logic").equals(Objects.requireNonNull(stacks.get(0).getTag()).getString("logic")))
                     return;
                 cook = 200;
                 getStackInSlot(1).shrink(1);

@@ -177,7 +177,7 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
          * @param pos   Position des Blockes
          */
         public void GetAllStates(String exp, World world, BlockPos pos) {
-            if (exp == null || getTE(world, pos).GetTest2().equals(exp))
+            if (exp == null || (world.getBlockState(pos).hasTileEntity()&&getTE(world, pos).GetTest2()!=null&&getTE(world, pos).GetTest2().equals(exp)))
                 return;
             getTE(world, pos).SetTest2(exp);
             world.setBlockState(pos, world.getBlockState(pos).with(LOGIC, LogicSpecies.GetEnum(exp)));
