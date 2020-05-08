@@ -1,6 +1,7 @@
 
 package net.mcreator.pmtinfai.item;
 
+import net.mcreator.pmtinfai.MKLGItems;
 import net.minecraftforge.registries.ObjectHolder;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,6 +37,7 @@ public class StandardcardItem extends PMTINFAIElements.ModElement {
 		public ItemCustom() {
 			super(new Item.Properties().group(LogicBlocksItemGroup.tab).maxStackSize(64));
 			setRegistryName("standardcard");
+			MKLGItems.StandardcardItem=this;
 		}
 
 		@Override
@@ -58,6 +60,7 @@ public class StandardcardItem extends PMTINFAIElements.ModElement {
 			super.addInformation(stack, worldIn, tooltip, flagIn);
 			ITextComponent itextcomponent = stack.getDisplayName().deepCopy();
 			if (stack.hasTag()) {
+				assert stack.getTag() != null;
 				String help = stack.getTag().getString("logic");
 				boolean b = stack.getTag().getBoolean("logic_");
 				if (b) {

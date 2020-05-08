@@ -22,7 +22,7 @@ public class LogicBlocksItemGroup extends PMTINFAIElements.ModElement {
 			@OnlyIn(Dist.CLIENT)
 			@Override
 			public ItemStack createIcon() {
-				return new ItemStack(Blocks.REDSTONE_WIRE, (int) (1));
+				return new ItemStack(Blocks.REDSTONE_WIRE, 1);
 			}
 
 			@OnlyIn(Dist.CLIENT)

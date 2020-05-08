@@ -7,12 +7,10 @@ import net.mcreator.pmtinfai.slots.Slot_Tisch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
@@ -20,10 +18,8 @@ import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +27,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -45,7 +40,6 @@ import java.util.function.Supplier;
 
 @PMTINFAIElements.ModElement.Tag
 public class TischGui extends PMTINFAIElements.ModElement {
-	public static HashMap guistate = new HashMap();
 	private static ContainerType<GuiContainerMod> containerType = null;
 	public TischGui(PMTINFAIElements instance) {
 		super(instance, 15);
@@ -108,7 +102,7 @@ public class TischGui extends PMTINFAIElements.ModElement {
 				this.x = pos.getX();
 				this.y = pos.getY();
 				this.z = pos.getZ();
-				TileEntity ent = inv.player != null ? inv.player.world.getTileEntity(pos) : null;
+				TileEntity ent = inv.player.world.getTileEntity(pos);
 				if (ent instanceof IInventory)
 					this.internal = (IInventory) ent;
 			}
@@ -125,7 +119,7 @@ public class TischGui extends PMTINFAIElements.ModElement {
 					}
 				}
 			}));
-			((Slot_Tisch)this.customSlots.get(0)).SetItem("standardcard");
+			//((Slot_Tisch)this.customSlots.get(0)).SetItem("standardcard");
 			this.customSlots.put(1, this.addSlot(new Slot_Tisch(internal, 1, 44, 7) {
 			}));
 			this.customSlots.put(2, this.addSlot(new Slot_Tisch(internal, 2, 44, 25) {

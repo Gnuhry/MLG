@@ -1,49 +1,42 @@
 
 package net.mcreator.pmtinfai.gui;
 
-import net.mcreator.pmtinfai.item.StandardcardItem;
+import net.mcreator.pmtinfai.MKLGItems;
+import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.slots.Slot_Tisch;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.IContainerFactory;
+import net.minecraftforge.fml.network.NetworkEvent;
 import org.lwjgl.opengl.GL11;
 
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.IContainerFactory;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.api.distmarker.Dist;
-
-import net.minecraft.world.World;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.Minecraft;
-
-import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.PMTINFAI;
-
-import java.util.function.Supplier;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 @PMTINFAIElements.ModElement.Tag
 public class PrinterGUIGui extends PMTINFAIElements.ModElement {
-    public static HashMap guistate = new HashMap();
     private static ContainerType<GuiContainerMod> containerType = null;
 
     public PrinterGUIGui(PMTINFAIElements instance) {
@@ -90,7 +83,7 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
                 this.x = pos.getX();
                 this.y = pos.getY();
                 this.z = pos.getZ();
-                TileEntity ent = inv.player != null ? inv.player.world.getTileEntity(pos) : null;
+                TileEntity ent = inv.player.world.getTileEntity(pos);
                 if (ent instanceof IInventory)
                     this.internal = (IInventory) ent;
             }
@@ -101,17 +94,17 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             }));
             this.customSlots.put(2, this.addSlot(new Slot_Tisch(internal, 2, 133, 29) {
             }));
-            ((Slot_Tisch) this.customSlots.get(0)).SetItem("standardcard");
-            ((Slot_Tisch) this.customSlots.get(1)).SetItem("standardcard");
-            ((Slot_Tisch) this.customSlots.get(2)).SetItem("");
+            ((Slot_Tisch) this.customSlots.get(0)).SetItem(MKLGItems.StandardcardItem);
+            ((Slot_Tisch) this.customSlots.get(1)).SetItem(MKLGItems.StandardcardItem);
+            ((Slot_Tisch) this.customSlots.get(2)).SetItem(null);
             ((Slot_Tisch) this.customSlots.get(0)).SetSlotStackLimit(1);
             int si;
             int sj;
             for (si = 0; si < 3; ++si)
                 for (sj = 0; sj < 9; ++sj)
-                    this.addSlot(new Slot(inv, sj + (si + 1) * 9, 0 + 8 + sj * 18, 0 + 84 + si * 18));
+                    this.addSlot(new Slot(inv, sj + (si + 1) * 9, 8 + sj * 18, 84 + si * 18));
             for (si = 0; si < 9; ++si)
-                this.addSlot(new Slot(inv, si, 0 + 8 + si * 18, 0 + 142));
+                this.addSlot(new Slot(inv, si, 8 + si * 18, 142));
         }
 
 
@@ -127,7 +120,7 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
         @Override
         public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
             ItemStack itemstack = ItemStack.EMPTY;
-            Slot slot = (Slot) this.inventorySlots.get(index);
+            Slot slot = this.inventorySlots.get(index);
             if (slot != null && slot.getHasStack()) {
                 ItemStack itemstack1 = slot.getStack();
                 itemstack = itemstack1.copy();
@@ -162,12 +155,6 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
         }
 
         @Override
-        /**
-         * Merges provided ItemStack with the first avaliable one in the
-         * container/player inventor between minIndex (included) and maxIndex
-         * (excluded). Args : stack, minIndex, maxIndex, negativDirection. /!\ the
-         * Container implementation do not check if the item is valid for the slot
-         */
         protected boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
             boolean flag = false;
             int i = startIndex;
@@ -252,27 +239,13 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             }
         }
 
-        private void slotChanged(int slotid, int ctype, int meta) {
-            if (this.world != null && this.world.isRemote) {
-                PMTINFAI.PACKET_HANDLER.sendToServer(new GUISlotChangedMessage(slotid, x, y, z, ctype, meta));
-                handleSlotAction(entity, slotid, ctype, meta, x, y, z);
-            }
-        }
     }
 
     @OnlyIn(Dist.CLIENT)
     public static class GuiWindow extends ContainerScreen<GuiContainerMod> {
-        private World world;
-        private int x, y, z;
-        private PlayerEntity entity;
 
         public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
             super(container, inventory, text);
-            this.world = container.world;
-            this.x = container.x;
-            this.y = container.y;
-            this.z = container.z;
-            this.entity = container.entity;
             this.xSize = 176;
             this.ySize = 166;
         }
@@ -327,13 +300,6 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             this.z = buffer.readInt();
         }
 
-        public ButtonPressedMessage(int buttonID, int x, int y, int z) {
-            this.buttonID = buttonID;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
         public static void buffer(ButtonPressedMessage message, PacketBuffer buffer) {
             buffer.writeInt(message.buttonID);
             buffer.writeInt(message.x);
@@ -344,12 +310,6 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
         public static void handler(ButtonPressedMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
             NetworkEvent.Context context = contextSupplier.get();
             context.enqueueWork(() -> {
-                PlayerEntity entity = context.getSender();
-                int buttonID = message.buttonID;
-                int x = message.x;
-                int y = message.y;
-                int z = message.z;
-                handleButtonAction(entity, buttonID, x, y, z);
             });
             context.setPacketHandled(true);
         }
@@ -357,15 +317,6 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
 
     public static class GUISlotChangedMessage {
         int slotID, x, y, z, changeType, meta;
-
-        public GUISlotChangedMessage(int slotID, int x, int y, int z, int changeType, int meta) {
-            this.slotID = slotID;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.changeType = changeType;
-            this.meta = meta;
-        }
 
         public GUISlotChangedMessage(PacketBuffer buffer) {
             this.slotID = buffer.readInt();
@@ -388,30 +339,8 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
         public static void handler(GUISlotChangedMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
             NetworkEvent.Context context = contextSupplier.get();
             context.enqueueWork(() -> {
-                PlayerEntity entity = context.getSender();
-                int slotID = message.slotID;
-                int changeType = message.changeType;
-                int meta = message.meta;
-                int x = message.x;
-                int y = message.y;
-                int z = message.z;
-                handleSlotAction(entity, slotID, changeType, meta, x, y, z);
             });
             context.setPacketHandled(true);
         }
-    }
-
-    private static void handleButtonAction(PlayerEntity entity, int buttonID, int x, int y, int z) {
-        World world = entity.world;
-        // security measure to prevent arbitrary chunk generation
-        if (!world.isBlockLoaded(new BlockPos(x, y, z)))
-            return;
-    }
-
-    private static void handleSlotAction(PlayerEntity entity, int slotID, int changeType, int meta, int x, int y, int z) {
-        World world = entity.world;
-        // security measure to prevent arbitrary chunk generation
-        if (!world.isBlockLoaded(new BlockPos(x, y, z)))
-            return;
     }
 }

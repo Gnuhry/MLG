@@ -1,6 +1,7 @@
 
 package net.mcreator.pmtinfai.item;
 
+import net.mcreator.pmtinfai.MKLGItems;
 import net.minecraftforge.registries.ObjectHolder;
 
 import net.minecraft.item.ItemStack;
@@ -26,6 +27,7 @@ public class OutputItem extends PMTINFAIElements.ModElement {
 		public ItemCustom() {
 			super(new Item.Properties().group(LogicBlocksItemGroup.tab).maxStackSize(16));
 			setRegistryName("output");
+			MKLGItems.OutputItem=this;
 		}
 
 		@Override
