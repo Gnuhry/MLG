@@ -177,7 +177,6 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
          */
         public void GetAllStates(String exp, World world, BlockPos pos) {
             BlockState bs = world.getBlockState(pos);
-            System.out.println(exp);
             FFSpecies species = FFSpecies.GetEnum(exp);
             if (species == bs.get(LOGIC))
                 return;
@@ -418,25 +417,19 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
         public boolean[] changeInput(int slot, BlockPos pos, World world, Item item) {
             BlockState blockstate = world.getBlockState(pos);
             Direction d = SlotIDtoDirection(slot).getOpposite();
-            // System.out.println(item.toString());
             if (item == MKLGItems.SetItem) {
-                System.out.println("Change SET in slot '" + slot + "'");
                 world.setBlockState(pos, blockstate.with(INPUT1, InputSide.GetEnum(d)));
                 clearSlot(pos, world, d, 0);
             } else if (item == MKLGItems.ResetItem) {
-                System.out.println("Change RESET in slot '" + slot + "'");
                 world.setBlockState(pos, blockstate.with(INPUT2, InputSide.GetEnum(d)));
                 clearSlot(pos, world, d, 1);
             } else if (item == MKLGItems.ClockItem) {
-                System.out.println("Change CLOCK in slot '" + slot + "'");
                 world.setBlockState(pos, blockstate.with(INPUT3, InputSide.GetEnum(d)));
                 clearSlot(pos, world, d, 2);
             } else if (item == MKLGItems.OutputItem) {
-                System.out.println("Change OUTPUT in slot '" + slot + "'");
                 world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.GetEnum(d)));
                 clearSlot(pos, world, d, 3);
             } else {
-                System.out.println("Delete slot '" + slot + "'");
                 clearSlot(pos, world, d, -1);
             }
             return new boolean[]{!(blockstate.get(INPUT1).isActive() || item == MKLGItems.SetItem),
@@ -456,7 +449,6 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
          * @param except Die Exception die nicht ersetzt wird 0-2 INPUT1-3, 3-Output
          */
         private void clearSlot(BlockPos pos, World world, Direction d, int except) {
-            System.out.println(d.toString() + ", " + except);
             BlockState blockstate = world.getBlockState(pos);
             if (except != 0) {
                 if (blockstate.get(INPUT1).GetDirection() == d) {

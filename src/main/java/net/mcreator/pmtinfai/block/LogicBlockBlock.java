@@ -181,7 +181,6 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
                 return;
             getTE(world, pos).SetTest2(exp);
             world.setBlockState(pos, world.getBlockState(pos).with(LOGIC, LogicSpecies.GetEnum(exp)));
-            System.out.println("Change Logic to: " + exp);
             if (exp.equals("none")) {
                 getTE(world, pos).SetActive(false);
                 return;
@@ -213,7 +212,6 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
                     if (max[e] && erg_calculate) {
                         max[e] = false;
                     }
-                    System.out.println(help + "-" + erg_calculate);
                 }
             }
             getTE(world, pos).SetHashMap(erg);
@@ -464,12 +462,10 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
             int[] help = new int[]{0, 0};
             BlockState blockstate = world.getBlockState(pos);
             Direction d = SlotIDtoDirection(slot).getOpposite();
-            // System.out.println(item.toString());
             if (item == MKLGItems.InputItem) {
                 if (existInputDirections(blockstate, d)) {
                     return IO_State(blockstate, 0, 0, world, pos);
                 }
-                System.out.println("Change Input in slot '" + slot + "'");
                 if (d == blockstate.get(OUTPUT).GetDirection()) {
                     world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.NONE));
                 }
@@ -479,13 +475,11 @@ public class LogicBlockBlock extends PMTINFAIElements.ModElement {
                 if (d == blockstate.get(OUTPUT).GetDirection()) {
                     return IO_State(blockstate, 0, 0, world, pos);
                 }
-                System.out.println("Change Output in slot '" + slot + "'");
                 removeInput(d, pos, world);
                 world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.GetEnum(d)));
                 removeInput(d, pos, world);
                 help[1] = 1;
             } else {
-                System.out.println("Change in slot '" + slot + "'");
                 if (d == blockstate.get(OUTPUT).GetDirection()) {
                     world.setBlockState(pos, blockstate.with(OUTPUT, InputSide.NONE));
                 }
