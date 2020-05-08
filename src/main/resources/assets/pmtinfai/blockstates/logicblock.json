@@ -117,53 +117,6 @@
     },
     {
       "when": {
-        "output": "none|east|north|west",
-        "input1_side": "none|east|north|west",
-        "input2_side": "none|east|north|west",
-        "input3_side": "none|east|north|west"
-      },
-      "apply": {
-        "model": "pmtinfai:block/logicblock_blank"
-      }
-    },
-    {
-      "when": {
-        "output": "south|east|north|none",
-        "input1_side": "south|east|north|none",
-        "input2_side": "south|east|north|none",
-        "input3_side": "south|east|north|none"
-      },
-      "apply": {
-        "model": "pmtinfai:block/logicblock_blank",
-        "y": 90
-      }
-    },
-    {
-      "when": {
-        "output": "south|east|none|west",
-        "input1_side": "south|east|none|west",
-        "input2_side": "south|east|none|west",
-        "input3_side": "south|east|none|west"
-      },
-      "apply": {
-        "model": "pmtinfai:block/logicblock_blank",
-        "y": 180
-      }
-    },
-    {
-      "when": {
-        "output": "south|none|north|west",
-        "input1_side": "south|none|north|west",
-        "input2_side": "south|none|north|west",
-        "input3_side": "south|none|north|west"
-      },
-      "apply": {
-        "model": "pmtinfai:block/logicblock_blank",
-        "y": 270
-      }
-    },
-    {
-      "when": {
         "logic": "none"
       },
       "apply": {

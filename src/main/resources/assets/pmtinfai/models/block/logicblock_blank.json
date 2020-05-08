@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "pmtinfai:grundblock/logic-block-top",
-		"2": "pmtinfai:grundblock/texture_logic_block_seite",
-		"3": "pmtinfai:grundblock/logic-block-top",
-		"particle": "pmtinfai:grundblock/logic-block-top"
+		"0": "pmtinfai:blocks/grundblock/logic-block-top",
+		"2": "pmtinfai:blocks/grundblock/texture_logic_block_seite",
+		"3": "pmtinfai:blocks/grundblock/logic-block-top",
+		"particle": "pmtinfai:blocks/grundblock/logic-block-top"
 	},
 	"elements": [
 		{

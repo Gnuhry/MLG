@@ -1,11 +1,11 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "pmtinfai:grundblock/logic-block-top",
-		"1": "pmtinfai:grundblock/model_logicblock_pc_seite",
-		"2": "pmtinfai:grundblock/texture_logic_block_seite",
-		"3": "pmtinfai:grundblock/texture_logicblock_pc_oben",
-		"particle": "pmtinfai:grundblock/logic-block-top"
+		"0": "pmtinfai:blocks/grundblock/logic-block-top",
+		"1": "pmtinfai:blocks/grundblock/model_logicblock_pc_seite",
+		"2": "pmtinfai:blocks/grundblock/texture_logic_block_seite",
+		"3": "pmtinfai:blocks/grundblock/texture_logicblock_pc_oben",
+		"particle": "pmtinfai:blocks/grundblock/logic-block-top"
 	},
 	"elements": [
 		{
@@ -13,7 +13,7 @@
 			"to": [16, 2, 16],
 			"rotation": {"angle": 0, "axis": "y", "origin": [0, 2, 0]},
 			"faces": {
-				"north": {"uv": [0, 0, 0, 0], "rotation": 180, "texture": "#2"},
+				"north": {"uv": [0, 0, 1, 1], "rotation": 180, "texture": "#2"},
 				"east": {"uv": [0, 0, 1, 1], "rotation": 270, "texture": "#2"},
 				"south": {"uv": [0, 0, 1, 1], "texture": "#2"},
 				"west": {"uv": [0, 0, 1, 1], "rotation": 90, "texture": "#2"},
@@ -57,7 +57,8 @@
 			"scale": [0.8, 0.8, 0.8]
 		},
 		"ground": {
-			"rotation": [-1, 0, 0]
+			"rotation": [-1, 0, 0],
+			"translation": [0, 4, 0]
 		},
 		"gui": {
 			"rotation": [36, 35, 0],
