@@ -20,43 +20,6 @@
 			}
 		}
 	],
-	"display": {
-		"thirdperson_righthand": {
-			"rotation": [61, 0, 0],
-			"translation": [0, 3.5, 2],
-			"scale": [0.5, 0.5, 0.5]
-		},
-		"thirdperson_lefthand": {
-			"rotation": [64, 0, 0],
-			"translation": [0, 3, 3.25],
-			"scale": [0.5, 0.5, 0.5]
-		},
-		"firstperson_righthand": {
-			"rotation": [-14, 0, 20],
-			"translation": [-2.25, 2, -6.5],
-			"scale": [0.8, 0.8, 0.8]
-		},
-		"firstperson_lefthand": {
-			"rotation": [-14, 0, 20],
-			"translation": [2.25, 2, -6.5],
-			"scale": [0.8, 0.8, 0.8]
-		},
-		"ground": {
-			"rotation": [-1, 0, 0]
-		},
-		"gui": {
-			"rotation": [36, 35, 0],
-			"scale": [0.61, 0.6, 0.6]
-		},
-		"head": {
-			"translation": [0, 14, 0],
-			"scale": [0.8, 1, 0.8]
-		},
-		"fixed": {
-			"rotation": [-90, 0, 0],
-			"translation": [0, 0, -7.75]
-		}
-	},
 	"groups": [
 		{
 			"name": "bone",
