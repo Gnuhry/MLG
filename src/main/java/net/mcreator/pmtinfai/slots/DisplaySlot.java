@@ -20,4 +20,8 @@ public class DisplaySlot extends Slot {
         return false;
     }
 
+    @Override
+    public void onSlotChanged() {
+        super.onSlotChanged();
+    }
 }

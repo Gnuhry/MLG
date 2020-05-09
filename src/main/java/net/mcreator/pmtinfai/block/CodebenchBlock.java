@@ -81,11 +81,6 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
         }
 
 
-        public static List<ItemStack> getDrops(BlockState state, ServerWorld worldIn, BlockPos pos, @Nullable TileEntity tileEntityIn) {
-            LootContext.Builder lootcontext$builder = (new LootContext.Builder(worldIn)).withRandom(worldIn.rand).withParameter(LootParameters.POSITION, pos).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withNullableParameter(LootParameters.BLOCK_ENTITY, tileEntityIn);
-            return state.getDrops(lootcontext$builder);
-        }
-
         @Override
         public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
             List<ItemStack> dropsOriginal = super.getDrops(state, builder);

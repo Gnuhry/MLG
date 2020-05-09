@@ -34,16 +34,13 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -111,11 +108,14 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
         @Override
         public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
             super.onBlockHarvested(worldIn, pos, state, player);
-            CustomTileEntity cte=((CustomTileEntity)worldIn.getTileEntity(pos));
-            cte.setInventorySlotContents(4,ItemStack.EMPTY);
-            cte.setInventorySlotContents(5,ItemStack.EMPTY);
-            cte.setInventorySlotContents(6,ItemStack.EMPTY);
-            cte.setInventorySlotContents(7,ItemStack.EMPTY);
+            CustomTileEntity cte = ((CustomTileEntity) worldIn.getTileEntity(pos));
+            assert cte != null;
+            cte.setInventorySlotContents(4, ItemStack.EMPTY);
+            cte.setInventorySlotContents(5, ItemStack.EMPTY);
+            cte.setInventorySlotContents(6, ItemStack.EMPTY);
+            cte.setInventorySlotContents(7, ItemStack.EMPTY);
+            cte.setInventorySlotContents(10, ItemStack.EMPTY);
+
         }
 
         @Override
@@ -155,8 +155,8 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
     }
 
     public static class CustomTileEntity extends LockableLootTileEntity {
-        private NonNullList<ItemStack> stacks = NonNullList.withSize(10, ItemStack.EMPTY);
-        private int kind=28;
+        private NonNullList<ItemStack> stacks = NonNullList.withSize(11, ItemStack.EMPTY);
+        private int kind = 28;
 
         protected CustomTileEntity() {
             super(Objects.requireNonNull(tileEntityType));
@@ -204,7 +204,7 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
 
         @Override
         public int getSizeInventory() {
-            return 10;
+            return 11;
         }
 
         @Override

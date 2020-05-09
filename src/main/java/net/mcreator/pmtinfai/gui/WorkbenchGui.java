@@ -22,7 +22,6 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -40,11 +39,11 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 @PMTINFAIElements.ModElement.Tag
 public class WorkbenchGui extends PMTINFAIElements.ModElement {
-    public static HashMap guistate = new HashMap();
     private static ContainerType<GuiContainerMod> containerType = null;
 
     public WorkbenchGui(PMTINFAIElements instance) {
@@ -84,13 +83,13 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             super(containerType, id);
             this.entity = inv.player;
             this.world = inv.player.world;
-            this.internal = new Inventory(10);
+            this.internal = new Inventory(11);
             if (extraData != null) {
                 BlockPos pos = extraData.readBlockPos();
                 this.x = pos.getX();
                 this.y = pos.getY();
                 this.z = pos.getZ();
-                TileEntity ent = inv.player != null ? inv.player.world.getTileEntity(pos) : null;
+                TileEntity ent = inv.player.world.getTileEntity(pos);
                 if (ent instanceof IInventory)
                     this.internal = (IInventory) ent;
             }
@@ -98,13 +97,13 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             this.customSlots.put(0, this.addSlot(new Slot(internal, 0, 8, 57) {
                 @Override
                 public boolean isItemValid(ItemStack stack) {
-                    return (((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind() < 27) && Items.REDSTONE_TORCH == stack.getItem();
+                    return (((WorkbenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getKind() < 27) && Items.REDSTONE_TORCH == stack.getItem();
                 }
 
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    int amount_ = ((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind();
+                    int amount_ = ((WorkbenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getKind();
                     int[] amount = Recipe_MKLG.CheckRecipe(LogicKinds.Get(amount_));
                     if (amount_ > 26) return;
                     while (true) {
@@ -244,13 +243,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                 }
             }));
             this.customSlots.put(4, this.addSlot(new DisplaySlot(internal, 4, 8, 35) {
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    CompoundNBT nbt = new CompoundNBT();
-                    nbt.putBoolean("display", true);
-                    this.getStack().setTag(nbt);
-                }
+
             }));
             this.customSlots.put(5, this.addSlot(new DisplaySlot(internal, 5, 26, 35) {
 
@@ -335,6 +328,9 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
 
                 }
             }));
+            this.customSlots.put(10, this.addSlot(new DisplaySlot(internal, 10, 134, 35) {
+
+            }));
             WorkbenchBlock.CustomTileEntity wb = ((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z)));
             int[] set = Recipe_MKLG.CheckRecipe(LogicKinds.Get(wb.getKind()));
             this.customSlots.get(4).putStack(new ItemStack(Items.REDSTONE_TORCH, set[0]));
@@ -345,9 +341,9 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             int sj;
             for (si = 0; si < 3; ++si)
                 for (sj = 0; sj < 9; ++sj)
-                    this.addSlot(new Slot(inv, sj + (si + 1) * 9, 0 + 8 + sj * 18, 0 + 84 + si * 18));
+                    this.addSlot(new Slot(inv, sj + (si + 1) * 9, 8 + sj * 18, 84 + si * 18));
             for (si = 0; si < 9; ++si)
-                this.addSlot(new Slot(inv, si, 0 + 8 + si * 18, 0 + 142));
+                this.addSlot(new Slot(inv, si, 8 + si * 18, 142));
         }
 
         public Map<Integer, Slot> get() {
@@ -362,22 +358,22 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
         @Override
         public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
             ItemStack itemstack = ItemStack.EMPTY;
-            Slot slot = (Slot) this.inventorySlots.get(index);
+            Slot slot = this.inventorySlots.get(index);
             if (slot != null && slot.getHasStack()) {
                 ItemStack itemstack1 = slot.getStack();
                 itemstack = itemstack1.copy();
-                if (index < 10) {
-                    if (!this.mergeItemStack(itemstack1, 10, this.inventorySlots.size(), true)) {
+                if (index < 11) {
+                    if (!this.mergeItemStack(itemstack1, 11, this.inventorySlots.size(), true)) {
                         return ItemStack.EMPTY;
                     }
                     slot.onSlotChange(itemstack1, itemstack);
-                } else if (!this.mergeItemStack(itemstack1, 0, 10, false)) {
-                    if (index < 10 + 27) {
-                        if (!this.mergeItemStack(itemstack1, 10 + 27, this.inventorySlots.size(), true)) {
+                } else if (!this.mergeItemStack(itemstack1, 0, 11, false)) {
+                    if (index < 11 + 27) {
+                        if (!this.mergeItemStack(itemstack1, 11 + 27, this.inventorySlots.size(), true)) {
                             return ItemStack.EMPTY;
                         }
                     } else {
-                        if (!this.mergeItemStack(itemstack1, 10, 10 + 27, false)) {
+                        if (!this.mergeItemStack(itemstack1, 11, 11 + 27, false)) {
                             return ItemStack.EMPTY;
                         }
                     }
@@ -481,12 +477,6 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             }
         }
 
-        private void slotChanged(int slotid, int ctype, int meta) {
-            if (this.world != null && this.world.isRemote) {
-                PMTINFAI.PACKET_HANDLER.sendToServer(new GUISlotChangedMessage(slotid, x, y, z, ctype, meta));
-                handleSlotAction(entity, slotid, ctype, meta, x, y, z);
-            }
-        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -536,10 +526,6 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             this.font.drawString("T-FF", 178, 83, -60392);
             this.font.drawString("J-K-FF", 178, 119, -60392);
             this.font.drawString("Name", 80, 5, -16777216);
-			/*this.font.drawString("64", 10, 45, -16777216);
-			this.font.drawString("64", 28, 45, -16777216);
-			this.font.drawString("64", 46, 45, -16777216);
-			this.font.drawString("64", 64, 45, -16777216);*/
         }
 
         @Override
@@ -555,7 +541,6 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             this.addButton(new Button(this.guiLeft + -29, this.guiTop + 11, 27, 20, "AND", e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(0, x, y, z));
                 handleButtonAction(entity, 0, x, y, z);
-
             }) {
             });
             this.addButton(new Button(this.guiLeft + -29, this.guiTop + 29, 27, 20, "OR", e -> {
@@ -697,6 +682,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                 int x = message.x;
                 int y = message.y;
                 int z = message.z;
+                assert entity != null;
                 handleButtonAction(entity, buttonID, x, y, z);
             });
             context.setPacketHandled(true);
@@ -705,15 +691,6 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
 
     public static class GUISlotChangedMessage {
         int slotID, x, y, z, changeType, meta;
-
-        public GUISlotChangedMessage(int slotID, int x, int y, int z, int changeType, int meta) {
-            this.slotID = slotID;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.changeType = changeType;
-            this.meta = meta;
-        }
 
         public GUISlotChangedMessage(PacketBuffer buffer) {
             this.slotID = buffer.readInt();
@@ -736,14 +713,6 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
         public static void handler(GUISlotChangedMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
             NetworkEvent.Context context = contextSupplier.get();
             context.enqueueWork(() -> {
-                PlayerEntity entity = context.getSender();
-                int slotID = message.slotID;
-                int changeType = message.changeType;
-                int meta = message.meta;
-                int x = message.x;
-                int y = message.y;
-                int z = message.z;
-                handleSlotAction(entity, slotID, changeType, meta, x, y, z);
             });
             context.setPacketHandled(true);
         }
@@ -762,12 +731,9 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
         ct.setInventorySlotContents(5, new ItemStack(Items.REDSTONE, help[1]));
         ct.setInventorySlotContents(6, new ItemStack(MKLGItems.BlockItem, help[2]));
         ct.setInventorySlotContents(7, new ItemStack(Items.REPEATER, help[3]));
-    }
+        ItemStack erg = new ItemStack(MKLGItems.StandardcardItem, 1);
+        erg.setTag(lk.GetNBT());
+        ct.setInventorySlotContents(10, erg);
 
-    private static void handleSlotAction(PlayerEntity entity, int slotID, int changeType, int meta, int x, int y, int z) {
-        World world = entity.world;
-        // security measure to prevent arbitrary chunk generation
-        if (!world.isBlockLoaded(new BlockPos(x, y, z)))
-            return;
     }
 }
