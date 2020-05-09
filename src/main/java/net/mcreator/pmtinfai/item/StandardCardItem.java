@@ -15,17 +15,17 @@ import net.minecraft.block.BlockState;
 
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.blockproperties.LogicSpecies;
+import net.mcreator.pmtinfai.enums.LogicSpecies;
 
 import javax.annotation.Nullable;
 
 import java.util.List;
 
 @PMTINFAIElements.ModElement.Tag
-public class StandardcardItem extends PMTINFAIElements.ModElement {
+public class StandardCardItem extends PMTINFAIElements.ModElement {
 	@ObjectHolder("pmtinfai:standardcard")
 	public static final Item block = null;
-	public StandardcardItem(PMTINFAIElements instance) {
+	public StandardCardItem(PMTINFAIElements instance) {
 		super(instance, 10);
 	}
 

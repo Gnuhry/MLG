@@ -1,14 +1,14 @@
 
 package net.mcreator.pmtinfai.gui;
 
-import net.mcreator.pmtinfai.PMTINFAI;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.block.CodebenchBlock;
+import net.mcreator.pmtinfai.block.FlipFlopBlock;
+import net.mcreator.pmtinfai.slots.KernelSlot;
+import net.mcreator.pmtinfai.slots.FlipFlopSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -17,15 +17,14 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,23 +33,21 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.lwjgl.opengl.GL11;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 @PMTINFAIElements.ModElement.Tag
-public class TableGui extends PMTINFAIElements.ModElement {
-    public static HashMap guistate = new HashMap();
+public class FlipFlopGui extends PMTINFAIElements.ModElement {
     private static ContainerType<GuiContainerMod> containerType = null;
 
-    public TableGui(PMTINFAIElements instance) {
-        super(instance, 17);
+    public FlipFlopGui(PMTINFAIElements instance) {
+        super(instance, 25);
         elements.addNetworkMessage(ButtonPressedMessage.class, ButtonPressedMessage::buffer, ButtonPressedMessage::new,
                 ButtonPressedMessage::handler);
-        elements.addNetworkMessage(GUISlotChangedMessage.class, GUISlotChangedMessage::buffer, GUISlotChangedMessage::new,
-                GUISlotChangedMessage::handler);
         containerType = new ContainerType<>(new GuiContainerModFactory());
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
     }
@@ -62,7 +59,7 @@ public class TableGui extends PMTINFAIElements.ModElement {
 
     @SubscribeEvent
     public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
-        event.getRegistry().register(containerType.setRegistryName("table"));
+        event.getRegistry().register(containerType.setRegistryName("flipflopgui"));
     }
 
     public static class GuiContainerModFactory implements IContainerFactory {
@@ -77,30 +74,101 @@ public class TableGui extends PMTINFAIElements.ModElement {
         private int x, y, z;
         private IInventory internal;
         private Map<Integer, Slot> customSlots = new HashMap<>();
+        private FlipFlopBlock.CustomBlock lb;
 
         public GuiContainerMod(int id, PlayerInventory inv, PacketBuffer extraData) {
             super(containerType, id);
             this.entity = inv.player;
             this.world = inv.player.world;
-            this.internal = new Inventory(1);
+            this.internal = new Inventory(5);
             if (extraData != null) {
                 BlockPos pos = extraData.readBlockPos();
                 this.x = pos.getX();
                 this.y = pos.getY();
                 this.z = pos.getZ();
+                lb = (FlipFlopBlock.CustomBlock) world.getBlockState(pos).getBlock();
                 TileEntity ent = inv.player.world.getTileEntity(pos);
                 if (ent instanceof IInventory)
                     this.internal = (IInventory) ent;
             }
             internal.openInventory(inv.player);
-            this.customSlots.put(0, this.addSlot(new CodeBenchSlot(internal, 0, 116, 50) {
+            this.customSlots.put(0, this.addSlot(new FlipFlopSlot(internal, 0, 35, 30) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    if (!((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getText().equals("")) {
-                        CompoundNBT nbt = new CompoundNBT();
-                        nbt.putString("logic", ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getText());
-                        customSlots.get(0).getStack().setTag(nbt);
+                    Item item = internal.getStackInSlot(0).getItem();
+                    boolean[] io_boolean = lb.changeInput(0, new BlockPos(x, y, z), world, item);
+                    for (int f = 0; f < 4; f++) {
+                        FlipFlopSlot slot = ((FlipFlopSlot) customSlots.get(f));
+                        slot.set = io_boolean[0];
+                        slot.reset = io_boolean[1];
+                        slot.clock = io_boolean[2];
+                        slot.output = io_boolean[3];
+                    }
+                }
+            }));
+            this.customSlots.put(1, this.addSlot(new FlipFlopSlot(internal, 1, 53, 12) {
+                @Override
+                public void onSlotChanged() {
+                    super.onSlotChanged();
+                    Item item = internal.getStackInSlot(1).getItem();
+                    boolean[] io_boolean = lb.changeInput(1, new BlockPos(x, y, z), world, item);
+                    for (int f = 0; f < 4; f++) {
+                        FlipFlopSlot slot = ((FlipFlopSlot) customSlots.get(f));
+                        slot.set = io_boolean[0];
+                        slot.reset = io_boolean[1];
+                        slot.clock = io_boolean[2];
+                        slot.output = io_boolean[3];
+                    }
+                    CompoundNBT nbt = new CompoundNBT();
+                    nbt.putString("logic", "master_slave_t_ff");
+                    internal.getStackInSlot(1).setTag(nbt);
+                }
+            }));
+            this.customSlots.put(2, this.addSlot(new FlipFlopSlot(internal, 2, 71, 30) {
+                @Override
+                public void onSlotChanged() {
+                    super.onSlotChanged();
+                    Item item = internal.getStackInSlot(2).getItem();
+                    boolean[] io_boolean = lb.changeInput(2, new BlockPos(x, y, z), world, item);
+                    for (int f = 0; f < 4; f++) {
+                        FlipFlopSlot slot = ((FlipFlopSlot) customSlots.get(f));
+                        slot.set = io_boolean[0];
+                        slot.reset = io_boolean[1];
+                        slot.clock = io_boolean[2];
+                        slot.output = io_boolean[3];
+                    }
+                    CompoundNBT nbt = new CompoundNBT();
+                    nbt.putString("logic", "rising_jk_ff");
+                    internal.getStackInSlot(2).setTag(nbt);
+                }
+            }));
+            this.customSlots.put(3, this.addSlot(new FlipFlopSlot(internal, 3, 53, 48) {
+                @Override
+                public void onSlotChanged() {
+                    super.onSlotChanged();
+                    Item item = internal.getStackInSlot(3).getItem();
+                    boolean[] io_boolean = lb.changeInput(3, new BlockPos(x, y, z), world, item);
+                    for (int f = 0; f < 4; f++) {
+                        FlipFlopSlot slot = ((FlipFlopSlot) customSlots.get(f));
+                        slot.set = io_boolean[0];
+                        slot.reset = io_boolean[1];
+                        slot.clock = io_boolean[2];
+                        slot.output = io_boolean[3];
+                    }
+                    CompoundNBT nbt = new CompoundNBT();
+                    nbt.putString("logic", "rs_ff");
+                    internal.getStackInSlot(3).setTag(nbt);
+                }
+            }));
+            this.customSlots.put(4, this.addSlot(new KernelSlot(internal, 4, 138, 31) {
+                @Override
+                public void onSlotChanged() {
+                    super.onSlotChanged();
+                    try {
+                        lb.GetAllStates(Objects.requireNonNull(internal.getStackInSlot(4).getTag()).getString("logic"), world, new BlockPos(x, y, z));
+                    } catch (Exception ed) {
+                        lb.GetAllStates("none", world, new BlockPos(x, y, z));
                     }
                 }
             }));
@@ -129,18 +197,18 @@ public class TableGui extends PMTINFAIElements.ModElement {
             if (slot != null && slot.getHasStack()) {
                 ItemStack itemstack1 = slot.getStack();
                 itemstack = itemstack1.copy();
-                if (index < 1) {
-                    if (!this.mergeItemStack(itemstack1, 1, this.inventorySlots.size(), true)) {
+                if (index < 5) {
+                    if (!this.mergeItemStack(itemstack1, 5, this.inventorySlots.size(), true)) {
                         return ItemStack.EMPTY;
                     }
                     slot.onSlotChange(itemstack1, itemstack);
-                } else if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
-                    if (index < 1 + 27) {
-                        if (!this.mergeItemStack(itemstack1, 1 + 27, this.inventorySlots.size(), true)) {
+                } else if (!this.mergeItemStack(itemstack1, 0, 5, false)) {
+                    if (index < 5 + 27) {
+                        if (!this.mergeItemStack(itemstack1, 5 + 27, this.inventorySlots.size(), true)) {
                             return ItemStack.EMPTY;
                         }
                     } else {
-                        if (!this.mergeItemStack(itemstack1, 1, 1 + 27, false)) {
+                        if (!this.mergeItemStack(itemstack1, 5, 5 + 27, false)) {
                             return ItemStack.EMPTY;
                         }
                     }
@@ -248,28 +316,19 @@ public class TableGui extends PMTINFAIElements.ModElement {
 
     @OnlyIn(Dist.CLIENT)
     public static class GuiWindow extends ContainerScreen<GuiContainerMod> {
-        private int x, y, z;
-        private PlayerEntity entity;
-        TextFieldWidget Logiccode;
-
         public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
             super(container, inventory, text);
-            this.x = container.x;
-            this.y = container.y;
-            this.z = container.z;
-            this.entity = container.entity;
             this.xSize = 176;
             this.ySize = 166;
         }
 
-        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/table.png");
+        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/logicblockgui.png");
 
         @Override
         public void render(int mouseX, int mouseY, float partialTicks) {
             this.renderBackground();
             super.render(mouseX, mouseY, partialTicks);
             this.renderHoveredToolTip(mouseX, mouseY);
-            Logiccode.render(mouseX, mouseY, partialTicks);
         }
 
         @Override
@@ -284,11 +343,16 @@ public class TableGui extends PMTINFAIElements.ModElement {
         @Override
         public void tick() {
             super.tick();
-            Logiccode.tick();
         }
 
         @Override
         protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+            this.font.drawString(I18n.format("n"), 58, 1, -16777216);
+            this.font.drawString(I18n.format("w"), 27, 33, -16777216);
+            this.font.drawString(I18n.format("s"), 57, 65, -16777216);
+            this.font.drawString(I18n.format("e"), 90, 33, -16777216);
+            this.font.drawString(I18n.format("io"), 17, 6, -16777216);
+            this.font.drawString(I18n.format("logic"), 134, 6, -16777216);
         }
 
         @Override
@@ -301,14 +365,6 @@ public class TableGui extends PMTINFAIElements.ModElement {
         public void init(Minecraft minecraft, int width, int height) {
             super.init(minecraft, width, height);
             minecraft.keyboardListener.enableRepeatEvents(true);
-            Logiccode = new TextFieldWidget(this.font, 150, 57, 120, 20, "Logic Code");
-            guistate.put("text:Logiccode", Logiccode);
-            Logiccode.setMaxStringLength(32767);
-            this.children.add(this.Logiccode);
-            this.addButton(new Button(this.guiLeft + 25, this.guiTop + 47, 50, 20, "check", e -> {
-                PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(0, x, y, z));
-                handleButtonAction(entity, x, y, z);
-            }));
         }
     }
 
@@ -322,13 +378,6 @@ public class TableGui extends PMTINFAIElements.ModElement {
             this.z = buffer.readInt();
         }
 
-        public ButtonPressedMessage(int buttonID, int x, int y, int z) {
-            this.buttonID = buttonID;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
         public static void buffer(ButtonPressedMessage message, PacketBuffer buffer) {
             buffer.writeInt(message.buttonID);
             buffer.writeInt(message.x);
@@ -339,121 +388,9 @@ public class TableGui extends PMTINFAIElements.ModElement {
         public static void handler(ButtonPressedMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
             NetworkEvent.Context context = contextSupplier.get();
             context.enqueueWork(() -> {
-                PlayerEntity entity = context.getSender();
-                int x = message.x;
-                int y = message.y;
-                int z = message.z;
-                assert entity != null;
-                handleButtonAction(entity, x, y, z);
             });
             context.setPacketHandled(true);
         }
     }
 
-    public static class GUISlotChangedMessage {
-        int slotID, x, y, z, changeType, meta;
-
-        public GUISlotChangedMessage(PacketBuffer buffer) {
-            this.slotID = buffer.readInt();
-            this.x = buffer.readInt();
-            this.y = buffer.readInt();
-            this.z = buffer.readInt();
-            this.changeType = buffer.readInt();
-            this.meta = buffer.readInt();
-        }
-
-        public static void buffer(GUISlotChangedMessage message, PacketBuffer buffer) {
-            buffer.writeInt(message.slotID);
-            buffer.writeInt(message.x);
-            buffer.writeInt(message.y);
-            buffer.writeInt(message.z);
-            buffer.writeInt(message.changeType);
-            buffer.writeInt(message.meta);
-        }
-
-        public static void handler(GUISlotChangedMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
-            NetworkEvent.Context context = contextSupplier.get();
-            context.enqueueWork(() -> {
-            });
-            context.setPacketHandled(true);
-        }
-    }
-
-    private static void handleButtonAction(PlayerEntity entity, int x, int y, int z) {
-        World world = entity.world;
-        // security measure to prevent arbitrary chunk generation
-        if (!world.isBlockLoaded(new BlockPos(x, y, z)))
-            return;
-        String text = ((TextFieldWidget) guistate.get("text:Logiccode")).getText();
-        String[] exp = text.split(",");
-        boolean b = true;
-        for (int f = 0; f < exp.length; f++) {
-            b = b && CheckExpression(exp[f], 2 - f);
-        }
-        MinecraftServer mcserv = ServerLifecycleHooks.getCurrentServer();
-        if (b) {
-            if (mcserv != null)
-                mcserv.getPlayerList().sendMessage(new StringTextComponent("Saved"));
-            ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText(text);
-        } else {
-            if (mcserv != null)
-                mcserv.getPlayerList().sendMessage(new StringTextComponent("Wrong entry"));
-        }
-    }
-
-    private static boolean CheckExpression(String exp, int type) {
-        List<Character> allowed = new ArrayList<>();
-        allowed.add('(');
-        allowed.add(')');
-        allowed.add('!');
-        List<Character> literal = new ArrayList<>();
-        literal.add('T');
-        literal.add('F');
-        literal.add('A');
-        if (type >= 1)
-            literal.add('B');
-        if (type >= 2)
-            literal.add('C');
-        List<Character> literal2 = new ArrayList<>();
-        literal2.add('&');
-        literal2.add('|');
-        // Checking Expression
-        char[] help = exp.toCharArray();
-        List<Character> x = new ArrayList<>();
-        for (char c : help) {
-            if (!literal.contains(c) && !literal2.contains(c) && !allowed.contains(c))
-                return false;
-            x.add(c);
-        }
-        for (int f = 0; f < x.size(); f++) {
-            if (x.get(f) == ')') {
-                for (int g = f - 1; g >= 0; g--) {
-                    if (x.get(g) == '(') {
-                        if (f - g == 4) {
-                            if (!literal.contains(x.get(g + 1)))
-                                return false;
-                            if (!literal.contains(x.get(g + 3)))
-                                return false;
-                            if (!literal2.contains(x.get(g + 2)))
-                                return false;
-                            x.set(f, 'T');
-                            x.subList(g, f).clear();
-                            f = 0;
-                            g = -1;
-                        } else if (f - g == 3) {
-                            if (!literal.contains(x.get(g + 2)))
-                                return false;
-                            if (x.get(g + 1) != '!')
-                                return false;
-                            x.set(f, 'T');
-                            x.subList(g, f).clear();
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return (literal.contains(x.get(0))) && x.size() == 1;
-    }
 }

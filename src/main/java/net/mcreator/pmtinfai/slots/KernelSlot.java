@@ -1,4 +1,4 @@
-package net.mcreator.pmtinfai.gui;
+package net.mcreator.pmtinfai.slots;
 
 import net.mcreator.pmtinfai.MKLGItems;
 import net.minecraft.inventory.IInventory;
@@ -7,10 +7,10 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Objects;
 
-public class Kernel_Slot extends Slot {
+public class KernelSlot extends Slot {
     public boolean logic_ = false;
 
-    public Kernel_Slot(IInventory internal, int i, int i1, int i2) {
+    public KernelSlot(IInventory internal, int i, int i1, int i2) {
         super(internal, i, i1, i2);
     }
 

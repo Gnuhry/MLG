@@ -1,4 +1,4 @@
-package net.mcreator.pmtinfai.blockproperties;
+package net.mcreator.pmtinfai.enums;
 
 import net.minecraft.util.IStringSerializable;
 

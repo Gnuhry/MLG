@@ -1,6 +1,8 @@
 
 package net.mcreator.pmtinfai.gui;
 
+import net.mcreator.pmtinfai.block.LogicBlock;
+import net.mcreator.pmtinfai.slots.KernelSlot;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -32,8 +34,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.Minecraft;
 
-import net.mcreator.pmtinfai.block.LogicBlockBlock;
-import net.mcreator.pmtinfai.slots.Slot_IO;
+import net.mcreator.pmtinfai.slots.LogicSlot;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 
 import java.util.Objects;
@@ -44,10 +45,10 @@ import java.util.HashMap;
 import net.minecraft.client.resources.I18n;
 
 @PMTINFAIElements.ModElement.Tag
-public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
+public class LogicBlockGui extends PMTINFAIElements.ModElement {
     private static ContainerType<GuiContainerMod> containerType = null;
 
-    public LogicBlockGUIGui(PMTINFAIElements instance) {
+    public LogicBlockGui(PMTINFAIElements instance) {
         super(instance, 5);
         elements.addNetworkMessage(ButtonPressedMessage.class, ButtonPressedMessage::buffer, ButtonPressedMessage::new,
                 ButtonPressedMessage::handler);
@@ -77,7 +78,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
         private int x, y, z;
         private IInventory internal;
         private Map<Integer, Slot> customSlots = new HashMap<>();
-        private LogicBlockBlock.CustomBlock lb;
+        private LogicBlock.CustomBlock lb;
 
         public GuiContainerMod(int id, PlayerInventory inv, PacketBuffer extraData) {
             super(containerType, id);
@@ -89,58 +90,58 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
                 this.x = pos.getX();
                 this.y = pos.getY();
                 this.z = pos.getZ();
-                lb = (LogicBlockBlock.CustomBlock) world.getBlockState(pos).getBlock();
+                lb = (LogicBlock.CustomBlock) world.getBlockState(pos).getBlock();
                 TileEntity ent = inv.player.world.getTileEntity(pos);
                 if (ent instanceof IInventory)
                     this.internal = (IInventory) ent;
             }
             internal.openInventory(inv.player);
-            this.customSlots.put(0, this.addSlot(new Slot_IO(internal, 0, 35, 30) {
+            this.customSlots.put(0, this.addSlot(new LogicSlot(internal, 0, 35, 30) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
                     Item item = internal.getStackInSlot(0).getItem();
                     boolean[] io_boolean = lb.changeInput(0, new BlockPos(x, y, z), world, item);
                     for (int f = 0; f < 4; f++) {
-                        ((Slot_IO) customSlots.get(f)).input = io_boolean[0];
-                        ((Slot_IO) customSlots.get(f)).output = io_boolean[1];
+                        ((LogicSlot) customSlots.get(f)).input = io_boolean[0];
+                        ((LogicSlot) customSlots.get(f)).output = io_boolean[1];
                     }
                 }
             }));
-            this.customSlots.put(1, this.addSlot(new Slot_IO(internal, 1, 53, 12) {
+            this.customSlots.put(1, this.addSlot(new LogicSlot(internal, 1, 53, 12) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
                     Item item = internal.getStackInSlot(1).getItem();
                     boolean[] io_boolean = lb.changeInput(1, new BlockPos(x, y, z), world, item);
                     for (int f = 0; f < 4; f++) {
-                        ((Slot_IO) customSlots.get(f)).input = io_boolean[0];
-                        ((Slot_IO) customSlots.get(f)).output = io_boolean[1];
+                        ((LogicSlot) customSlots.get(f)).input = io_boolean[0];
+                        ((LogicSlot) customSlots.get(f)).output = io_boolean[1];
                     }
                 }
             }));
-            this.customSlots.put(2, this.addSlot(new Slot_IO(internal, 2, 71, 30) {
+            this.customSlots.put(2, this.addSlot(new LogicSlot(internal, 2, 71, 30) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
                     Item item = internal.getStackInSlot(2).getItem();
                     boolean[] io_boolean = lb.changeInput(2, new BlockPos(x, y, z), world, item);
                     for (int f = 0; f < 4; f++) {
-                        ((Slot_IO) customSlots.get(f)).input = io_boolean[0];
-                        ((Slot_IO) customSlots.get(f)).output = io_boolean[1];
+                        ((LogicSlot) customSlots.get(f)).input = io_boolean[0];
+                        ((LogicSlot) customSlots.get(f)).output = io_boolean[1];
                     }
 
                 }
             }));
-            this.customSlots.put(3, this.addSlot(new Slot_IO(internal, 3, 53, 48) {
+            this.customSlots.put(3, this.addSlot(new LogicSlot(internal, 3, 53, 48) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
                     Item item = internal.getStackInSlot(3).getItem();
                     boolean[] io_boolean = lb.changeInput(3, new BlockPos(x, y, z), world, item);
                     for (int f = 0; f < 4; f++) {
-                        ((Slot_IO) customSlots.get(f)).input = io_boolean[0];
-                        ((Slot_IO) customSlots.get(f)).output = io_boolean[1];
+                        ((LogicSlot) customSlots.get(f)).input = io_boolean[0];
+                        ((LogicSlot) customSlots.get(f)).output = io_boolean[1];
                     }
                     CompoundNBT nbt = new CompoundNBT();
                     nbt.putString("logic", "(A&(B&C)),(A&B),F");
@@ -148,7 +149,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
                     internal.getStackInSlot(3).setTag(nbt);
                 }
             }));
-            this.customSlots.put(4, this.addSlot(new Kernel_Slot(internal, 4, 138, 31) {
+            this.customSlots.put(4, this.addSlot(new KernelSlot(internal, 4, 138, 31) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
@@ -159,7 +160,7 @@ public class LogicBlockGUIGui extends PMTINFAIElements.ModElement {
                     }
                 }
             }));
-            ((Kernel_Slot) this.customSlots.get(4)).logic_ = true;
+            ((KernelSlot) this.customSlots.get(4)).logic_ = true;
             int si;
             int sj;
             for (si = 0; si < 3; ++si)

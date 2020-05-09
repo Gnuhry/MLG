@@ -3,7 +3,7 @@ package net.mcreator.pmtinfai.block;
 
 import io.netty.buffer.Unpooled;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.gui.TableGui;
+import net.mcreator.pmtinfai.gui.CodebenchGui;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -98,7 +98,7 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
 
                     @Override
                     public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-                        return new TableGui.GuiContainerMod(id, inventory, new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
+                        return new CodebenchGui.GuiContainerMod(id, inventory, new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
                     }
                 }, new BlockPos(x, y, z));
             }
@@ -225,7 +225,7 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
 
         @Override
         public Container createMenu(int id, PlayerInventory player) {
-            return new TableGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
+            return new CodebenchGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
         }
 
         @Override

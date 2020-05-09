@@ -1,13 +1,15 @@
 
 package net.mcreator.pmtinfai.gui;
 
-import net.mcreator.pmtinfai.MKLGItems;
+import net.mcreator.pmtinfai.PMTINFAI;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.block.PrinterBlock;
-import net.mcreator.pmtinfai.slots.Slot_Tisch;
+import net.mcreator.pmtinfai.block.CodebenchBlock;
+import net.mcreator.pmtinfai.slots.CodeBenchSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -17,11 +19,14 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -30,18 +35,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.lwjgl.opengl.GL11;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 @PMTINFAIElements.ModElement.Tag
-public class PrinterGUIGui extends PMTINFAIElements.ModElement {
+public class CodebenchGui extends PMTINFAIElements.ModElement {
+    public static HashMap guistate = new HashMap();
     private static ContainerType<GuiContainerMod> containerType = null;
 
-    public PrinterGUIGui(PMTINFAIElements instance) {
-        super(instance, 20);
+    public CodebenchGui(PMTINFAIElements instance) {
+        super(instance, 17);
         elements.addNetworkMessage(ButtonPressedMessage.class, ButtonPressedMessage::buffer, ButtonPressedMessage::new,
                 ButtonPressedMessage::handler);
         elements.addNetworkMessage(GUISlotChangedMessage.class, GUISlotChangedMessage::buffer, GUISlotChangedMessage::new,
@@ -57,7 +63,7 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
 
     @SubscribeEvent
     public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
-        event.getRegistry().register(containerType.setRegistryName("printergui"));
+        event.getRegistry().register(containerType.setRegistryName("table"));
     }
 
     public static class GuiContainerModFactory implements IContainerFactory {
@@ -65,7 +71,6 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             return new GuiContainerMod(id, inv, extraData);
         }
     }
-
 
     public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
         private World world;
@@ -78,7 +83,7 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             super(containerType, id);
             this.entity = inv.player;
             this.world = inv.player.world;
-            this.internal = new Inventory(3);
+            this.internal = new Inventory(1);
             if (extraData != null) {
                 BlockPos pos = extraData.readBlockPos();
                 this.x = pos.getX();
@@ -89,37 +94,17 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
                     this.internal = (IInventory) ent;
             }
             internal.openInventory(inv.player);
-            this.customSlots.put(0, this.addSlot(new Slot_Tisch(internal, 0, 8, 29) {
+            this.customSlots.put(0, this.addSlot(new CodeBenchSlot(internal, 0, 116, 50) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
-                }
-
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-            }));
-            this.customSlots.put(1, this.addSlot(new Slot_Tisch(internal, 1, 43, 29) {
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
+                    if (!((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getText().equals("")) {
+                        CompoundNBT nbt = new CompoundNBT();
+                        nbt.putString("logic", ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getText());
+                        customSlots.get(0).getStack().setTag(nbt);
+                    }
                 }
             }));
-            this.customSlots.put(2, this.addSlot(new Slot_Tisch(internal, 2, 133, 29) {
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
-                    internal.markDirty();
-                }
-            }));
-            ((Slot_Tisch) this.customSlots.get(0)).SetItem(MKLGItems.StandardcardItem);
-            ((Slot_Tisch) this.customSlots.get(0)).setTag(true);
-            ((Slot_Tisch) this.customSlots.get(1)).SetItem(MKLGItems.StandardcardItem);
-            ((Slot_Tisch) this.customSlots.get(2)).SetItem(null);
             int si;
             int sj;
             for (si = 0; si < 3; ++si)
@@ -128,7 +113,6 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             for (si = 0; si < 9; ++si)
                 this.addSlot(new Slot(inv, si, 8 + si * 18, 142));
         }
-
 
         public Map<Integer, Slot> get() {
             return customSlots;
@@ -146,18 +130,18 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             if (slot != null && slot.getHasStack()) {
                 ItemStack itemstack1 = slot.getStack();
                 itemstack = itemstack1.copy();
-                if (index < 3) {
-                    if (!this.mergeItemStack(itemstack1, 3, this.inventorySlots.size(), true)) {
+                if (index < 1) {
+                    if (!this.mergeItemStack(itemstack1, 1, this.inventorySlots.size(), true)) {
                         return ItemStack.EMPTY;
                     }
                     slot.onSlotChange(itemstack1, itemstack);
-                } else if (!this.mergeItemStack(itemstack1, 0, 3, false)) {
-                    if (index < 3 + 27) {
-                        if (!this.mergeItemStack(itemstack1, 3 + 27, this.inventorySlots.size(), true)) {
+                } else if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+                    if (index < 1 + 27) {
+                        if (!this.mergeItemStack(itemstack1, 1 + 27, this.inventorySlots.size(), true)) {
                             return ItemStack.EMPTY;
                         }
                     } else {
-                        if (!this.mergeItemStack(itemstack1, 3, 3 + 27, false)) {
+                        if (!this.mergeItemStack(itemstack1, 1, 1 + 27, false)) {
                             return ItemStack.EMPTY;
                         }
                     }
@@ -265,20 +249,28 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
 
     @OnlyIn(Dist.CLIENT)
     public static class GuiWindow extends ContainerScreen<GuiContainerMod> {
+        private int x, y, z;
+        private PlayerEntity entity;
+        TextFieldWidget Logiccode;
 
         public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
             super(container, inventory, text);
+            this.x = container.x;
+            this.y = container.y;
+            this.z = container.z;
+            this.entity = container.entity;
             this.xSize = 176;
             this.ySize = 166;
         }
 
-        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/printergui.png");
+        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/table.png");
 
         @Override
         public void render(int mouseX, int mouseY, float partialTicks) {
             this.renderBackground();
             super.render(mouseX, mouseY, partialTicks);
             this.renderHoveredToolTip(mouseX, mouseY);
+            Logiccode.render(mouseX, mouseY, partialTicks);
         }
 
         @Override
@@ -293,6 +285,7 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
         @Override
         public void tick() {
             super.tick();
+            Logiccode.tick();
         }
 
         @Override
@@ -309,6 +302,14 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
         public void init(Minecraft minecraft, int width, int height) {
             super.init(minecraft, width, height);
             minecraft.keyboardListener.enableRepeatEvents(true);
+            Logiccode = new TextFieldWidget(this.font, 150, 57, 120, 20, "Logic Code");
+            guistate.put("text:Logiccode", Logiccode);
+            Logiccode.setMaxStringLength(32767);
+            this.children.add(this.Logiccode);
+            this.addButton(new Button(this.guiLeft + 25, this.guiTop + 47, 50, 20, "check", e -> {
+                PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(0, x, y, z));
+                handleButtonAction(entity, x, y, z);
+            }));
         }
     }
 
@@ -322,6 +323,13 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             this.z = buffer.readInt();
         }
 
+        public ButtonPressedMessage(int buttonID, int x, int y, int z) {
+            this.buttonID = buttonID;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
         public static void buffer(ButtonPressedMessage message, PacketBuffer buffer) {
             buffer.writeInt(message.buttonID);
             buffer.writeInt(message.x);
@@ -332,6 +340,12 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
         public static void handler(ButtonPressedMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
             NetworkEvent.Context context = contextSupplier.get();
             context.enqueueWork(() -> {
+                PlayerEntity entity = context.getSender();
+                int x = message.x;
+                int y = message.y;
+                int z = message.z;
+                assert entity != null;
+                handleButtonAction(entity, x, y, z);
             });
             context.setPacketHandled(true);
         }
@@ -364,5 +378,83 @@ public class PrinterGUIGui extends PMTINFAIElements.ModElement {
             });
             context.setPacketHandled(true);
         }
+    }
+
+    private static void handleButtonAction(PlayerEntity entity, int x, int y, int z) {
+        World world = entity.world;
+        // security measure to prevent arbitrary chunk generation
+        if (!world.isBlockLoaded(new BlockPos(x, y, z)))
+            return;
+        String text = ((TextFieldWidget) guistate.get("text:Logiccode")).getText();
+        String[] exp = text.split(",");
+        boolean b = true;
+        for (int f = 0; f < exp.length; f++) {
+            b = b && CheckExpression(exp[f], 2 - f);
+        }
+        MinecraftServer mcserv = ServerLifecycleHooks.getCurrentServer();
+        if (b) {
+            if (mcserv != null)
+                mcserv.getPlayerList().sendMessage(new StringTextComponent("Saved"));
+            ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText(text);
+        } else {
+            if (mcserv != null)
+                mcserv.getPlayerList().sendMessage(new StringTextComponent("Wrong entry"));
+        }
+    }
+
+    private static boolean CheckExpression(String exp, int type) {
+        List<Character> allowed = new ArrayList<>();
+        allowed.add('(');
+        allowed.add(')');
+        allowed.add('!');
+        List<Character> literal = new ArrayList<>();
+        literal.add('T');
+        literal.add('F');
+        literal.add('A');
+        if (type >= 1)
+            literal.add('B');
+        if (type >= 2)
+            literal.add('C');
+        List<Character> literal2 = new ArrayList<>();
+        literal2.add('&');
+        literal2.add('|');
+        // Checking Expression
+        char[] help = exp.toCharArray();
+        List<Character> x = new ArrayList<>();
+        for (char c : help) {
+            if (!literal.contains(c) && !literal2.contains(c) && !allowed.contains(c))
+                return false;
+            x.add(c);
+        }
+        for (int f = 0; f < x.size(); f++) {
+            if (x.get(f) == ')') {
+                for (int g = f - 1; g >= 0; g--) {
+                    if (x.get(g) == '(') {
+                        if (f - g == 4) {
+                            if (!literal.contains(x.get(g + 1)))
+                                return false;
+                            if (!literal.contains(x.get(g + 3)))
+                                return false;
+                            if (!literal2.contains(x.get(g + 2)))
+                                return false;
+                            x.set(f, 'T');
+                            x.subList(g, f).clear();
+                            f = 0;
+                            g = -1;
+                        } else if (f - g == 3) {
+                            if (!literal.contains(x.get(g + 2)))
+                                return false;
+                            if (x.get(g + 1) != '!')
+                                return false;
+                            x.set(f, 'T');
+                            x.subList(g, f).clear();
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return (literal.contains(x.get(0))) && x.size() == 1;
     }
 }

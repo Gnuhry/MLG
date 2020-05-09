@@ -1,13 +1,13 @@
 
 package net.mcreator.pmtinfai.gui;
 
+import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.block.FlipFlopBlockBlock;
-import net.mcreator.pmtinfai.slots.Slot_FF_IO;
+import net.mcreator.pmtinfai.block.PrinterBlock;
+import net.mcreator.pmtinfai.slots.PrinterSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -16,9 +16,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -36,17 +34,18 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 @PMTINFAIElements.ModElement.Tag
-public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
+public class PrinterGui extends PMTINFAIElements.ModElement {
     private static ContainerType<GuiContainerMod> containerType = null;
 
-    public FlipFlopGUIGui(PMTINFAIElements instance) {
-        super(instance, 25);
+    public PrinterGui(PMTINFAIElements instance) {
+        super(instance, 20);
         elements.addNetworkMessage(ButtonPressedMessage.class, ButtonPressedMessage::buffer, ButtonPressedMessage::new,
                 ButtonPressedMessage::handler);
+        elements.addNetworkMessage(GUISlotChangedMessage.class, GUISlotChangedMessage::buffer, GUISlotChangedMessage::new,
+                GUISlotChangedMessage::handler);
         containerType = new ContainerType<>(new GuiContainerModFactory());
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
     }
@@ -58,7 +57,7 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 
     @SubscribeEvent
     public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
-        event.getRegistry().register(containerType.setRegistryName("flipflopgui"));
+        event.getRegistry().register(containerType.setRegistryName("printergui"));
     }
 
     public static class GuiContainerModFactory implements IContainerFactory {
@@ -67,110 +66,60 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
         }
     }
 
+
     public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
         private World world;
         private PlayerEntity entity;
         private int x, y, z;
         private IInventory internal;
         private Map<Integer, Slot> customSlots = new HashMap<>();
-        private FlipFlopBlockBlock.CustomBlock lb;
 
         public GuiContainerMod(int id, PlayerInventory inv, PacketBuffer extraData) {
             super(containerType, id);
             this.entity = inv.player;
             this.world = inv.player.world;
-            this.internal = new Inventory(5);
+            this.internal = new Inventory(3);
             if (extraData != null) {
                 BlockPos pos = extraData.readBlockPos();
                 this.x = pos.getX();
                 this.y = pos.getY();
                 this.z = pos.getZ();
-                lb = (FlipFlopBlockBlock.CustomBlock) world.getBlockState(pos).getBlock();
                 TileEntity ent = inv.player.world.getTileEntity(pos);
                 if (ent instanceof IInventory)
                     this.internal = (IInventory) ent;
             }
             internal.openInventory(inv.player);
-            this.customSlots.put(0, this.addSlot(new Slot_FF_IO(internal, 0, 35, 30) {
+            this.customSlots.put(0, this.addSlot(new PrinterSlot(internal, 0, 8, 29) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    Item item = internal.getStackInSlot(0).getItem();
-                    boolean[] io_boolean = lb.changeInput(0, new BlockPos(x, y, z), world, item);
-                    for (int f = 0; f < 4; f++) {
-                        Slot_FF_IO slot = ((Slot_FF_IO) customSlots.get(f));
-                        slot.set = io_boolean[0];
-                        slot.reset = io_boolean[1];
-                        slot.clock = io_boolean[2];
-                        slot.output = io_boolean[3];
-                    }
+                    ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
+                }
+
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
                 }
             }));
-            this.customSlots.put(1, this.addSlot(new Slot_FF_IO(internal, 1, 53, 12) {
+            this.customSlots.put(1, this.addSlot(new PrinterSlot(internal, 1, 43, 29) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    Item item = internal.getStackInSlot(1).getItem();
-                    boolean[] io_boolean = lb.changeInput(1, new BlockPos(x, y, z), world, item);
-                    for (int f = 0; f < 4; f++) {
-                        Slot_FF_IO slot = ((Slot_FF_IO) customSlots.get(f));
-                        slot.set = io_boolean[0];
-                        slot.reset = io_boolean[1];
-                        slot.clock = io_boolean[2];
-                        slot.output = io_boolean[3];
-                    }
-                    CompoundNBT nbt = new CompoundNBT();
-                    nbt.putString("logic", "master_slave_t_ff");
-                    internal.getStackInSlot(1).setTag(nbt);
+                    ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
                 }
             }));
-            this.customSlots.put(2, this.addSlot(new Slot_FF_IO(internal, 2, 71, 30) {
+            this.customSlots.put(2, this.addSlot(new PrinterSlot(internal, 2, 133, 29) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    Item item = internal.getStackInSlot(2).getItem();
-                    boolean[] io_boolean = lb.changeInput(2, new BlockPos(x, y, z), world, item);
-                    for (int f = 0; f < 4; f++) {
-                        Slot_FF_IO slot = ((Slot_FF_IO) customSlots.get(f));
-                        slot.set = io_boolean[0];
-                        slot.reset = io_boolean[1];
-                        slot.clock = io_boolean[2];
-                        slot.output = io_boolean[3];
-                    }
-                    CompoundNBT nbt = new CompoundNBT();
-                    nbt.putString("logic", "rising_jk_ff");
-                    internal.getStackInSlot(2).setTag(nbt);
+                    ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
+                    internal.markDirty();
                 }
             }));
-            this.customSlots.put(3, this.addSlot(new Slot_FF_IO(internal, 3, 53, 48) {
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    Item item = internal.getStackInSlot(3).getItem();
-                    boolean[] io_boolean = lb.changeInput(3, new BlockPos(x, y, z), world, item);
-                    for (int f = 0; f < 4; f++) {
-                        Slot_FF_IO slot = ((Slot_FF_IO) customSlots.get(f));
-                        slot.set = io_boolean[0];
-                        slot.reset = io_boolean[1];
-                        slot.clock = io_boolean[2];
-                        slot.output = io_boolean[3];
-                    }
-                    CompoundNBT nbt = new CompoundNBT();
-                    nbt.putString("logic", "rs_ff");
-                    internal.getStackInSlot(3).setTag(nbt);
-                }
-            }));
-            this.customSlots.put(4, this.addSlot(new Kernel_Slot(internal, 4, 138, 31) {
-                @Override
-                public void onSlotChanged() {
-                    super.onSlotChanged();
-                    try {
-                        lb.GetAllStates(Objects.requireNonNull(internal.getStackInSlot(4).getTag()).getString("logic"), world, new BlockPos(x, y, z));
-                    } catch (Exception ed) {
-                        lb.GetAllStates("none", world, new BlockPos(x, y, z));
-                    }
-                }
-            }));
+            ((PrinterSlot) this.customSlots.get(0)).SetItem(MKLGItems.StandardcardItem);
+            ((PrinterSlot) this.customSlots.get(0)).setTag(true);
+            ((PrinterSlot) this.customSlots.get(1)).SetItem(MKLGItems.StandardcardItem);
+            ((PrinterSlot) this.customSlots.get(2)).SetItem(null);
             int si;
             int sj;
             for (si = 0; si < 3; ++si)
@@ -179,6 +128,7 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
             for (si = 0; si < 9; ++si)
                 this.addSlot(new Slot(inv, si, 8 + si * 18, 142));
         }
+
 
         public Map<Integer, Slot> get() {
             return customSlots;
@@ -196,18 +146,18 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
             if (slot != null && slot.getHasStack()) {
                 ItemStack itemstack1 = slot.getStack();
                 itemstack = itemstack1.copy();
-                if (index < 5) {
-                    if (!this.mergeItemStack(itemstack1, 5, this.inventorySlots.size(), true)) {
+                if (index < 3) {
+                    if (!this.mergeItemStack(itemstack1, 3, this.inventorySlots.size(), true)) {
                         return ItemStack.EMPTY;
                     }
                     slot.onSlotChange(itemstack1, itemstack);
-                } else if (!this.mergeItemStack(itemstack1, 0, 5, false)) {
-                    if (index < 5 + 27) {
-                        if (!this.mergeItemStack(itemstack1, 5 + 27, this.inventorySlots.size(), true)) {
+                } else if (!this.mergeItemStack(itemstack1, 0, 3, false)) {
+                    if (index < 3 + 27) {
+                        if (!this.mergeItemStack(itemstack1, 3 + 27, this.inventorySlots.size(), true)) {
                             return ItemStack.EMPTY;
                         }
                     } else {
-                        if (!this.mergeItemStack(itemstack1, 5, 5 + 27, false)) {
+                        if (!this.mergeItemStack(itemstack1, 3, 3 + 27, false)) {
                             return ItemStack.EMPTY;
                         }
                     }
@@ -315,13 +265,14 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 
     @OnlyIn(Dist.CLIENT)
     public static class GuiWindow extends ContainerScreen<GuiContainerMod> {
+
         public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
             super(container, inventory, text);
             this.xSize = 176;
             this.ySize = 166;
         }
 
-        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/logicblockgui.png");
+        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/printergui.png");
 
         @Override
         public void render(int mouseX, int mouseY, float partialTicks) {
@@ -346,12 +297,6 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
 
         @Override
         protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-            this.font.drawString(I18n.format("n"), 58, 1, -16777216);
-            this.font.drawString(I18n.format("w"), 27, 33, -16777216);
-            this.font.drawString(I18n.format("s"), 57, 65, -16777216);
-            this.font.drawString(I18n.format("e"), 90, 33, -16777216);
-            this.font.drawString(I18n.format("io"), 17, 6, -16777216);
-            this.font.drawString(I18n.format("logic"), 134, 6, -16777216);
         }
 
         @Override
@@ -392,4 +337,32 @@ public class FlipFlopGUIGui extends PMTINFAIElements.ModElement {
         }
     }
 
+    public static class GUISlotChangedMessage {
+        int slotID, x, y, z, changeType, meta;
+
+        public GUISlotChangedMessage(PacketBuffer buffer) {
+            this.slotID = buffer.readInt();
+            this.x = buffer.readInt();
+            this.y = buffer.readInt();
+            this.z = buffer.readInt();
+            this.changeType = buffer.readInt();
+            this.meta = buffer.readInt();
+        }
+
+        public static void buffer(GUISlotChangedMessage message, PacketBuffer buffer) {
+            buffer.writeInt(message.slotID);
+            buffer.writeInt(message.x);
+            buffer.writeInt(message.y);
+            buffer.writeInt(message.z);
+            buffer.writeInt(message.changeType);
+            buffer.writeInt(message.meta);
+        }
+
+        public static void handler(GUISlotChangedMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
+            NetworkEvent.Context context = contextSupplier.get();
+            context.enqueueWork(() -> {
+            });
+            context.setPacketHandled(true);
+        }
+    }
 }

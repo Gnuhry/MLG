@@ -11,5 +11,5 @@ public class MKLGItems {
     public static Item ResetItem= Items.REDSTONE;
     public static Item ClockItem=Items.REDSTONE_TORCH;
     public static Item CustomCardItem=Items.REDSTONE_TORCH;
-
+    public static Item BlockItem=Items.STONE;
 }

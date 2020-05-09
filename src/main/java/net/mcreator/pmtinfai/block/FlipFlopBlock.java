@@ -4,10 +4,10 @@ package net.mcreator.pmtinfai.block;
 import io.netty.buffer.Unpooled;
 import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.blockproperties.FFSpecies;
-import net.mcreator.pmtinfai.blockproperties.InputSide;
-import net.mcreator.pmtinfai.gui.FlipFlopGUIGui;
-import net.mcreator.pmtinfai.gui.LogicBlockGUIGui;
+import net.mcreator.pmtinfai.enums.FFSpecies;
+import net.mcreator.pmtinfai.enums.InputSide;
+import net.mcreator.pmtinfai.gui.FlipFlopGui;
+import net.mcreator.pmtinfai.gui.LogicBlockGui;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -55,13 +55,13 @@ import net.minecraftforge.registries.ObjectHolder;
 import java.util.*;
 
 @PMTINFAIElements.ModElement.Tag
-public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
+public class FlipFlopBlock extends PMTINFAIElements.ModElement {
     @ObjectHolder("pmtinfai:flipflopblock")
     public static final Block block = null;
     @ObjectHolder("pmtinfai:flipflopblock")
     public static final TileEntityType<CustomTileEntity> tileEntityType = null;
 
-    public FlipFlopBlockBlock(PMTINFAIElements instance) {
+    public FlipFlopBlock(PMTINFAIElements instance) {
         super(instance, 20);
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
     }
@@ -214,7 +214,7 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 
                     @Override
                     public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-                        return new FlipFlopGUIGui.GuiContainerMod(id, inventory,
+                        return new FlipFlopGui.GuiContainerMod(id, inventory,
                                 new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
                     }
                 }, new BlockPos(x, y, z));
@@ -808,7 +808,7 @@ public class FlipFlopBlockBlock extends PMTINFAIElements.ModElement {
 
         @Override
         public Container createMenu(int id, PlayerInventory player) {
-            return new LogicBlockGUIGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
+            return new LogicBlockGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
         }
 
         @Override

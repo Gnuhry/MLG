@@ -3,7 +3,7 @@ package net.mcreator.pmtinfai.block;
 
 import io.netty.buffer.Unpooled;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.gui.TischGui;
+import net.mcreator.pmtinfai.gui.WorkbenchGui;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -98,7 +98,7 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
 
                     @Override
                     public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-                        return new TischGui.GuiContainerMod(id, inventory, new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
+                        return new WorkbenchGui.GuiContainerMod(id, inventory, new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
                     }
                 }, new BlockPos(x, y, z));
             }
@@ -142,7 +142,8 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
     }
 
     public static class CustomTileEntity extends LockableLootTileEntity {
-        private NonNullList<ItemStack> stacks = NonNullList.withSize(29, ItemStack.EMPTY);
+        private NonNullList<ItemStack> stacks = NonNullList.withSize(10, ItemStack.EMPTY);
+        private int kind=28;
 
         protected CustomTileEntity() {
             super(Objects.requireNonNull(tileEntityType));
@@ -152,15 +153,26 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
         public void read(CompoundNBT compound) {
             super.read(compound);
             this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+            kind = compound.getInt("kind");
             ItemStackHelper.loadAllItems(compound, this.stacks);
         }
 
         @Override
         public CompoundNBT write(CompoundNBT compound) {
             super.write(compound);
+            compound.putInt("kind", kind);
             ItemStackHelper.saveAllItems(compound, this.stacks);
             return compound;
         }
+
+        public int getKind() {
+            return kind;
+        }
+
+        public void setKind(int kind) {
+            this.kind = kind;
+        }
+
 
         @Override
         public SUpdateTileEntityPacket getUpdatePacket() {
@@ -179,7 +191,7 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
 
         @Override
         public int getSizeInventory() {
-            return 29;
+            return 10;
         }
 
         @Override
@@ -212,7 +224,7 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
 
         @Override
         public Container createMenu(int id, PlayerInventory player) {
-            return new TischGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
+            return new WorkbenchGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
         }
 
         @Override

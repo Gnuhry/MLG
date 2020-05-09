@@ -5,9 +5,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.inventory.IInventory;
 
-public class Slot_FF_IO extends Slot {
+public class FlipFlopSlot extends Slot {
 	public boolean set = true, reset = true, clock = true, output = true;
-	public Slot_FF_IO(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+	public FlipFlopSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
 		super(inventoryIn, index, xPosition, yPosition);
 	}
 

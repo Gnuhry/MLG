@@ -4,7 +4,7 @@ package net.mcreator.pmtinfai.block;
 import io.netty.buffer.Unpooled;
 import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
-import net.mcreator.pmtinfai.gui.PrinterGUIGui;
+import net.mcreator.pmtinfai.gui.PrinterGui;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -121,7 +121,7 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
 
                     @Override
                     public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-                        return new PrinterGUIGui.GuiContainerMod(id, inventory,
+                        return new PrinterGui.GuiContainerMod(id, inventory,
                                 new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
                     }
                 }, new BlockPos(x, y, z));
@@ -273,7 +273,7 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
 
         @Override
         public Container createMenu(int id, PlayerInventory player) {
-            return new PrinterGUIGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
+            return new PrinterGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
         }
 
         @Override

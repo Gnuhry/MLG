@@ -1,4 +1,4 @@
-package net.mcreator.pmtinfai.gui;
+package net.mcreator.pmtinfai.slots;
 
 import net.mcreator.pmtinfai.MKLGItems;
 import net.minecraft.inventory.IInventory;

@@ -6,10 +6,10 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class Slot_Tisch extends Slot {
+public class PrinterSlot extends Slot {
     private Item item;
     private boolean Tag=false;
-    public Slot_Tisch(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+    public PrinterSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
         super(inventoryIn, index, xPosition, yPosition);
     }
 

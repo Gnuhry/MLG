@@ -5,9 +5,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.inventory.IInventory;
 
-public class Slot_IO extends Slot {
+public class LogicSlot extends Slot {
 	public boolean input = true, output = true;
-	public Slot_IO(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+	public LogicSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
 		super(inventoryIn, index, xPosition, yPosition);
 	}
 
