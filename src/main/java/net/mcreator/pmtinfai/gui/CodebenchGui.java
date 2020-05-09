@@ -302,7 +302,7 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
         public void init(Minecraft minecraft, int width, int height) {
             super.init(minecraft, width, height);
             minecraft.keyboardListener.enableRepeatEvents(true);
-            Logiccode = new TextFieldWidget(this.font, 150, 57, 120, 20, "Logic Code");
+            Logiccode = new TextFieldWidget(this.font, this.guiLeft + 20, this.guiTop + 20, 120, 20, "Logic Code");
             guistate.put("text:Logiccode", Logiccode);
             Logiccode.setMaxStringLength(32767);
             this.children.add(this.Logiccode);
@@ -402,7 +402,7 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
         }
     }
 
-    private static boolean CheckExpression(String exp, int type) {
+    private static boolean CheckExpression(String exp, int i) {
         List<Character> allowed = new ArrayList<>();
         allowed.add('(');
         allowed.add(')');
@@ -411,9 +411,9 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
         literal.add('T');
         literal.add('F');
         literal.add('A');
-        if (type >= 1)
+        if (i > 0)
             literal.add('B');
-        if (type >= 2)
+        if (i > 1)
             literal.add('C');
         List<Character> literal2 = new ArrayList<>();
         literal2.add('&');
@@ -448,6 +448,8 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
                                 return false;
                             x.set(f, 'T');
                             x.subList(g, f).clear();
+                            f = 0;
+                            g = -1;
                         } else {
                             return false;
                         }
