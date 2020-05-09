@@ -34,13 +34,16 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -103,6 +106,16 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
                 }, new BlockPos(x, y, z));
             }
             return true;
+        }
+
+        @Override
+        public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+            super.onBlockHarvested(worldIn, pos, state, player);
+            CustomTileEntity cte=((CustomTileEntity)worldIn.getTileEntity(pos));
+            cte.setInventorySlotContents(4,ItemStack.EMPTY);
+            cte.setInventorySlotContents(5,ItemStack.EMPTY);
+            cte.setInventorySlotContents(6,ItemStack.EMPTY);
+            cte.setInventorySlotContents(7,ItemStack.EMPTY);
         }
 
         @Override

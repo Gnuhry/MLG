@@ -244,7 +244,13 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                 }
             }));
             this.customSlots.put(4, this.addSlot(new DisplaySlot(internal, 4, 8, 35) {
-
+                @Override
+                public void onSlotChanged() {
+                    super.onSlotChanged();
+                    CompoundNBT nbt = new CompoundNBT();
+                    nbt.putBoolean("display", true);
+                    this.getStack().setTag(nbt);
+                }
             }));
             this.customSlots.put(5, this.addSlot(new DisplaySlot(internal, 5, 26, 35) {
 
@@ -551,11 +557,6 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                 handleButtonAction(entity, 0, x, y, z);
 
             }) {
-                @Override
-                public void onPress() {
-                    super.onPress();
-                    System.out.println("Test");
-                }
             });
             this.addButton(new Button(this.guiLeft + -29, this.guiTop + 29, 27, 20, "OR", e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(1, x, y, z));
