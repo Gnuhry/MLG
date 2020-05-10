@@ -1,5 +1,5 @@
 {
-  "parent": "pmtinfai:block/logicblock_noout",
+  "parent": "pmtinfai:block/flipflopblock",
   "display": {
     "thirdperson": {
       "rotation": [

@@ -1,11 +1,11 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "pmtinfai:grundblock/texture_flipflopblock_platte",
-		"1": "pmtinfai:grundblock/texture_flipflopblock_pc_seite",
-		"2": "pmtinfai:grundblock/texture_flipflopblock_seite",
-		"3": "pmtinfai:grundblock/texture_flipflop_pc_oben",
-		"particle": "pmtinfai:grundblock/texture_flipflopblock_platte"
+		"0": "pmtinfai:blocks/grundblock/texture_flipflopblock_platte",
+		"1": "pmtinfai:blocks/grundblock/texture_flipflopblock_pc_seite",
+		"2": "pmtinfai:blocks/grundblock/texture_flipflopblock_seite",
+		"3": "pmtinfai:blocks/grundblock/texture_flipflop_pc_oben",
+		"particle": "pmtinfai:blocks/grundblock/texture_flipflopblock_platte"
 	},
 	"elements": [
 		{

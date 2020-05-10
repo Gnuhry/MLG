@@ -6,8 +6,7 @@
       }
     },
     {
-      "when":
-      {
+      "when": {
         "clock_side": "north"
       },
       "apply": {
@@ -16,8 +15,7 @@
       }
     },
     {
-      "when":
-      {
+      "when": {
         "clock_side": "east"
       },
       "apply": {
@@ -26,8 +24,7 @@
       }
     },
     {
-      "when":
-      {
+      "when": {
         "clock_side": "south"
       },
       "apply": {
@@ -35,7 +32,7 @@
       }
     },
     {
-      "when":  {
+      "when": {
         "clock_side": "west"
       },
       "apply": {
@@ -44,8 +41,7 @@
       }
     },
     {
-      "when":
-      {
+      "when": {
         "set_side": "north"
       },
       "apply": {
@@ -54,8 +50,7 @@
       }
     },
     {
-      "when":
-      {
+      "when": {
         "set_side": "east"
       },
       "apply": {
@@ -64,8 +59,7 @@
       }
     },
     {
-      "when":
-      {
+      "when": {
         "set_side": "south"
       },
       "apply": {
@@ -73,7 +67,7 @@
       }
     },
     {
-      "when":  {
+      "when": {
         "set_side": "west"
       },
       "apply": {
@@ -82,8 +76,7 @@
       }
     },
     {
-      "when":
-      {
+      "when": {
         "reset_side": "north"
       },
       "apply": {
@@ -92,8 +85,7 @@
       }
     },
     {
-      "when":
-      {
+      "when": {
         "reset_side": "east"
       },
       "apply": {
@@ -102,8 +94,7 @@
       }
     },
     {
-      "when":
-      {
+      "when": {
         "reset_side": "south"
       },
       "apply": {
@@ -111,7 +102,7 @@
       }
     },
     {
-      "when":  {
+      "when": {
         "reset_side": "west"
       },
       "apply": {
@@ -159,8 +150,7 @@
         "logic": "none"
       },
       "apply": {
-        "model": "pmtinfai:block/flipflopblock_pc",
-        "y": 270
+        "model": "pmtinfai:block/flipflopblock_pc"
       }
     }
   ]
