@@ -1,23 +1,28 @@
 {
-  "gui.pmtinfai.w": "W",
-  "item.pmtinfai.set": "Set",
-  "gui.pmtinfai.s": "S",
-  "item.pmtinfai.cable": "Cable",
+  "block.pmtinfai.flipflopblock": "FlipFlop Block",
+  "block.pmtinfai.workbench": "Workbench",
   "block.pmtinfai.logicblock": "Logic Block",
+  "block.pmtinfai.printer": "Printer Block",
+  "block.pmtinfai.codebench": "Workbench",
+
+  "item.pmtinfai.cable": "Cable",
+  "item.pmtinfai.set": "Set",
   "item.pmtinfai.memory": "Memory",
-  "gui.pmtinfai.n": "N",
   "item.pmtinfai.customcard": "Custom Card",
-  "gui.pmtinfai.io": "I/O",
   "item.pmtinfai.standardcard": "Card",
-  "gui.pmtinfai.e": "E",
+  "item.pmtinfai.input": "Input",
+  "item.pmtinfai.resistor": "Resistor",
+  "item.pmtinfai.reset": "Reset",
   "item.pmtinfai.clock": "Clock",
   "item.pmtinfai.output": "Output",
   "item.pmtinfai.pin": "Pin",
-  "block.pmtinfai.flipflopblock": "FlipFlop Block",
-  "block.pmtinfai.workbench": "Workbench",
-  "itemGroup.tablogicblocks": "Logic Block",
-  "item.pmtinfai.input": "Input",
-  "item.pmtinfai.resistor": "Resistor",
+
+  "gui.pmtinfai.s": "S",
+  "gui.pmtinfai.w": "W",
+  "gui.pmtinfai.n": "N",
+  "gui.pmtinfai.e": "E",
+  "gui.pmtinfai.io": "I/O",
   "gui.pmtinfai.logic": "Logic",
-  "item.pmtinfai.reset": "Reset"
+
+  "itemGroup.tablogicblocks": "Logic Block"
 }
