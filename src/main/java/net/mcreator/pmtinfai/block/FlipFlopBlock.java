@@ -89,7 +89,7 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
 
         // boolean Variablen zum Abfangen von Multithreading
         public CustomBlock() {
-            super(Block.Properties.create(Material.MISCELLANEOUS).sound(SoundType.STEM).hardnessAndResistance(0f, 0f).lightValue(0));
+            super(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0f, 0f).lightValue(0));
             setRegistryName("flipflopblock");
             // Laden der Default Properties der Blöcke
             this.setDefaultState(this.stateContainer.getBaseState().with(POWER, 0).with(INPUT1, InputSide.NONE)
