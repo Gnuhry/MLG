@@ -14,8 +14,8 @@ public enum FFSpecies implements IStringSerializable {
     // 1 | 0
     // 1 | 1
     // Q=save, F=false, D=toggle, T=true
-    private final char[] TableRS = new char[]{'Q', 'T', 'F', 'F'};
-    private final char[] TableJK = new char[]{'Q', 'T', 'F', 'D'};
+    private final char[] TableRS = new char[]{'Q', 'F', 'T', 'F'};
+    private final char[] TableJK = new char[]{'Q', 'F', 'T', 'D'};
     private final char[] TableD = new char[]{'F', 'F', 'T', 'T'};
     private final char[] TableT = new char[]{'Q', 'Q', 'D', 'D'};
     // Variablen

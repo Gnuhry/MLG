@@ -1,6 +1,7 @@
 
 package net.mcreator.pmtinfai.itemgroup;
 
+import net.mcreator.pmtinfai.block.LogicBlock;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
 
@@ -22,7 +23,7 @@ public class LogicBlocksItemGroup extends PMTINFAIElements.ModElement {
 			@OnlyIn(Dist.CLIENT)
 			@Override
 			public ItemStack createIcon() {
-				return new ItemStack(Blocks.REDSTONE_WIRE, 1);
+				return new ItemStack(LogicBlock.block, 1);
 			}
 
 			@OnlyIn(Dist.CLIENT)

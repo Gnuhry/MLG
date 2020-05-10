@@ -54,11 +54,11 @@ public enum LogicKinds {
             case 22:
                 return JK_FF;
             case 23:
-                return JK_FF_P;
-            case 24:
                 return JK_FF_H;
-            case 25:
+            case 24:
                 return JK_FF_L;
+            case 25:
+                return JK_FF_P;
             case 26:
                 return JK_FF_MS;
         }
@@ -88,9 +88,9 @@ public enum LogicKinds {
         if (this == D_FF_MS) return 20;
         if (this == T_FF_MS) return 21;
         if (this == JK_FF) return 22;
-        if (this == JK_FF_P) return 23;
-        if (this == JK_FF_H) return 24;
-        if (this == JK_FF_L) return 25;
+        if (this == JK_FF_H) return 23;
+        if (this == JK_FF_L) return 24;
+        if (this == JK_FF_P) return 25;
         if (this == JK_FF_MS) return 26;
         return 27;
     }

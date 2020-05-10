@@ -15,7 +15,7 @@ public class FlipFlopSlot extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if (set && stack.getItem() == MKLGItems.InputItem || output && stack.getItem() == MKLGItems.OutputItem
+        if (set && stack.getItem() == MKLGItems.SetItem || output && stack.getItem() == MKLGItems.OutputItem
                 || reset && stack.getItem() == MKLGItems.ResetItem || clock && stack.getItem() == MKLGItems.ClockItem) {
             return true;
         }

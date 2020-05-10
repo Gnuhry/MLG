@@ -8,6 +8,7 @@ import net.mcreator.pmtinfai.slots.PrinterSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -297,6 +298,7 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
 
         @Override
         protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+            this.font.drawString(I18n.format("gui.pmtinfai.printer"), 80, 5, -16777216);
         }
 
         @Override

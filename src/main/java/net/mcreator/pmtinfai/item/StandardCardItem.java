@@ -2,6 +2,7 @@
 package net.mcreator.pmtinfai.item;
 
 import net.mcreator.pmtinfai.MKLGItems;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.registries.ObjectHolder;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
@@ -66,7 +67,7 @@ public class StandardCardItem extends PMTINFAIElements.ModElement {
 				if (b) {
 					help = LogicSpecies.GetEnum(help).toString();
 				}
-				itextcomponent.appendText("logic: ").appendText(help);
+				itextcomponent.appendText(I18n.format("item.pmtinfai.logic")+": ").appendText(help);
 				tooltip.add(itextcomponent);
 			}
 		}

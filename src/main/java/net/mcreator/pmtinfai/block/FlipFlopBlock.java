@@ -432,9 +432,19 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
             } else {
                 clearSlot(pos, world, d, -1);
             }
+            return IO_State(blockstate, item);
+        }
+
+        /**
+         * * private*** Findet Heraus ob weitere Inputs oder Outputs Slot frei sind
+         *
+         * @param blockstate BlockState des Blockes
+         * @param item       Item welches gerade geändert wurde
+         */
+        public boolean[] IO_State(BlockState blockstate, Item item) {
             return new boolean[]{!(blockstate.get(INPUT1).isActive() || item == MKLGItems.SetItem),
                     !(blockstate.get(INPUT2).isActive() || item == MKLGItems.ResetItem),
-                    !(blockstate.get(INPUT3).isActive() || item == MKLGItems.ClockItem),
+                    (!(blockstate.get(INPUT3).isActive() || item == MKLGItems.ClockItem))&&blockstate.get(LOGIC).GetClockMode()!=0,
                     !(blockstate.get(OUTPUT).isActive() || item == MKLGItems.OutputItem)};
         }
 
@@ -496,10 +506,10 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
          */
         private int getPowerOnSides(World world, BlockPos pos, BlockState blockstate) {
             List<Integer> inputs = new ArrayList();
-            if (blockstate.has(INPUT1) && blockstate.get(INPUT1) != InputSide.NONE)
-                inputs.add(this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT1).GetDirection())));
-            if (blockstate.has(INPUT2) && blockstate.get(INPUT2) != InputSide.NONE)
-                inputs.add(this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT2).GetDirection())));
+            if ((blockstate.has(INPUT1) && blockstate.get(INPUT1) == InputSide.NONE) || (blockstate.has(INPUT2) && blockstate.get(INPUT2) == InputSide.NONE))
+                return 0;
+            inputs.add(this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT1).GetDirection())));
+            inputs.add(this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT2).GetDirection())));
             if (blockstate.has(INPUT3) && blockstate.get(INPUT3) != InputSide.NONE)
                 inputs.add(this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT3).GetDirection())));
             if (inputs.size() <= 0)

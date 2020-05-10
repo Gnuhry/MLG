@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -521,11 +522,11 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
 
         @Override
         protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-            this.font.drawString("R-S-FF", 178, 11, -60392);
-            this.font.drawString("D-FF", 178, 47, -60392);
-            this.font.drawString("T-FF", 178, 83, -60392);
-            this.font.drawString("J-K-FF", 178, 119, -60392);
-            this.font.drawString("Name", 80, 5, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.rsff"), 178, 11, -60392);
+            this.font.drawString(I18n.format("gui.pmtinfai.dff"), 178, 47, -60392);
+            this.font.drawString(I18n.format("gui.pmtinfai.tff"), 178, 83, -60392);
+            this.font.drawString(I18n.format("gui.pmtinfai.jkff"), 178, 119, -60392);
+            this.font.drawString(I18n.format("gui.pmtinfai.workbench"), 80, 5, -16777216);
         }
 
         @Override
@@ -538,32 +539,32 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
         public void init(Minecraft minecraft, int width, int height) {
             super.init(minecraft, width, height);
             minecraft.keyboardListener.enableRepeatEvents(true);
-            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 11, 27, 20, "AND", e -> {
+            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 11, 27, 20, I18n.format("gui.pmtinfai.and"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(0, x, y, z));
                 handleButtonAction(entity, 0, x, y, z);
             }) {
             });
-            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 29, 27, 20, "OR", e -> {
+            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 29, 27, 20, I18n.format("gui.pmtinfai.or"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(1, x, y, z));
                 handleButtonAction(entity, 1, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 47, 27, 20, "NOT", e -> {
+            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 47, 27, 20, I18n.format("gui.pmtinfai.not"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(2, x, y, z));
                 handleButtonAction(entity, 2, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 65, 27, 20, "NAND", e -> {
+            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 65, 27, 20, I18n.format("gui.pmtinfai.nand"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(3, x, y, z));
                 handleButtonAction(entity, 3, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 83, 27, 20, "NOR", e -> {
+            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 83, 27, 20, I18n.format("gui.pmtinfai.nor"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(4, x, y, z));
                 handleButtonAction(entity, 4, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 101, 27, 20, "XOR", e -> {
+            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 101, 27, 20, I18n.format("gui.pmtinfai.xor"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(5, x, y, z));
                 handleButtonAction(entity, 5, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 119, 27, 20, "XNOR", e -> {
+            this.addButton(new Button(this.guiLeft + -29, this.guiTop + 119, 27, 20, I18n.format("gui.pmtinfai.xnor"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(6, x, y, z));
                 handleButtonAction(entity, 6, x, y, z);
             }));
@@ -571,7 +572,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(7, x, y, z));
                 handleButtonAction(entity, 7, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + 205, this.guiTop + 20, 10, 20, "P", e -> {
+            this.addButton(new Button(this.guiLeft + 205, this.guiTop + 20, 10, 20, I18n.format("gui.pmtinfai.pegel"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(8, x, y, z));
                 handleButtonAction(entity, 8, x, y, z);
             }));
@@ -587,7 +588,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(11, x, y, z));
                 handleButtonAction(entity, 11, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + 205, this.guiTop + 56, 10, 20, "P", e -> {
+            this.addButton(new Button(this.guiLeft + 205, this.guiTop + 56, 10, 20, I18n.format("gui.pmtinfai.pegel"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(12, x, y, z));
                 handleButtonAction(entity, 12, x, y, z);
             }));
@@ -611,19 +612,19 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(17, x, y, z));
                 handleButtonAction(entity, 17, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + 205, this.guiTop + 92, 10, 20, "P", e -> {
+            this.addButton(new Button(this.guiLeft + 205, this.guiTop + 92, 10, 20, I18n.format("gui.pmtinfai.pegel"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(18, x, y, z));
                 handleButtonAction(entity, 18, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + 214, this.guiTop + 20, 10, 20, "M", e -> {
+            this.addButton(new Button(this.guiLeft + 214, this.guiTop + 20, 10, 20, I18n.format("gui.pmtinfai.masterslave"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(19, x, y, z));
                 handleButtonAction(entity, 19, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + 214, this.guiTop + 56, 10, 20, "M", e -> {
+            this.addButton(new Button(this.guiLeft + 214, this.guiTop + 56, 10, 20, I18n.format("gui.pmtinfai.masterslave"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(20, x, y, z));
                 handleButtonAction(entity, 20, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + 214, this.guiTop + 92, 10, 20, "M", e -> {
+            this.addButton(new Button(this.guiLeft + 214, this.guiTop + 92, 10, 20, I18n.format("gui.pmtinfai.masterslave"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(21, x, y, z));
                 handleButtonAction(entity, 21, x, y, z);
             }));
@@ -639,11 +640,11 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(24, x, y, z));
                 handleButtonAction(entity, 24, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + 205, this.guiTop + 128, 10, 20, "P", e -> {
+            this.addButton(new Button(this.guiLeft + 205, this.guiTop + 128, 10, 20, I18n.format("gui.pmtinfai.pegel"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(25, x, y, z));
                 handleButtonAction(entity, 25, x, y, z);
             }));
-            this.addButton(new Button(this.guiLeft + 214, this.guiTop + 128, 10, 20, "M", e -> {
+            this.addButton(new Button(this.guiLeft + 214, this.guiTop + 128, 10, 20, I18n.format("gui.pmtinfai.masterslave"), e -> {
                 PMTINFAI.PACKET_HANDLER.sendToServer(new ButtonPressedMessage(26, x, y, z));
                 handleButtonAction(entity, 26, x, y, z);
             }));

@@ -156,6 +156,11 @@ public class LogicBlockGui extends PMTINFAIElements.ModElement {
                     }
                 }
             }));
+            boolean[] io_boolean = lb.IO_State(world.getBlockState(new BlockPos(x,y,z)),0,0,world,new BlockPos(x,y,z));
+            for (int f = 0; f < 4; f++) {
+                ((LogicSlot) customSlots.get(f)).input = io_boolean[0];
+                ((LogicSlot) customSlots.get(f)).output = io_boolean[1];
+            }
             ((KernelSlot) this.customSlots.get(4)).logic_ = true;
             int si;
             int sj;
@@ -331,14 +336,16 @@ public class LogicBlockGui extends PMTINFAIElements.ModElement {
             super.tick();
         }
 
-        @Override
+        @Override @OnlyIn(Dist.CLIENT)
         protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-            this.font.drawString(I18n.format("n"), 58, 1, -16777216);
-            this.font.drawString(I18n.format("w"), 27, 33, -16777216);
-            this.font.drawString(I18n.format("s"), 57, 65, -16777216);
-            this.font.drawString(I18n.format("e"), 90, 33, -16777216);
-            this.font.drawString(I18n.format("io"), 17, 6, -16777216);
-            this.font.drawString(I18n.format("logic"), 134, 6, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.n"), 58, 3, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.w"), 27, 33, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.s"), 57, 65, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.e"), 90, 33, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.io"), 17, 6, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.logic"), 134, 6, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.logicb"), 80, 5, -16777216);
+
         }
 
         @Override

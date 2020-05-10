@@ -5,6 +5,7 @@ import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.block.FlipFlopBlock;
 import net.mcreator.pmtinfai.slots.KernelSlot;
 import net.mcreator.pmtinfai.slots.FlipFlopSlot;
+import net.mcreator.pmtinfai.slots.LogicSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -163,6 +164,14 @@ public class FlipFlopGui extends PMTINFAIElements.ModElement {
                     }
                 }
             }));
+            boolean[] io_boolean = lb.IO_State(world.getBlockState(new BlockPos(x,y,z)),null);
+            for (int f = 0; f < 4; f++) {
+                FlipFlopSlot slot = ((FlipFlopSlot) customSlots.get(f));
+                slot.set = io_boolean[0];
+                slot.reset = io_boolean[1];
+                slot.clock = io_boolean[2];
+                slot.output = io_boolean[3];
+            }
             int si;
             int sj;
             for (si = 0; si < 3; ++si)
@@ -338,12 +347,14 @@ public class FlipFlopGui extends PMTINFAIElements.ModElement {
 
         @Override
         protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-            this.font.drawString(I18n.format("n"), 58, 1, -16777216);
-            this.font.drawString(I18n.format("w"), 27, 33, -16777216);
-            this.font.drawString(I18n.format("s"), 57, 65, -16777216);
-            this.font.drawString(I18n.format("e"), 90, 33, -16777216);
-            this.font.drawString(I18n.format("io"), 17, 6, -16777216);
-            this.font.drawString(I18n.format("logic"), 134, 6, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.n"), 58, 3, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.w"), 27, 33, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.s"), 57, 65, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.e"), 90, 33, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.io"), 17, 6, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.logic"), 134, 6, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.flipflop"), 80, 5, -16777216);
+
         }
 
         @Override

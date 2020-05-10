@@ -11,6 +11,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -299,6 +300,7 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
 
         @Override
         protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+            this.font.drawString(I18n.format("gui.pmtinfai.codebench"), 80, 5, -16777216);
         }
 
         @Override
@@ -407,11 +409,11 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
             CodebenchBlock.CustomTileEntity ct = ((CodebenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z)));
             if (ct.getStackInSlot(0).isEmpty()) {
                 if (mcserv != null)
-                    mcserv.getPlayerList().sendMessage(new StringTextComponent("No Card, (Saved in Block)"));
+                    mcserv.getPlayerList().sendMessage(new StringTextComponent(I18n.format("gui.pmtinfai.save")));
                 ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText(text);
             } else {
                 if (mcserv != null)
-                    mcserv.getPlayerList().sendMessage(new StringTextComponent("Saved"));
+                    mcserv.getPlayerList().sendMessage(new StringTextComponent(I18n.format("gui.pmtinfai.saved")));
                 ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText(text);
                 CompoundNBT nbt = new CompoundNBT();
                 nbt.putString("logic", ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getText());
@@ -425,7 +427,7 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
             }
         } else {
             if (mcserv != null)
-                mcserv.getPlayerList().sendMessage(new StringTextComponent("Wrong entry"));
+                mcserv.getPlayerList().sendMessage(new StringTextComponent(I18n.format("gui.pmtinfai.wrong")));
         }
     }
 

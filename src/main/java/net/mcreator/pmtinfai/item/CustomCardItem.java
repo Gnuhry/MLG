@@ -23,26 +23,11 @@ public class CustomCardItem extends PMTINFAIElements.ModElement {
 	public void initElements() {
 		elements.items.add(() -> new ItemCustom());
 	}
-	public static class ItemCustom extends Item {
+	public static class ItemCustom extends StandardCardItem.ItemCustom {
 		public ItemCustom() {
-			super(new Item.Properties().group(LogicBlocksItemGroup.tab).maxStackSize(64));
+			super();
 			setRegistryName("customcard");
 			MKLGItems.CustomCardItem=this;
-		}
-
-		@Override
-		public int getItemEnchantability() {
-			return 0;
-		}
-
-		@Override
-		public int getUseDuration(ItemStack itemstack) {
-			return 0;
-		}
-
-		@Override
-		public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
-			return 1F;
 		}
 	}
 }

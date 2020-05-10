@@ -522,7 +522,7 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
          * @param world  Welt des Blockes
          * @param pos    Position des Blockes
          */
-        private boolean[] IO_State(BlockState bs, int input, int output, World world, BlockPos pos) {
+        public boolean[] IO_State(BlockState bs, int input, int output, World world, BlockPos pos) {
             if (bs.get(INPUT1) != InputSide.NONE)
                 input++;
             if (bs.get(INPUT2) != InputSide.NONE)
