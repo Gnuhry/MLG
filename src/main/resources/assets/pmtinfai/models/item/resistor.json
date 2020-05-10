@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "pmtinfai:items/texture_resistance"
+    "layer0": "pmtinfai:items/texture_resistance_item"
   }
 }

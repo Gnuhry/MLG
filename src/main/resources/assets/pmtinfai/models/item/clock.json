@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "pmtinfai:items/clock"
+    "layer0": "pmtinfai:items/texture_clock_item"
   }
 }

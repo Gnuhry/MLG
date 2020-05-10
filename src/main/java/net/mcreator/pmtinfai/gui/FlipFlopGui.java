@@ -313,7 +313,7 @@ public class FlipFlopGui extends PMTINFAIElements.ModElement {
             this.ySize = 166;
         }
 
-        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/logicblockgui.png");
+        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/gui/flipflopgui.png");
 
         @Override
         public void render(int mouseX, int mouseY, float partialTicks) {

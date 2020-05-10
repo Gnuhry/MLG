@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "pmtinfai:items/reset"
+    "layer0": "pmtinfai:items/texture_reset_item"
   }
 }

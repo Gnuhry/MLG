@@ -45,6 +45,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -177,7 +179,7 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
          * @param pos   Position des Blockes
          */
         public void GetAllStates(String exp, World world, BlockPos pos) {
-            if (exp == null || (world.getBlockState(pos).hasTileEntity()&&getTE(world, pos).GetTest2()!=null&&getTE(world, pos).GetTest2().equals(exp)))
+            if (exp == null || (world.getBlockState(pos).hasTileEntity() && getTE(world, pos).GetTest2() != null && getTE(world, pos).GetTest2().equals(exp)))
                 return;
             getTE(world, pos).SetTest2(exp);
             world.setBlockState(pos, world.getBlockState(pos).with(LOGIC, LogicSpecies.GetEnum(exp)));
@@ -489,6 +491,29 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
         }
 
         /**
+         * Animiere die Partikel
+         *
+         * @param stateIn BlockState des Blockes
+         * @param worldIn Welt des Blockes
+         * @param pos     Position des Blockes
+         * @param rand    RandomGenerator
+         */
+        @OnlyIn(Dist.CLIENT)
+        public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+            CustomTileEntity ct = ((CustomTileEntity) worldIn.getTileEntity(pos));
+            System.out.println("Test");
+            if (ct.GetActiveInput(0)) {
+
+            }
+//            if (stateIn.get(LIT)) {
+//                double d0 = (double) pos.getX() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
+//                double d1 = (double) pos.getY() + 0.7D + (rand.nextDouble() - 0.5D) * 0.2D;
+//                double d2 = (double) pos.getZ() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
+//                worldIn.addParticle(RedstoneParticleData.REDSTONE_DUST, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+//            }
+        }
+
+        /**
          * * private*** Findet Heraus ob weitere Inputs oder Outputs Slot frei sind
          *
          * @param bs     BlockState des Blockes
@@ -755,6 +780,7 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
         private boolean isActive = true;
         private String test2 = "null";
         private int MaxInput = 3;
+        private boolean[] activeInput=new boolean[]{false,false,false,false};
 
         protected CustomTileEntity() {
             super(Objects.requireNonNull(tileEntityType));
@@ -767,6 +793,9 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
             MaxInput = compound.getInt("input");
             for (int f = 0; f < help.length; f++) {
                 help[f] = compound.getBoolean("HashMap" + f);
+            }
+            for (int f = 0; f < activeInput.length; f++) {
+                activeInput[f] = compound.getBoolean("activeInput" + f);
             }
             isActive = compound.getBoolean("active");
             this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
@@ -781,11 +810,20 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
             for (int f = 0; f < help.length; f++) {
                 compound.putBoolean("HashMap" + f, help[f]);
             }
+            for (int f = 0; f < activeInput.length; f++) {
+                compound.putBoolean("activeInput" + f, activeInput[f]);
+            }
             compound.putBoolean("active", isActive);
             ItemStackHelper.saveAllItems(compound, this.stacks);
             return compound;
         }
 
+        public void SetActiveInput(int slot, boolean active){
+            activeInput[slot]=active;
+        }
+        public boolean GetActiveInput(int slot){
+            return activeInput[slot];
+        }
         public int GetMaxInput() {
             return MaxInput;
         }

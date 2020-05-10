@@ -272,7 +272,7 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
             this.ySize = 166;
         }
 
-        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/printergui.png");
+        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/gui/printergui.png");
 
         @Override
         public void render(int mouseX, int mouseY, float partialTicks) {
