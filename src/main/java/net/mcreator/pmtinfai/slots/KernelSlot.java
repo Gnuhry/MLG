@@ -16,7 +16,7 @@ public class KernelSlot extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        return logic_ ? stack.getItem() == MKLGItems.StandardcardItem && stack.hasTag() && Objects.requireNonNull(stack.getTag()).contains("logic") && stack.getTag().contains("logic_") : stack.getItem() == MKLGItems.StandardcardItem && stack.hasTag() && Objects.requireNonNull(stack.getTag()).contains("logic") && !stack.getTag().contains("logic_");
+        return logic_ ? (stack.getItem() == MKLGItems.StandardcardItem|| stack.getItem() == MKLGItems.CustomCardItem) && stack.hasTag() && Objects.requireNonNull(stack.getTag()).contains("logic") && stack.getTag().contains("logic_") : stack.getItem() == MKLGItems.StandardcardItem && stack.hasTag() && Objects.requireNonNull(stack.getTag()).contains("logic") && !stack.getTag().contains("logic_");
     }
 
     @Override

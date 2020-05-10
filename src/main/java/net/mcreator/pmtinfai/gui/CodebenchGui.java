@@ -4,6 +4,7 @@ package net.mcreator.pmtinfai.gui;
 import net.mcreator.pmtinfai.PMTINFAI;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.block.CodebenchBlock;
+import net.mcreator.pmtinfai.block.WorkbenchBlock;
 import net.mcreator.pmtinfai.slots.CodeBenchSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -101,7 +102,15 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
                     if (!((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getText().equals("")) {
                         CompoundNBT nbt = new CompoundNBT();
                         nbt.putString("logic", ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getText());
+                        nbt.putBoolean("logic_", true);
                         customSlots.get(0).getStack().setTag(nbt);
+                        ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText("");
+                    } else if (customSlots.get(0).getStack().hasTag() && customSlots.get(0).getStack().getTag().contains("logic_")) {
+                        ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText(customSlots.get(0).getStack().getTag().getString("logic"));
+                        TextFieldWidget tw = (TextFieldWidget) guistate.getOrDefault("text:Logiccode", null);
+                        if (tw != null) {
+                            tw.setText(customSlots.get(0).getStack().getTag().getString("logic"));
+                        }
                     }
                 }
             }));
@@ -387,15 +396,33 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
             return;
         String text = ((TextFieldWidget) guistate.get("text:Logiccode")).getText();
         String[] exp = text.split(",");
-        boolean b = true;
-        for (int f = 0; f < exp.length; f++) {
-            b = b && CheckExpression(exp[f], 2 - f);
+        boolean b = exp.length == 3;
+        if (b) {
+            for (int f = 0; f < exp.length; f++) {
+                b = b && CheckExpression(exp[f], 2 - f);
+            }
         }
         MinecraftServer mcserv = ServerLifecycleHooks.getCurrentServer();
         if (b) {
-            if (mcserv != null)
-                mcserv.getPlayerList().sendMessage(new StringTextComponent("Saved"));
-            ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText(text);
+            CodebenchBlock.CustomTileEntity ct = ((CodebenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z)));
+            if (ct.getStackInSlot(0).isEmpty()) {
+                if (mcserv != null)
+                    mcserv.getPlayerList().sendMessage(new StringTextComponent("No Card, (Saved in Block)"));
+                ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText(text);
+            } else {
+                if (mcserv != null)
+                    mcserv.getPlayerList().sendMessage(new StringTextComponent("Saved"));
+                ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText(text);
+                CompoundNBT nbt = new CompoundNBT();
+                nbt.putString("logic", ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getText());
+                nbt.putBoolean("logic_", true);
+                ct.getStackInSlot(0).setTag(nbt);
+                ((CodebenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).setText("");
+                TextFieldWidget tw = (TextFieldWidget) guistate.getOrDefault("text:Logiccode", null);
+                if (tw != null) {
+                    tw.setText("");
+                }
+            }
         } else {
             if (mcserv != null)
                 mcserv.getPlayerList().sendMessage(new StringTextComponent("Wrong entry"));
@@ -457,6 +484,6 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
                 }
             }
         }
-        return (literal.contains(x.get(0))) && x.size() == 1;
+        return x.size() == 1 && (literal.contains(x.get(0)));
     }
 }

@@ -30,7 +30,6 @@ public class InputItem extends PMTINFAIElements.ModElement {
             super(new Item.Properties().group(LogicBlocksItemGroup.tab).maxStackSize(16));
             setRegistryName("input");
             MKLGItems.InputItem=this;
-            MKLGItems.SetItem=MKLGItems.InputItem;
         }
 
         @Override

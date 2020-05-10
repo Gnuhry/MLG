@@ -97,7 +97,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             this.customSlots.put(0, this.addSlot(new Slot(internal, 0, 8, 57) {
                 @Override
                 public boolean isItemValid(ItemStack stack) {
-                    return (((WorkbenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getKind() < 27) && Items.REDSTONE_TORCH == stack.getItem();
+                    return (((WorkbenchBlock.CustomTileEntity) Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)))).getKind() < 27) && MKLGItems.Cable == stack.getItem();
                 }
 
                 @Override
@@ -134,7 +134,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             this.customSlots.put(1, this.addSlot(new Slot(internal, 1, 26, 57) {
                 @Override
                 public boolean isItemValid(ItemStack stack) {
-                    return (((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind() < 27) && Items.REDSTONE == stack.getItem();
+                    return (((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind() < 27) && MKLGItems.Pin == stack.getItem();
                 }
 
                 @Override
@@ -171,7 +171,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             this.customSlots.put(2, this.addSlot(new Slot(internal, 2, 44, 57) {
                 @Override
                 public boolean isItemValid(ItemStack stack) {
-                    return (((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind() < 27) && MKLGItems.BlockItem == stack.getItem();
+                    return (((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind() < 27) && MKLGItems.Memory == stack.getItem();
                 }
 
                 @Override
@@ -208,7 +208,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             this.customSlots.put(3, this.addSlot(new Slot(internal, 3, 62, 57) {
                 @Override
                 public boolean isItemValid(ItemStack stack) {
-                    return (((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind() < 27) && Items.REPEATER == stack.getItem();
+                    return (((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind() < 27) &&MKLGItems.Resistor == stack.getItem();
                 }
 
                 @Override
@@ -333,10 +333,10 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             }));
             WorkbenchBlock.CustomTileEntity wb = ((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z)));
             int[] set = Recipe_MKLG.CheckRecipe(LogicKinds.Get(wb.getKind()));
-            this.customSlots.get(4).putStack(new ItemStack(Items.REDSTONE_TORCH, set[0]));
-            this.customSlots.get(5).putStack(new ItemStack(Items.REDSTONE, set[1]));
-            this.customSlots.get(6).putStack(new ItemStack(MKLGItems.BlockItem, set[2]));
-            this.customSlots.get(7).putStack(new ItemStack(Items.REPEATER, set[3]));
+            this.customSlots.get(4).putStack(new ItemStack(MKLGItems.Cable, set[0]));
+            this.customSlots.get(5).putStack(new ItemStack(MKLGItems.Pin, set[1]));
+            this.customSlots.get(6).putStack(new ItemStack(MKLGItems.Memory, set[2]));
+            this.customSlots.get(7).putStack(new ItemStack(MKLGItems.Resistor, set[3]));
             int si;
             int sj;
             for (si = 0; si < 3; ++si)
@@ -727,10 +727,10 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
         int[] help = Recipe_MKLG.CheckRecipe(lk);
         ((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).setKind(lk.Get());
         WorkbenchBlock.CustomTileEntity ct = ((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z)));
-        ct.setInventorySlotContents(4, new ItemStack(Items.REDSTONE_TORCH, help[0]));
-        ct.setInventorySlotContents(5, new ItemStack(Items.REDSTONE, help[1]));
-        ct.setInventorySlotContents(6, new ItemStack(MKLGItems.BlockItem, help[2]));
-        ct.setInventorySlotContents(7, new ItemStack(Items.REPEATER, help[3]));
+        ct.setInventorySlotContents(4, new ItemStack(MKLGItems.Cable, help[0]));
+        ct.setInventorySlotContents(5, new ItemStack(MKLGItems.Pin, help[1]));
+        ct.setInventorySlotContents(6, new ItemStack(MKLGItems.Memory, help[2]));
+        ct.setInventorySlotContents(7, new ItemStack(MKLGItems.Resistor, help[3]));
         ItemStack erg = new ItemStack(MKLGItems.StandardcardItem, 1);
         erg.setTag(lk.GetNBT());
         ct.setInventorySlotContents(10, erg);

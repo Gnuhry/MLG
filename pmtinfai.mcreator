@@ -136,6 +136,70 @@
       "compiles": true,
       "locked_code": true,
       "ids": {}
+    },
+    {
+      "name": "Resistor",
+      "type": "item",
+      "sortid": 21,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Pin",
+      "type": "item",
+      "sortid": 22,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Memory",
+      "type": "item",
+      "sortid": 23,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Cable",
+      "type": "item",
+      "sortid": 24,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Set",
+      "type": "item",
+      "sortid": 25,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Reset",
+      "type": "item",
+      "sortid": 26,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Clock",
+      "type": "item",
+      "sortid": 27,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "CustomCard",
+      "type": "item",
+      "sortid": 28,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
     }
   ],
   "variable_elements": [],
@@ -143,33 +207,49 @@
   "language_map": {
     "en_us": {
       "gui.pmtinfai.w": "W",
+      "item.pmtinfai.set": "Set",
       "gui.pmtinfai.s": "S",
+      "item.pmtinfai.cable": "Cable",
       "block.pmtinfai.logicblock": "Logic Block",
+      "item.pmtinfai.memory": "Memory",
       "gui.pmtinfai.n": "N",
+      "item.pmtinfai.customcard": "Custom Card",
       "gui.pmtinfai.io": "I/O",
       "item.pmtinfai.standardcard": "Card",
       "gui.pmtinfai.e": "E",
+      "item.pmtinfai.clock": "Clock",
       "item.pmtinfai.output": "Output",
+      "item.pmtinfai.pin": "Pin",
       "block.pmtinfai.flipflopblock": "FlipFlop Block",
       "block.pmtinfai.workbench": "Workbench",
       "itemGroup.tablogicblocks": "Logic Block",
       "item.pmtinfai.input": "Input",
-      "gui.pmtinfai.logic": "Logic"
+      "item.pmtinfai.resistor": "Resistor",
+      "gui.pmtinfai.logic": "Logic",
+      "item.pmtinfai.reset": "Reset"
     },
     "de_de": {
       "gui.pmtinfai.w": "W",
+      "item.pmtinfai.set": "Set",
       "gui.pmtinfai.s": "S",
+      "item.pmtinfai.cable": "Cable",
       "block.pmtinfai.logicblock": "Logik Block",
+      "item.pmtinfai.memory": "Memory",
       "gui.pmtinfai.n": "N",
+      "item.pmtinfai.customcard": "Custom Card",
       "gui.pmtinfai.io": "E/A",
       "item.pmtinfai.standardcard": "Karte",
       "gui.pmtinfai.e": "O",
+      "item.pmtinfai.clock": "Clock",
       "item.pmtinfai.output": "Ausgang",
+      "item.pmtinfai.pin": "Pin",
       "block.pmtinfai.flipflopblock": "FlipFlop Block",
       "block.pmtinfai.workbench": "Werkbank",
       "itemGroup.tablogicblocks": "Logik Block",
       "item.pmtinfai.input": "Eingang",
-      "gui.pmtinfai.logic": "Logik"
+      "item.pmtinfai.resistor": "Resistor",
+      "gui.pmtinfai.logic": "Logik",
+      "item.pmtinfai.reset": "Reset"
     }
   },
   "workspaceSettings": {
