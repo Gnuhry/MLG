@@ -496,7 +496,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             this.ySize = 166;
         }
 
-        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/tisch.png");
+        private static final ResourceLocation texture = new ResourceLocation("pmtinfai:textures/worktablegui.png");
 
         @Override
         public void render(int mouseX, int mouseY, float partialTicks) {
