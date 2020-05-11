@@ -162,6 +162,14 @@ public class FlipFlopGui extends PMTINFAIElements.ModElement {
                     } catch (Exception ed) {
                         lb.GetAllStates("none", world, new BlockPos(x, y, z));
                     }
+                    boolean[] io_boolean = lb.IO_State(world.getBlockState(new BlockPos(x,y,z)),null);
+                    for (int f = 0; f < 4; f++) {
+                        FlipFlopSlot slot = ((FlipFlopSlot) customSlots.get(f));
+                        slot.set = io_boolean[0];
+                        slot.reset = io_boolean[1];
+                        slot.clock = io_boolean[2];
+                        slot.output = io_boolean[3];
+                    }
                 }
             }));
             boolean[] io_boolean = lb.IO_State(world.getBlockState(new BlockPos(x,y,z)),null);
