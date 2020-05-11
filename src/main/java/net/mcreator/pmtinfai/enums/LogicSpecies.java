@@ -1,10 +1,11 @@
 package net.mcreator.pmtinfai.enums;
 
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.client.resources.I18n;
 
 public enum LogicSpecies implements IStringSerializable {
     // Enum
-    AND("and"), OR("or"), NOT("not"), NOR("nor"), NAND("nand"), XOR("xor"), XNOR("xnor"), NONE("none"), CUSTOM("custom");
+    AND(I18n.format("enum.pmtinfai.and")), OR(I18n.format("enum.pmtinfai.or")), NOT(I18n.format("enum.pmtinfai.not")), NOR(I18n.format("enum.pmtinfai.nor")), NAND(I18n.format("enum.pmtinfai.nand")), XOR(I18n.format("enum.pmtinfai.xor")), XNOR(I18n.format("enum.pmtinfai.xnor")), NONE(I18n.format("enum.pmtinfai.none")), CUSTOM(I18n.format("enum.pmtinfai.custom"));
     private static final String[] help = new String[]{"(A&(B&C)),(A&B),F", "(A|(B|C)),(A|B),F", "F,F,(!A)", "(!(A|(B|C))),(!(A|B)),F",
             "(!(A&(B&C))),(!(A&B)),F", "((A&(B&C))|((A&((!B)&(!C)))|(((!A)&(B&(!C)))|((!A)&((!B)&C))))),(((!A)&B)|((!B)&A)),F",
             "(!((A&(B&C))|((A&((!B)&(!C)))|(((!A)&(B&(!C)))|((!A)&((!B)&C)))))),(!(((!A)&B)|((!B)&A))),F"};
@@ -28,7 +29,7 @@ public enum LogicSpecies implements IStringSerializable {
     }
 
     /**
-     * Gibt den Namen zurück
+     * Gibt den Namen zurï¿½ck
      *
      * @return Name des Enums
      */
@@ -49,7 +50,7 @@ public enum LogicSpecies implements IStringSerializable {
      * Wandelt die Direction in das Enum um
      *
      * @param d Direction zum Umwandeln
-     * @return zugehöriges Enum
+     * @return zugehï¿½riges Enum
      */
     public static LogicSpecies GetEnum(String d) {
         if (d.equals(help[0]))
