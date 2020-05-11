@@ -5,10 +5,10 @@ import net.minecraft.client.resources.I18n;
 
 public enum FFSpecies implements IStringSerializable {
     // Enum
-    RS(I18n.format("enum.pmtinfai.rs_ff")), P_RS(I18n.format("enum.pmtinfai.gated_rs_ff")), HF_RS(I18n.format("enum.pmtinfai.rising_rs_ff")), LF_RS(I18n.format("enum.pmtinfai.falling_rs_ff")), MS_RS(I18n.format("enum.pmtinfai.master_slave_rs_ff")), JK(I18n.format("enum.pmtinfai.jk_ff")), P_JK(
-            I18n.format("enum.pmtinfai.gated_jk_ff")), HF_JK(I18n.format("enum.pmtinfai.rising_jk_ff")), LF_JK(I18n.format("enum.pmtinfai.falling_jk_ff")), MS_JK(I18n.format("enum.pmtinfai.master_slave_jk_ff")), D(I18n.format("enum.pmtinfai.d_ff")), P_D(I18n.format("enum.pmtinfai.gated_d_ff")), HF_D(
-            I18n.format("enum.pmtinfai.rising_d_ff")), LF_D(I18n.format("enum.pmtinfai.falling_d_ff")), MS_D(I18n.format("enum.pmtinfai.master_slave_d_ff")), T(
-            I18n.format("enum.pmtinfai.t_ff")), P_T(  I18n.format("enum.pmtinfai.gated_t_ff")), HF_T(I18n.format("enum.pmtinfai.rising_t_ff")), LF_T(I18n.format("enum.pmtinfai.falling_t_ff")), MS_T(I18n.format("enum.pmtinfai.master_slave_t_ff")), NONE(I18n.format("enum.pmtinfai.none"));
+    RS("rs_ff"), P_RS("gated_rs_ff"), HF_RS("rising_rs_ff"), LF_RS("falling_rs_ff"), MS_RS("master_slave_rs_ff"), JK("jk_ff"), P_JK(
+            "gated_jk_ff"), HF_JK("rising_jk_ff"), LF_JK("falling_jk_ff"), MS_JK("master_slave_jk_ff"), D("d_ff"), P_D("gated_d_ff"), HF_D(
+            "rising_d_ff"), LF_D("falling_d_ff"), MS_D("master_slave_f_ff"), T(
+            "t_ff"), P_T("gated_t_ff"), HF_T("rising_t_ff"), LF_T("falling_t_ff"), MS_T("master_slave_t_ff"), NONE("none");
     // S | R
     // 0 | 0
     // 0 | 1
@@ -52,6 +52,75 @@ public enum FFSpecies implements IStringSerializable {
      *
      * @return Aktiv wenn die InputSeite existiert
      */
+
+    public String getTranslationName() {
+        if(this==RS){
+            return I18n.format("enum.pmtinfai.rs_ff");
+        }
+        if(this==JK){
+            return I18n.format("enum.pmtinfai.jk_ff");
+        }
+        if(this==D){
+            return I18n.format("enum.pmtinfai.d_ff");
+        }
+        if(this==T){
+            return I18n.format("enum.pmtinfai.t_ff");
+        }
+        if(this==P_RS){
+            return I18n.format("enum.pmtinfai.gated_rs_ff");
+        }
+        if(this==P_JK){
+            return I18n.format("enum.pmtinfai.gated_jk_ff");
+        }
+        if(this==P_D){
+            return I18n.format("enum.pmtinfai.gated_d_ff");
+        }
+        if(this==P_T){
+            return I18n.format("enum.pmtinfai.gated_t_ff");
+        }
+        if(this==HF_RS){
+            return I18n.format("enum.pmtinfai.rising_rs_ff");
+        }
+        if(this==HF_JK){
+            return I18n.format("enum.pmtinfai.rising_jk_ff");
+        }
+        if(this==HF_D){
+            return I18n.format("enum.pmtinfai.rising_d_ff");
+        }
+        if(this==HF_T){
+            return I18n.format("enum.pmtinfai.rising_t_ff");
+        }
+        if(this==LF_RS){
+            return I18n.format("enum.pmtinfai.falling_rs_ff");
+        }
+        if(this==LF_JK){
+            return I18n.format("enum.pmtinfai.falling_jk_ff");
+        }
+        if(this==LF_D){
+            return I18n.format("enum.pmtinfai.falling_d_ff");
+        }
+        if(this==LF_T){
+            return I18n.format("enum.pmtinfai.falling_t_ff");
+        }
+        if(this==MS_RS){
+            return I18n.format("enum.pmtinfai.master_slave_rs_ff");
+        }
+        if(this==MS_JK){
+            return I18n.format("enum.pmtinfai.master_slave_jk_ff");
+        }
+        if(this==MS_D){
+            return I18n.format("enum.pmtinfai.master_slave_d_ff");
+        }
+        if(this==MS_T){
+            return I18n.format("enum.pmtinfai.master_slave_t_ff");
+        }
+        if(this==NONE){
+            return I18n.format("enum.pmtinfai.none");
+        }
+        return this.getName();
+    }
+
+
     public boolean isActive() {
         return this != NONE;
     }
