@@ -152,6 +152,166 @@
       "apply": {
         "model": "pmtinfai:block/flipflopblock_pc"
       }
+    },
+    {
+      "when": {
+        "logic": "rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_oc"
+      }
+    },
+    {
+      "when": {
+        "logic": "gated_rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_pg"
+      }
+    },
+    {
+      "when": {
+        "logic": "rising_rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_p"
+      }
+    },
+    {
+      "when": {
+        "logic": "falling_rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_n"
+      }
+    },
+    {
+      "when": {
+        "logic": "master_slave_rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_ms"
+      }
+    },
+    {
+      "when": {
+        "logic": "d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_oc"
+      }
+    },
+    {
+      "when": {
+        "logic": "gated_d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_pg"
+      }
+    },
+    {
+      "when": {
+        "logic": "rising_d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_p"
+      }
+    },
+    {
+      "when": {
+        "logic": "falling_d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_n"
+      }
+    },
+    {
+      "when": {
+        "logic": "master_slave_d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_ms"
+      }
+    },
+    {
+      "when": {
+        "logic": "t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_oc"
+      }
+    },
+    {
+      "when": {
+        "logic": "gated_t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_pg"
+      }
+    },
+    {
+      "when": {
+        "logic": "rising_t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_p"
+      }
+    },
+    {
+      "when": {
+        "logic": "falling_t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_n"
+      }
+    },
+    {
+      "when": {
+        "logic": "master_slave_t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_ms"
+      }
+    },
+    {
+      "when": {
+        "logic": "jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_oc"
+      }
+    },
+    {
+      "when": {
+        "logic": "gated_jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_pg"
+      }
+    },
+    {
+      "when": {
+        "logic": "rising_jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_p"
+      }
+    },
+    {
+      "when": {
+        "logic": "falling_jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_n"
+      }
+    },
+    {
+      "when": {
+        "logic": "master_slave_jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_ms"
+      }
     }
   ]
 }
