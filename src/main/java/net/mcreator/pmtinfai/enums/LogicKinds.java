@@ -97,6 +97,7 @@ public enum LogicKinds {
 
     public CompoundNBT GetNBT() {
         CompoundNBT erg = new CompoundNBT();
+        erg.putInt("CustomModelData", this.Get()+1);
         switch (this) {
             case AndGate:
                 erg.putString("logic", "(A&(B&C)),(A&B),F");
