@@ -90,7 +90,7 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
                     this.internal = (IInventory) ent;
             }
             internal.openInventory(inv.player);
-            this.customSlots.put(0, this.addSlot(new PrinterSlot(internal, 0, 8, 29) {
+            this.customSlots.put(0, this.addSlot(new PrinterSlot(internal, 0, 26, 39) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
@@ -102,14 +102,14 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
                     return 1;
                 }
             }));
-            this.customSlots.put(1, this.addSlot(new PrinterSlot(internal, 1, 43, 29) {
+            this.customSlots.put(1, this.addSlot(new PrinterSlot(internal, 1, 62, 39) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
                     ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
                 }
             }));
-            this.customSlots.put(2, this.addSlot(new PrinterSlot(internal, 2, 133, 29) {
+            this.customSlots.put(2, this.addSlot(new PrinterSlot(internal, 2, 134, 39) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
