@@ -22,7 +22,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -209,7 +208,7 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
             this.customSlots.put(3, this.addSlot(new Slot(internal, 3, 62, 57) {
                 @Override
                 public boolean isItemValid(ItemStack stack) {
-                    return (((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind() < 27) &&MKLGItems.Resistor == stack.getItem();
+                    return (((WorkbenchBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).getKind() < 27) && MKLGItems.Resistor == stack.getItem();
                 }
 
                 @Override
@@ -268,28 +267,30 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                     int[] amount = Recipe_MKLG.CheckRecipe(LogicKinds.Get(amount_));
                     if (amount_ > 26) return;
                     while (true) {
-                        for (int f = 0; f < amount.length; f++) {
+                        //Check for Ingriedients
+                        for (int f = 0; f < amount.length; f++)
                             if (amount[f] > customSlots.get(f).getStack().getCount())
                                 return;
-                        }
-                        if (customSlots.get(8).getStack().getCount() > 0) {
-                            Slot set = customSlots.get(9);
-                            for (int f = 0; f < amount.length; f++) {
-                                customSlots.get(f).getStack().shrink(amount[f]);
-                            }
-                            customSlots.get(8).getStack().shrink(1);
-                            if (set.getHasStack() && set.getStack().getTag() == LogicKinds.Get(amount_).GetNBT()) {
-                                set.getStack().grow(1);
-                            } else {
-                                ItemStack is = new ItemStack(MKLGItems.StandardcardItem, 1);
-                                is.setTag(LogicKinds.Get(amount_).GetNBT());
-                                set.putStack(is);
-                            }
-                        } else {
+                        if(!customSlots.get(8).getHasStack())
                             return;
+
+                        //Check Slot 9
+                        if(customSlots.get(9).getHasStack()&&customSlots.get(9).getStack().hasTag()&&customSlots.get(9).getStack().getTag().contains("logic")&&customSlots.get(9).getStack().getTag().getString("logic")!= LogicKinds.Get(amount_).GetNBT().getString("logic"))
+                            return;
+
+                        for (int f = 0; f < amount.length; f++) {
+                            customSlots.get(f).getStack().shrink(amount[f]);
+                        }
+                        customSlots.get(8).getStack().shrink(1);
+
+                        if(customSlots.get(9).getHasStack())
+                            customSlots.get(9).getStack().grow(1);
+                        else{
+                            ItemStack is = new ItemStack(MKLGItems.StandardcardItem, 1);
+                            is.setTag(LogicKinds.Get(amount_).GetNBT());
+                            customSlots.get(9).putStack(is);
                         }
                     }
-
                 }
             }));
             this.customSlots.put(9, this.addSlot(new Slot(internal, 9, 134, 21) {
@@ -305,28 +306,30 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
                     int[] amount = Recipe_MKLG.CheckRecipe(LogicKinds.Get(amount_));
                     if (amount_ > 26) return;
                     while (true) {
-                        for (int f = 0; f < amount.length; f++) {
+                        //Check for Ingriedients
+                        for (int f = 0; f < amount.length; f++)
                             if (amount[f] > customSlots.get(f).getStack().getCount())
                                 return;
-                        }
-                        if (customSlots.get(8).getStack().getCount() > 0) {
-                            Slot set = customSlots.get(9);
-                            for (int f = 0; f < amount.length; f++) {
-                                customSlots.get(f).getStack().shrink(amount[f]);
-                            }
-                            customSlots.get(8).getStack().shrink(1);
-                            if (set.getHasStack() && set.getStack().getTag() == LogicKinds.Get(amount_).GetNBT()) {
-                                set.getStack().grow(1);
-                            } else {
-                                ItemStack is = new ItemStack(MKLGItems.StandardcardItem, 1);
-                                is.setTag(LogicKinds.Get(amount_).GetNBT());
-                                set.putStack(is);
-                            }
-                        } else {
+                        if(!customSlots.get(8).getHasStack())
                             return;
+
+                        //Check Slot 9
+                        if(customSlots.get(9).getHasStack()&&customSlots.get(9).getStack().hasTag()&&customSlots.get(9).getStack().getTag().contains("logic")&&customSlots.get(9).getStack().getTag().getString("logic")!= LogicKinds.Get(amount_).GetNBT().getString("logic"))
+                            return;
+
+                        for (int f = 0; f < amount.length; f++) {
+                            customSlots.get(f).getStack().shrink(amount[f]);
+                        }
+                        customSlots.get(8).getStack().shrink(1);
+
+                        if(customSlots.get(9).getHasStack())
+                            customSlots.get(9).getStack().grow(1);
+                        else{
+                            ItemStack is = new ItemStack(MKLGItems.StandardcardItem, 1);
+                            is.setTag(LogicKinds.Get(amount_).GetNBT());
+                            customSlots.get(9).putStack(is);
                         }
                     }
-
                 }
             }));
             this.customSlots.put(10, this.addSlot(new DisplaySlot(internal, 10, 134, 35) {
@@ -735,6 +738,6 @@ public class WorkbenchGui extends PMTINFAIElements.ModElement {
         ItemStack erg = new ItemStack(MKLGItems.StandardcardItem, 1);
         erg.setTag(lk.GetNBT());
         ct.setInventorySlotContents(10, erg);
-
+        ct.setInventorySlotContents(8,ct.getStackInSlot(8));
     }
 }
