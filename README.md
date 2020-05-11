@@ -7,4 +7,4 @@
 
 Die Minecraft Mod für Logikblöcke wie And, Or, RS-FF und weiteres.
 
-Schaue vorbei: https://pmtinf19ai2.github.io/
+Schaue vorbei: http://minekraft-logik-gatter.de/
