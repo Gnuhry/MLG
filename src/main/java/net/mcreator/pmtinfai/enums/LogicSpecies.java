@@ -1,6 +1,7 @@
 package net.mcreator.pmtinfai.enums;
 
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.client.resources.I18n;
 
 public enum LogicSpecies implements IStringSerializable {
     // Enum
@@ -28,7 +29,7 @@ public enum LogicSpecies implements IStringSerializable {
     }
 
     /**
-     * Gibt den Namen zurück
+     * Gibt den Namen zurï¿½ck
      *
      * @return Name des Enums
      */
@@ -41,6 +42,38 @@ public enum LogicSpecies implements IStringSerializable {
      *
      * @return Aktiv wenn die InputSeite existiert
      */
+
+    public String getTranslationName() {
+        if(this==AND){
+            return I18n.format("enum.pmtinfai.and");
+        }
+        if(this==OR){
+            return I18n.format("enum.pmtinfai.or");
+        }
+        if(this==NOT){
+            return I18n.format("enum.pmtinfai.not");
+        }
+        if(this==NOR){
+            return I18n.format("enum.pmtinfai.nor");
+        }
+        if(this==NAND){
+            return I18n.format("enum.pmtinfai.nand");
+        }
+        if(this==XOR){
+            return I18n.format("enum.pmtinfai.xor");
+        }
+        if(this==XNOR){
+            return I18n.format("enum.pmtinfai.xnor");
+        }
+        if(this==NONE){
+            return I18n.format("enum.pmtinfai.none");
+        }
+        if(this==CUSTOM){
+            return I18n.format("enum.pmtinfai.custom");
+        }
+        return this.getName();
+    }
+
     public boolean isActive() {
         return this != NONE;
     }
@@ -49,7 +82,7 @@ public enum LogicSpecies implements IStringSerializable {
      * Wandelt die Direction in das Enum um
      *
      * @param d Direction zum Umwandeln
-     * @return zugehöriges Enum
+     * @return zugehï¿½riges Enum
      */
     public static LogicSpecies GetEnum(String d) {
         if (d.equals(help[0]))

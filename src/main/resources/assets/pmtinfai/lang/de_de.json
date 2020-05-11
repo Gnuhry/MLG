@@ -46,5 +46,41 @@
   "gui.pmtinfai.flipflop": "FlipFlop",
   "gui.pmtinfai.logicb": "Logik",
 
-  "itemGroup.tablogicblocks": "Logik Block"
+  "itemGroup.tablogicblocks": "Logik Block",
+
+  "enum.pmtinfai.rs_ff": "rs_flipflop",
+  "enum.pmtinfai.gated_rs_ff": "taktgesteuertes_rs_flipflop",
+  "enum.pmtinfai.rising_rs_ff": "steigendes_rs_flipflop",
+  "enum.pmtinfai.falling_rs_ff": "fallendes_rs_flipflop",
+  "enum.pmtinfai.master_slave_rs_ff": "meister_sklave_rs_flipflop",
+  "enum.pmtinfai.jk_ff": "jk_flipflop",
+  "enum.pmtinfai.d_ff": "d_flipflop",
+  "enum.pmtinfai.t_ff": "t_flipflop",
+  "enum.pmtinfai.gated_jk_ff": "taktgesteuertes_jk_flipflop",
+  "enum.pmtinfai.gated_d_ff": "taktgesteuertes_d_flipflop",
+  "enum.pmtinfai.gated_t_ff": "taktgesteuertes_t_flipflop",
+  "enum.pmtinfai.rising_jk_ff": "steigendes_jk_flipflop",
+  "enum.pmtinfai.rising_d_ff": "steigendes_d_flipflop",
+  "enum.pmtinfai.rising_t_ff": "steigendes_t_flipflop",
+  "enum.pmtinfai.falling_jk_ff": "fallendes_jk_flipflop",
+  "enum.pmtinfai.falling_d_ff": "fallendes_d_flipflop",
+  "enum.pmtinfai.falling_t_ff": "fallendes_t_flipflop",
+  "enum.pmtinfai.master_slave_jk_ff": "meister_sklave_jk_flipflop",
+  "enum.pmtinfai.master_slave_d_ff": "meister_sklave_d_flipflop",
+  "enum.pmtinfai.master_slave_t_ff": "meister_sklave_t_flipflop",
+  "enum.pmtinfai.none": "nichts",
+
+  "enum.pmtinfai.west": "westen",
+  "enum.pmtinfai.east": "osten",
+  "enum.pmtinfai.south": "süden",
+  "enum.pmtinfai.north": "norden",
+
+  "enum.pmtinfai.and": "und",
+  "enum.pmtinfai.or": "oder",
+  "enum.pmtinfai.not": "nicht",
+  "enum.pmtinfai.nor": "nicht oder",
+  "enum.pmtinfai.nand": "nicht und",
+  "enum.pmtinfai.xor": "exklusiv oderr",
+  "enum.pmtinfai.xnor": "entweder oder",
+  "enum.pmtinfai.custom": "eigen"
 }

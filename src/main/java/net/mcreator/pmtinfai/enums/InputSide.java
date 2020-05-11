@@ -2,6 +2,7 @@ package net.mcreator.pmtinfai.enums;
 
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Direction;
+import net.minecraft.client.resources.I18n;
 
 public enum InputSide implements IStringSerializable {
     //Enum
@@ -27,7 +28,7 @@ public enum InputSide implements IStringSerializable {
     }
 
     /**
-     * Gibt den Namen zurück
+     * Gibt den Namen zurï¿½ck
      *
      * @return Name des Enums
      */
@@ -40,6 +41,26 @@ public enum InputSide implements IStringSerializable {
      *
      * @return Aktiv wenn die InputSeite existiert
      */
+
+    public String getTranslationName() {
+        if(this==WEST){
+            return I18n.format("enum.pmtinfai.west");
+        }
+        if(this==EAST){
+            return I18n.format("enum.pmtinfai.east");
+        }
+        if(this==NORTH){
+            return I18n.format("enum.pmtinfai.north");
+        }
+        if(this==SOUTH){
+            return I18n.format("enum.pmtinfai.south");
+        }
+        if(this==NONE){
+            return I18n.format("enum.pmtinfai.none");
+        }
+        return this.getName();
+    }
+
     public boolean isActive() {
         return this != NONE;
     }
@@ -48,7 +69,7 @@ public enum InputSide implements IStringSerializable {
      * Wandelt die Direction in das Enum um
      *
      * @param d Direction zum Umwandeln
-     * @return zugehöriges Enum
+     * @return zugehï¿½riges Enum
      */
     public static InputSide GetEnum(Direction d) {
         if (d == Direction.EAST)

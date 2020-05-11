@@ -1,6 +1,7 @@
 package net.mcreator.pmtinfai.enums;
 
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.client.resources.I18n;
 
 public enum FFSpecies implements IStringSerializable {
     // Enum
@@ -51,6 +52,75 @@ public enum FFSpecies implements IStringSerializable {
      *
      * @return Aktiv wenn die InputSeite existiert
      */
+
+    public String getTranslationName() {
+        if(this==RS){
+            return I18n.format("enum.pmtinfai.rs_ff");
+        }
+        if(this==JK){
+            return I18n.format("enum.pmtinfai.jk_ff");
+        }
+        if(this==D){
+            return I18n.format("enum.pmtinfai.d_ff");
+        }
+        if(this==T){
+            return I18n.format("enum.pmtinfai.t_ff");
+        }
+        if(this==P_RS){
+            return I18n.format("enum.pmtinfai.gated_rs_ff");
+        }
+        if(this==P_JK){
+            return I18n.format("enum.pmtinfai.gated_jk_ff");
+        }
+        if(this==P_D){
+            return I18n.format("enum.pmtinfai.gated_d_ff");
+        }
+        if(this==P_T){
+            return I18n.format("enum.pmtinfai.gated_t_ff");
+        }
+        if(this==HF_RS){
+            return I18n.format("enum.pmtinfai.rising_rs_ff");
+        }
+        if(this==HF_JK){
+            return I18n.format("enum.pmtinfai.rising_jk_ff");
+        }
+        if(this==HF_D){
+            return I18n.format("enum.pmtinfai.rising_d_ff");
+        }
+        if(this==HF_T){
+            return I18n.format("enum.pmtinfai.rising_t_ff");
+        }
+        if(this==LF_RS){
+            return I18n.format("enum.pmtinfai.falling_rs_ff");
+        }
+        if(this==LF_JK){
+            return I18n.format("enum.pmtinfai.falling_jk_ff");
+        }
+        if(this==LF_D){
+            return I18n.format("enum.pmtinfai.falling_d_ff");
+        }
+        if(this==LF_T){
+            return I18n.format("enum.pmtinfai.falling_t_ff");
+        }
+        if(this==MS_RS){
+            return I18n.format("enum.pmtinfai.master_slave_rs_ff");
+        }
+        if(this==MS_JK){
+            return I18n.format("enum.pmtinfai.master_slave_jk_ff");
+        }
+        if(this==MS_D){
+            return I18n.format("enum.pmtinfai.master_slave_d_ff");
+        }
+        if(this==MS_T){
+            return I18n.format("enum.pmtinfai.master_slave_t_ff");
+        }
+        if(this==NONE){
+            return I18n.format("enum.pmtinfai.none");
+        }
+        return this.getName();
+    }
+
+
     public boolean isActive() {
         return this != NONE;
     }
