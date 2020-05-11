@@ -36,7 +36,7 @@ public class CustomCardItem extends PMTINFAIElements.ModElement {
 	}
 	public static class ItemCustom extends Item {
 		public ItemCustom() {
-			super(new Item.Properties().group(LogicBlocksItemGroup.tab).maxStackSize(64));
+			super(new Item.Properties().group(LogicBlocksItemGroup.tab).maxStackSize(16));
 			setRegistryName("customcard");
 			MKLGItems.CustomCardItem=this;
 		}
