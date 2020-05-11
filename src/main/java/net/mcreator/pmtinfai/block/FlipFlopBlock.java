@@ -26,6 +26,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
@@ -46,6 +47,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -404,6 +407,11 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
                 worldIn.setBlockState(pos, state.with(POWER, calculatedOutput), 3);
             }
             worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+            int i = state.get(POWER);
+            if (calculatedOutput == i) {
+                worldIn.setBlockState(pos, state.with(POWER, (i + 1) % 15), 3);
+                worldIn.setBlockState(pos, state.with(POWER, i), 3);
+            }
         }
 
         /**
@@ -436,6 +444,42 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
         }
 
         /**
+         * Animiere die Partikel
+         *
+         * @param stateIn BlockState des Blockes
+         * @param worldIn Welt des Blockes
+         * @param pos     Position des Blockes
+         * @param rand    RandomGenerator
+         */
+        @OnlyIn(Dist.CLIENT) @Override
+        public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+            CustomTileEntity ct = ((CustomTileEntity) worldIn.getTileEntity(pos));
+            //west,north,east,south
+            double over = (double) pos.getY() + 0.3D;
+            if (ct.GetActiveInput(3)) {
+                double north_middle = (double) pos.getX() + 0.5D;
+                double west_abit = (double) pos.getZ() + 0.2D;
+                worldIn.addParticle(RedstoneParticleData.REDSTONE_DUST, north_middle, over, west_abit, 1.0D, 0.0D, 0.0D);
+            }
+            if (ct.GetActiveInput(0)) {
+                double north_middle_abit = (double) pos.getX() + 0.8D;
+                double west_middle = (double) pos.getZ() + 0.5D;
+                worldIn.addParticle(RedstoneParticleData.REDSTONE_DUST, north_middle_abit, over, west_middle, 1.0D, 0.0D, 0.0D);
+            }
+            if (ct.GetActiveInput(1)) {
+                double north_middle = (double) pos.getX() + 0.5D;
+                double west_middle_abit = (double) pos.getZ() + 0.8D;
+                worldIn.addParticle(RedstoneParticleData.REDSTONE_DUST, north_middle, over, west_middle_abit, 1.0D, 0.0D, 0.0D);
+            }
+            if (ct.GetActiveInput(2)) {
+                double north_abit = (double) pos.getX() + 0.2D;
+                double west_middle = (double) pos.getZ() + 0.5D;
+                worldIn.addParticle(RedstoneParticleData.REDSTONE_DUST, north_abit, over, west_middle, 1.0D, 0.0D, 0.0D);
+
+            }
+        }
+
+        /**
          * * private*** Findet Heraus ob weitere Inputs oder Outputs Slot frei sind
          *
          * @param blockstate BlockState des Blockes
@@ -444,7 +488,7 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
         public boolean[] IO_State(BlockState blockstate, Item item) {
             return new boolean[]{!(blockstate.get(INPUT1).isActive() || item == MKLGItems.SetItem),
                     !(blockstate.get(INPUT2).isActive() || item == MKLGItems.ResetItem),
-                    (!(blockstate.get(INPUT3).isActive() || item == MKLGItems.ClockItem))&&blockstate.get(LOGIC).GetClockMode()!=0,
+                    (!(blockstate.get(INPUT3).isActive() || item == MKLGItems.ClockItem)) && blockstate.get(LOGIC).GetClockMode() != 0,
                     !(blockstate.get(OUTPUT).isActive() || item == MKLGItems.OutputItem)};
         }
 
@@ -508,14 +552,32 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
             List<Integer> inputs = new ArrayList();
             if ((blockstate.has(INPUT1) && blockstate.get(INPUT1) == InputSide.NONE) || (blockstate.has(INPUT2) && blockstate.get(INPUT2) == InputSide.NONE))
                 return 0;
-            inputs.add(this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT1).GetDirection())));
-            inputs.add(this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT2).GetDirection())));
-            if (blockstate.has(INPUT3) && blockstate.get(INPUT3) != InputSide.NONE)
-                inputs.add(this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT3).GetDirection())));
+            int i = this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT1).GetDirection()));
+            int k = DirectiontoSlotID(blockstate.get(INPUT1).GetDirection());
+            if (k >= 0)
+                getTE(world, pos).SetActiveInput(k, i > 0);
+            inputs.add(i);
+            i = this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT2).GetDirection()));
+            k = DirectiontoSlotID(blockstate.get(INPUT2).GetDirection());
+            if (k >= 0)
+                getTE(world, pos).SetActiveInput(k, i > 0);
+            inputs.add(i);
+            if (blockstate.has(INPUT3) && blockstate.get(INPUT3) != InputSide.NONE) {
+                i = this.getPowerOnSide(world, pos, Objects.requireNonNull(blockstate.get(INPUT3).GetDirection()));
+                k = DirectiontoSlotID(blockstate.get(INPUT3).GetDirection());
+                if (k >= 0)
+                    getTE(world, pos).SetActiveInput(k, i > 0);
+                inputs.add(i);
+            }
             if (inputs.size() <= 0)
                 return 0;
-            else
-                return logic(inputs, world, pos);
+            else {
+                i = logic(inputs, world, pos);
+                k = DirectiontoSlotID(blockstate.get(OUTPUT).GetDirection());
+                if (k >= 0)
+                    getTE(world, pos).SetActiveInput(k, i > 0);
+                return i;
+            }
         }
 
         /**
@@ -556,6 +618,28 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
                 default:
                     return null;
             }
+        }
+
+        /**
+         * ** private*** Direction anhand der SlotId
+         *
+         * @param d Direction des Slot
+         * @return SlotID des SlotIDs
+         */
+        private int DirectiontoSlotID(Direction d) {
+            if (d == Direction.WEST) {
+                return 0;
+            }
+            if (d == Direction.NORTH) {
+                return 1;
+            }
+            if (d == Direction.EAST) {
+                return 2;
+            }
+            if (d == Direction.SOUTH) {
+                return 3;
+            }
+            return -1;
         }
 
         /**
@@ -719,6 +803,7 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
         private int HIGH = 0;
         private int LOW = 0;
         private int MS = 0;
+        private boolean[] activeInput = new boolean[]{false, false, false, false};
 
         protected CustomTileEntity() {
             super(Objects.requireNonNull(tileEntityType));
@@ -731,6 +816,9 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
             HIGH = compound.getInt("HIGH");
             LOW = compound.getInt("LOW");
             MS = compound.getInt("MS");
+            for (int f = 0; f < activeInput.length; f++) {
+                activeInput[f] = compound.getBoolean("activeInput" + f);
+            }
             ItemStackHelper.loadAllItems(compound, this.stacks);
         }
 
@@ -741,7 +829,18 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
             compound.putInt("HIGH", HIGH);
             compound.putInt("LOW", LOW);
             compound.putInt("MS", MS);
+            for (int f = 0; f < activeInput.length; f++) {
+                compound.putBoolean("activeInput" + f, activeInput[f]);
+            }
             return compound;
+        }
+
+        public void SetActiveInput(int slot, boolean active) {
+            activeInput[slot] = active;
+        }
+
+        public boolean GetActiveInput(int slot) {
+            return activeInput[slot];
         }
 
         public int GetHIGH() {
