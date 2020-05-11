@@ -6,7 +6,7 @@ public enum FFSpecies implements IStringSerializable {
     // Enum
     RS("rs_ff"), P_RS("gated_rs_ff"), HF_RS("rising_rs_ff"), LF_RS("falling_rs_ff"), MS_RS("master_slave_rs_ff"), JK("jk_ff"), P_JK(
             "gated_jk_ff"), HF_JK("rising_jk_ff"), LF_JK("falling_jk_ff"), MS_JK("master_slave_jk_ff"), D("d_ff"), P_D("gated_d_ff"), HF_D(
-            "rising_d_ff"), LF_D("falling_d_ff"), MS_D("master_slave_f_ff"), T(
+            "rising_d_ff"), LF_D("falling_d_ff"), MS_D("master_slave_d_ff"), T(
             "t_ff"), P_T("gated_t_ff"), HF_T("rising_t_ff"), LF_T("falling_t_ff"), MS_T("master_slave_t_ff"), NONE("none");
     // S | R
     // 0 | 0
@@ -38,7 +38,7 @@ public enum FFSpecies implements IStringSerializable {
     }
 
     /**
-     * Gibt den Namen zurück
+     * Gibt den Namen zurï¿½ck
      *
      * @return Name des Enums
      */
@@ -59,7 +59,7 @@ public enum FFSpecies implements IStringSerializable {
      * Wandelt die Direction in das Enum um
      *
      * @param d Direction zum Umwandeln
-     * @return zugehöriges Enum
+     * @return zugehï¿½riges Enum
      */
     public static FFSpecies GetEnum(String d) {
         if (d.equals("rs_ff"))
