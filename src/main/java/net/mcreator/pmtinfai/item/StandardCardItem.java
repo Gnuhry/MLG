@@ -65,7 +65,7 @@ public class StandardCardItem extends PMTINFAIElements.ModElement {
 				String help = stack.getTag().getString("logic");
 				boolean b = stack.getTag().getBoolean("logic_");
 				if (b) {
-					help = LogicSpecies.GetEnum(help).toString();
+					help = LogicSpecies.GetEnum(help).getTranslationName();
 				}
 				itextcomponent.appendText(I18n.format("item.pmtinfai.logic")+": ").appendText(help);
 				tooltip.add(itextcomponent);
