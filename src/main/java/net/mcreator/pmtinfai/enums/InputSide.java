@@ -6,7 +6,7 @@ import net.minecraft.client.resources.I18n;
 
 public enum InputSide implements IStringSerializable {
     //Enum
-    WEST(I18n.format("enum.pmtinfai.west")), EAST(I18n.format("enum.pmtinfai.east")), NORTH(I18n.format("enum.pmtinfai.north")), SOUTH(I18n.format("enum.pmtinfai.south")), NONE(I18n.format("enum.pmtinfai.none"));
+    WEST("west"), EAST("east"), NORTH("north"), SOUTH("south"), NONE("none");
 
     //Variablen
     private final String name;
@@ -41,6 +41,26 @@ public enum InputSide implements IStringSerializable {
      *
      * @return Aktiv wenn die InputSeite existiert
      */
+
+    public String getTranslationName() {
+        if(this==WEST){
+            return I18n.format("enum.pmtinfai.west");
+        }
+        if(this==EAST){
+            return I18n.format("enum.pmtinfai.east");
+        }
+        if(this==NORTH){
+            return I18n.format("enum.pmtinfai.north");
+        }
+        if(this==SOUTH){
+            return I18n.format("enum.pmtinfai.south");
+        }
+        if(this==NONE){
+            return I18n.format("enum.pmtinfai.none");
+        }
+        return this.getName();
+    }
+
     public boolean isActive() {
         return this != NONE;
     }

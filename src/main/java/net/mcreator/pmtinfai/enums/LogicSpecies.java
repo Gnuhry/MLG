@@ -5,7 +5,7 @@ import net.minecraft.client.resources.I18n;
 
 public enum LogicSpecies implements IStringSerializable {
     // Enum
-    AND(I18n.format("enum.pmtinfai.and")), OR(I18n.format("enum.pmtinfai.or")), NOT(I18n.format("enum.pmtinfai.not")), NOR(I18n.format("enum.pmtinfai.nor")), NAND(I18n.format("enum.pmtinfai.nand")), XOR(I18n.format("enum.pmtinfai.xor")), XNOR(I18n.format("enum.pmtinfai.xnor")), NONE(I18n.format("enum.pmtinfai.none")), CUSTOM(I18n.format("enum.pmtinfai.custom"));
+    AND("and"), OR("or"), NOT("not"), NOR("nor"), NAND("nand"), XOR("xor"), XNOR("xnor"), NONE("none"), CUSTOM("custom");
     private static final String[] help = new String[]{"(A&(B&C)),(A&B),F", "(A|(B|C)),(A|B),F", "F,F,(!A)", "(!(A|(B|C))),(!(A|B)),F",
             "(!(A&(B&C))),(!(A&B)),F", "((A&(B&C))|((A&((!B)&(!C)))|(((!A)&(B&(!C)))|((!A)&((!B)&C))))),(((!A)&B)|((!B)&A)),F",
             "(!((A&(B&C))|((A&((!B)&(!C)))|(((!A)&(B&(!C)))|((!A)&((!B)&C)))))),(!(((!A)&B)|((!B)&A))),F"};
@@ -42,6 +42,38 @@ public enum LogicSpecies implements IStringSerializable {
      *
      * @return Aktiv wenn die InputSeite existiert
      */
+
+    public String getTranslationName() {
+        if(this==AND){
+            return I18n.format("enum.pmtinfai.and");
+        }
+        if(this==OR){
+            return I18n.format("enum.pmtinfai.or");
+        }
+        if(this==NOT){
+            return I18n.format("enum.pmtinfai.not");
+        }
+        if(this==NOR){
+            return I18n.format("enum.pmtinfai.nor");
+        }
+        if(this==NAND){
+            return I18n.format("enum.pmtinfai.nand");
+        }
+        if(this==XOR){
+            return I18n.format("enum.pmtinfai.xor");
+        }
+        if(this==XNOR){
+            return I18n.format("enum.pmtinfai.xnor");
+        }
+        if(this==NONE){
+            return I18n.format("enum.pmtinfai.none");
+        }
+        if(this==CUSTOM){
+            return I18n.format("enum.pmtinfai.custom");
+        }
+        return this.getName();
+    }
+
     public boolean isActive() {
         return this != NONE;
     }
