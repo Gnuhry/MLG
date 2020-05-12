@@ -208,6 +208,14 @@
       "compiles": true,
       "locked_code": false,
       "ids": {}
+    },
+    {
+      "name": "Prozessor",
+      "type": "item",
+      "sortid": 30,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
     }
   ],
   "variable_elements": [],
@@ -215,6 +223,7 @@
   "language_map": {
     "en_us": {
       "gui.pmtinfai.w": "W",
+      "item.pmtinfai.prozessor": "Prozessor",
       "item.pmtinfai.set": "Set",
       "gui.pmtinfai.s": "S",
       "item.pmtinfai.cable": "Cable",
@@ -238,6 +247,7 @@
     },
     "de_de": {
       "gui.pmtinfai.w": "W",
+      "item.pmtinfai.prozessor": "Prozessor",
       "item.pmtinfai.set": "Set",
       "gui.pmtinfai.s": "S",
       "item.pmtinfai.cable": "Cable",
