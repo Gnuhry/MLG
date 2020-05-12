@@ -30,6 +30,6 @@
     { "predicate":  {"custom_model_data": 24}, "model":  "pmtinfai:item/texture_card_item/jk_ff_h"},
     { "predicate":  {"custom_model_data": 25}, "model":  "pmtinfai:item/texture_card_item/jk_ff_l"},
     { "predicate":  {"custom_model_data": 26}, "model":  "pmtinfai:item/texture_card_item/jk_ff_p"},
-    { "predicate":  {"custom_model_data": 26}, "model":  "pmtinfai:item/texture_card_item/jk_ff_ms"}
+    { "predicate":  {"custom_model_data": 27}, "model":  "pmtinfai:item/texture_card_item/jk_ff_ms"}
   ]
 }
