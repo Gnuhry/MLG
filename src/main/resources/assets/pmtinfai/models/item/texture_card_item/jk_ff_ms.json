@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "pmtinfai:items/texture_card_item/texture_jk_ff_masterslave_item"
+  }
+}
