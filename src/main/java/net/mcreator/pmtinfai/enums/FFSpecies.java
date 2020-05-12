@@ -17,8 +17,8 @@ public enum FFSpecies implements IStringSerializable {
     // Q=save, F=false, D=toggle, T=true
     private final char[] TableRS = new char[]{'Q', 'F', 'T', 'F'};
     private final char[] TableJK = new char[]{'Q', 'F', 'T', 'D'};
-    private final char[] TableD = new char[]{'F', 'F', 'T', 'T'};
-    private final char[] TableT = new char[]{'Q', 'Q', 'D', 'D'};
+    private final char[] TableD = new char[]{'F', 'F', 'T', 'F'};
+    private final char[] TableT = new char[]{'Q', 'F', 'D', 'F'};
     // Variablen
     private final String name;
 
@@ -140,7 +140,7 @@ public enum FFSpecies implements IStringSerializable {
             return FFSpecies.HF_RS;
         if (d.equals("falling_rs_ff"))
             return FFSpecies.LF_RS;
-        if (d.equals("master_slace_rs_ff"))
+        if (d.equals("master_slave_rs_ff"))
             return FFSpecies.MS_RS;
         if (d.equals("jk_ff"))
             return FFSpecies.JK;
@@ -150,7 +150,7 @@ public enum FFSpecies implements IStringSerializable {
             return FFSpecies.HF_JK;
         if (d.equals("falling_jk_ff"))
             return FFSpecies.LF_JK;
-        if (d.equals("master_slace_jk_ff"))
+        if (d.equals("master_slave_jk_ff"))
             return FFSpecies.MS_JK;
         if (d.equals("d_ff"))
             return FFSpecies.D;

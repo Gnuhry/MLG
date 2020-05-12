@@ -407,10 +407,11 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
                 worldIn.setBlockState(pos, state.with(POWER, calculatedOutput), 3);
             }
             worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-            int i = state.get(POWER);
-            if (calculatedOutput == i) {
-                worldIn.setBlockState(pos, state.with(POWER, (i + 1) % 15), 3);
-                worldIn.setBlockState(pos, state.with(POWER, i), 3);
+            InputSide i = state.get(OUTPUT);
+            if (calculatedOutput == state.get(POWER) && getTE(worldIn, pos).isSetActive()) {
+                worldIn.setBlockState(pos, state.with(OUTPUT, InputSide.NONE), 3);
+                worldIn.setBlockState(pos, state.with(OUTPUT, i), 3);
+                getTE(worldIn, pos).setSetActive(false);
             }
         }
 
@@ -451,7 +452,8 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
          * @param pos     Position des Blockes
          * @param rand    RandomGenerator
          */
-        @OnlyIn(Dist.CLIENT) @Override
+        @OnlyIn(Dist.CLIENT)
+        @Override
         public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
             CustomTileEntity ct = ((CustomTileEntity) worldIn.getTileEntity(pos));
             //west,north,east,south
@@ -804,6 +806,7 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
         private int LOW = 0;
         private int MS = 0;
         private boolean[] activeInput = new boolean[]{false, false, false, false};
+        private boolean SetActive = false;
 
         protected CustomTileEntity() {
             super(Objects.requireNonNull(tileEntityType));
@@ -819,6 +822,7 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
             for (int f = 0; f < activeInput.length; f++) {
                 activeInput[f] = compound.getBoolean("activeInput" + f);
             }
+            SetActive = compound.getBoolean("set");
             ItemStackHelper.loadAllItems(compound, this.stacks);
         }
 
@@ -829,13 +833,26 @@ public class FlipFlopBlock extends PMTINFAIElements.ModElement {
             compound.putInt("HIGH", HIGH);
             compound.putInt("LOW", LOW);
             compound.putInt("MS", MS);
+            compound.putBoolean("set", SetActive);
             for (int f = 0; f < activeInput.length; f++) {
                 compound.putBoolean("activeInput" + f, activeInput[f]);
             }
             return compound;
         }
 
+
+        public boolean isSetActive() {
+            return SetActive;
+        }
+
+        public void setSetActive(boolean setActive) {
+            SetActive = setActive;
+        }
+
         public void SetActiveInput(int slot, boolean active) {
+            if (activeInput[slot] != active) {
+                SetActive = true;
+            }
             activeInput[slot] = active;
         }
 

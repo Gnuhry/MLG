@@ -451,10 +451,11 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
                 worldIn.setBlockState(pos, state.with(POWER, calculatedOutput), 3);
             }
             worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-            int i = state.get(POWER);
-            if (calculatedOutput == i) {
-                worldIn.setBlockState(pos, state.with(POWER, (i + 1) % 15), 3);
-                worldIn.setBlockState(pos, state.with(POWER, i), 3);
+            InputSide i = state.get(OUTPUT);
+            if (calculatedOutput == state.get(POWER) && getTE(worldIn, pos).isSetActive()) {
+                worldIn.setBlockState(pos, state.with(OUTPUT, InputSide.NONE), 3);
+                worldIn.setBlockState(pos, state.with(OUTPUT, i), 3);
+                getTE(worldIn, pos).setSetActive(false);
             }
         }
 
@@ -842,6 +843,7 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
         private String test2 = "null";
         private int MaxInput = 3;
         private boolean[] activeInput = new boolean[]{false, false, false, false};
+        private boolean SetActive = false;
 
         protected CustomTileEntity() {
             super(Objects.requireNonNull(tileEntityType));
@@ -860,6 +862,7 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
             }
             isActive = compound.getBoolean("active");
             this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+            SetActive = compound.getBoolean("set");
             ItemStackHelper.loadAllItems(compound, this.stacks);
         }
 
@@ -874,15 +877,18 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
             for (int f = 0; f < activeInput.length; f++) {
                 compound.putBoolean("activeInput" + f, activeInput[f]);
             }
+            compound.putBoolean("set", SetActive);
             compound.putBoolean("active", isActive);
             ItemStackHelper.saveAllItems(compound, this.stacks);
             return compound;
         }
 
         public void SetActiveInput(int slot, boolean active) {
+            if (activeInput[slot] != active) {
+                SetActive = true;
+            }
             activeInput[slot] = active;
         }
-
         public boolean GetActiveInput(int slot) {
             return activeInput[slot];
         }
@@ -900,6 +906,15 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
                 return null;
             return test2;
         }
+
+        public boolean isSetActive() {
+            return SetActive;
+        }
+
+        public void setSetActive(boolean setActive) {
+            SetActive = setActive;
+        }
+
 
         public void SetTest2(String set) {
             test2 = set;
