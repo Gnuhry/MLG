@@ -1,0 +1,42 @@
+{
+  "group": "pmtinfai",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "pmtinfai:pin"
+    },
+    "1": {
+      "item": "pmtinfai:cable"
+    },
+    "2": {
+      "item": "pmtinfai:pin"
+    },
+    "3": {
+      "item": "pmtinfai:cable"
+    },
+    "4": {
+      "item": "pmtinfai:memory"
+    },
+    "5": {
+      "item": "pmtinfai:cable"
+    },
+    "6": {
+      "item": "pmtinfai:pin"
+    },
+    "7": {
+      "item": "pmtinfai:cable"
+    },
+    "8": {
+      "item": "pmtinfai:pin"
+    }
+  },
+  "result": {
+    "item": "pmtinfai:prozessor",
+    "count": 1
+  }
+}

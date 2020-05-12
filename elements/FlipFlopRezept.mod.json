@@ -9,37 +9,37 @@
     "recipeShapeless": false,
     "recipeSlots": [
       {
-        "value": ""
+        "value": "CUSTOM:Cable"
       },
       {
-        "value": "Blocks.REDSTONE_TORCH"
+        "value": "CUSTOM:Cable"
       },
       {
-        "value": ""
-      },
-      {
-        "value": ""
-      },
-      {
-        "value": "CUSTOM:Standardcard"
-      },
-      {
-        "value": ""
-      },
-      {
-        "value": "Items.IRON_INGOT"
+        "value": "CUSTOM:Cable"
       },
       {
         "value": "Items.REDSTONE"
       },
       {
-        "value": "Items.IRON_INGOT"
+        "value": "CUSTOM:Prozessor"
+      },
+      {
+        "value": "Items.REDSTONE"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#7"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#7"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#7"
       }
     ],
     "recipeReturnStack": {
-      "value": "CUSTOM:Input"
+      "value": "CUSTOM:FlipFlopBlock"
     },
-    "name": "inputrezept",
+    "name": "flipfloprezept",
     "namespace": "mod"
   }
 }

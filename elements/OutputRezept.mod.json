@@ -4,36 +4,36 @@
   "definition": {
     "recipeType": "Crafting",
     "xpReward": 0.0,
-    "recipeRetstackSize": 8,
+    "recipeRetstackSize": 1,
     "group": "",
     "recipeShapeless": false,
     "recipeSlots": [
       {
-        "value": "Items.REDSTONE"
+        "value": ""
       },
       {
-        "value": "Items.REDSTONE"
+        "value": "Items.REPEATER"
       },
       {
-        "value": "Items.REDSTONE"
+        "value": ""
       },
       {
-        "value": "Items.REDSTONE"
+        "value": ""
       },
       {
         "value": "CUSTOM:Standardcard"
       },
       {
-        "value": "Items.REDSTONE"
+        "value": ""
+      },
+      {
+        "value": "Items.IRON_INGOT"
       },
       {
         "value": "Items.REDSTONE"
       },
       {
-        "value": "Items.REDSTONE"
-      },
-      {
-        "value": "Items.REDSTONE"
+        "value": "Items.IRON_INGOT"
       }
     ],
     "recipeReturnStack": {

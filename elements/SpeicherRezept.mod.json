@@ -9,22 +9,22 @@
     "recipeShapeless": false,
     "recipeSlots": [
       {
-        "value": ""
+        "value": "Items.IRON_INGOT"
       },
       {
-        "value": "Blocks.REDSTONE_TORCH"
+        "value": "Items.REDSTONE"
       },
       {
-        "value": ""
+        "value": "Items.IRON_INGOT"
       },
       {
-        "value": ""
+        "value": "Items.IRON_INGOT"
       },
       {
-        "value": "CUSTOM:Standardcard"
+        "value": "Blocks.CHEST"
       },
       {
-        "value": ""
+        "value": "Items.IRON_INGOT"
       },
       {
         "value": "Items.IRON_INGOT"
@@ -37,9 +37,9 @@
       }
     ],
     "recipeReturnStack": {
-      "value": "CUSTOM:Input"
+      "value": "CUSTOM:Memory"
     },
-    "name": "inputrezept",
+    "name": "speicherrezept",
     "namespace": "mod"
   }
 }

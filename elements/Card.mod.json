@@ -4,7 +4,7 @@
   "definition": {
     "recipeType": "Crafting",
     "xpReward": 0.0,
-    "recipeRetstackSize": 16,
+    "recipeRetstackSize": 4,
     "group": "",
     "recipeShapeless": false,
     "recipeSlots": [
@@ -12,28 +12,28 @@
         "value": ""
       },
       {
-        "value": "Items.IRON_INGOT"
+        "value": "Blocks.GLASS_PANE"
       },
       {
         "value": ""
       },
       {
-        "value": ""
-      },
-      {
-        "value": "Blocks.SMOOTH_STONE"
-      },
-      {
-        "value": ""
-      },
-      {
-        "value": ""
+        "value": "Items.REDSTONE"
       },
       {
         "value": "Items.IRON_INGOT"
       },
       {
-        "value": ""
+        "value": "Items.REDSTONE"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#0"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#0"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#0"
       }
     ],
     "recipeReturnStack": {

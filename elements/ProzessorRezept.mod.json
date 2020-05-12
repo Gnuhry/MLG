@@ -9,37 +9,37 @@
     "recipeShapeless": false,
     "recipeSlots": [
       {
-        "value": ""
+        "value": "CUSTOM:Pin"
       },
       {
-        "value": "Blocks.REDSTONE_TORCH"
+        "value": "CUSTOM:Cable"
       },
       {
-        "value": ""
+        "value": "CUSTOM:Pin"
       },
       {
-        "value": ""
+        "value": "CUSTOM:Cable"
       },
       {
-        "value": "CUSTOM:Standardcard"
+        "value": "CUSTOM:Memory"
       },
       {
-        "value": ""
+        "value": "CUSTOM:Cable"
       },
       {
-        "value": "Items.IRON_INGOT"
+        "value": "CUSTOM:Pin"
       },
       {
-        "value": "Items.REDSTONE"
+        "value": "CUSTOM:Cable"
       },
       {
-        "value": "Items.IRON_INGOT"
+        "value": "CUSTOM:Pin"
       }
     ],
     "recipeReturnStack": {
-      "value": "CUSTOM:Input"
+      "value": "CUSTOM:Prozessor"
     },
-    "name": "inputrezept",
+    "name": "prozessorrezept",
     "namespace": "mod"
   }
 }

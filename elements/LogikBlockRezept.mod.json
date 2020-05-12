@@ -9,37 +9,37 @@
     "recipeShapeless": false,
     "recipeSlots": [
       {
-        "value": ""
-      },
-      {
-        "value": "Blocks.REDSTONE_TORCH"
-      },
-      {
-        "value": ""
-      },
-      {
-        "value": ""
-      },
-      {
-        "value": "CUSTOM:Standardcard"
-      },
-      {
-        "value": ""
-      },
-      {
-        "value": "Items.IRON_INGOT"
+        "value": "CUSTOM:Cable"
       },
       {
         "value": "Items.REDSTONE"
       },
       {
-        "value": "Items.IRON_INGOT"
+        "value": "CUSTOM:Cable"
+      },
+      {
+        "value": "Items.REDSTONE"
+      },
+      {
+        "value": "CUSTOM:Prozessor"
+      },
+      {
+        "value": "Items.REDSTONE"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#0"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#0"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#0"
       }
     ],
     "recipeReturnStack": {
-      "value": "CUSTOM:Input"
+      "value": "CUSTOM:LogicBlock"
     },
-    "name": "inputrezept",
+    "name": "logikblockrezept",
     "namespace": "mod"
   }
 }

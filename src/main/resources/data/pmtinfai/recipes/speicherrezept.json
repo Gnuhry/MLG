@@ -2,16 +2,28 @@
   "group": "pmtinfai",
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " 1 ",
-    " 4 ",
+    "012",
+    "345",
     "678"
   ],
   "key": {
+    "0": {
+      "item": "minecraft:iron_ingot"
+    },
     "1": {
-      "item": "minecraft:redstone_torch"
+      "item": "minecraft:redstone"
+    },
+    "2": {
+      "item": "minecraft:iron_ingot"
+    },
+    "3": {
+      "item": "minecraft:iron_ingot"
     },
     "4": {
-      "item": "pmtinfai:standardcard"
+      "item": "minecraft:chest"
+    },
+    "5": {
+      "item": "minecraft:iron_ingot"
     },
     "6": {
       "item": "minecraft:iron_ingot"
@@ -24,7 +36,7 @@
     }
   },
   "result": {
-    "item": "pmtinfai:input",
+    "item": "pmtinfai:memory",
     "count": 1
   }
 }

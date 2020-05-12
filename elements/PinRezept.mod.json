@@ -6,40 +6,40 @@
     "xpReward": 0.0,
     "recipeRetstackSize": 1,
     "group": "",
-    "recipeShapeless": false,
+    "recipeShapeless": true,
     "recipeSlots": [
       {
         "value": ""
       },
       {
-        "value": "Blocks.REDSTONE_TORCH"
-      },
-      {
         "value": ""
       },
       {
         "value": ""
       },
       {
-        "value": "CUSTOM:Standardcard"
+        "value": ""
+      },
+      {
+        "value": "Items.IRON_NUGGET"
       },
       {
         "value": ""
       },
       {
-        "value": "Items.IRON_INGOT"
+        "value": ""
       },
       {
         "value": "Items.REDSTONE"
       },
       {
-        "value": "Items.IRON_INGOT"
+        "value": ""
       }
     ],
     "recipeReturnStack": {
-      "value": "CUSTOM:Input"
+      "value": "CUSTOM:Pin"
     },
-    "name": "inputrezept",
+    "name": "pinrezept",
     "namespace": "mod"
   }
 }
