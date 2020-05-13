@@ -10,6 +10,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -343,12 +344,13 @@ public class TimerGui extends PMTINFAIElements.ModElement {
 
         @Override
         protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-            this.font.drawString("N", 58, 1, -16777216);
-            this.font.drawString("E", 27, 33, -16777216);
-            this.font.drawString("S", 57, 65, -16777216);
-            this.font.drawString("W", 90, 33, -16777216);
-            this.font.drawString("I/O", 17, 6, -16777216);
-            this.font.drawString("Ticks", 134, 6, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.n"), 58, 3, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.w"), 27, 33, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.s"), 57, 65, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.e"), 90, 33, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.io"), 17, 6, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.ticks"), 134, 6, -16777216);
+            this.font.drawString(I18n.format("gui.pmtinfai.timer"), 80, 5, -16777216);
         }
 
         @Override
@@ -471,8 +473,7 @@ public class TimerGui extends PMTINFAIElements.ModElement {
                 throw new NumberFormatException();
             ((TimerBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).setTimer(i);
             return;
-        } catch (NumberFormatException e) {
-        } catch (NullPointerException e) {
+        } catch (NumberFormatException | NullPointerException ignored) {
         }
         ((TextFieldWidget) guistate.get("text:ticks")).setText("");
         ((TimerBlock.CustomTileEntity) world.getTileEntity(new BlockPos(x, y, z))).setTimer(0);

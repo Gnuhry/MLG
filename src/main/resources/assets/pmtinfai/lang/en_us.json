@@ -4,6 +4,7 @@
   "block.pmtinfai.logicblock": "Logic Block",
   "block.pmtinfai.printer": "Printer Block",
   "block.pmtinfai.codebench": "Codebench Block",
+  "block.pmtinfai.timerb": "Timer Block",
 
   "item.pmtinfai.cable": "Cable",
   "item.pmtinfai.set": "Set Card",
@@ -45,6 +46,8 @@
   "gui.pmtinfai.codebench": "Codebench",
   "gui.pmtinfai.flipflop": "FlipFlop",
   "gui.pmtinfai.logicb": "Logic",
+  "gui.pmtinfai.timer": "Timer",
+  "gui.pmtinfai.ticks": "Ticks",
 
   "itemGroup.tablogicblocks": "Logic Block",
 

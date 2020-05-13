@@ -149,11 +149,13 @@ public class LogicBlockGui extends PMTINFAIElements.ModElement {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    try {
-                        lb.GetAllStates(Objects.requireNonNull(internal.getStackInSlot(4).getTag()).getString("logic"), world, new BlockPos(x, y, z));
-                    } catch (Exception ed) {
-                        lb.GetAllStates("none", world, new BlockPos(x, y, z));
-                    }
+                        ItemStack s=internal.getStackInSlot(4);
+                        if(s.hasTag()&&s.getTag().contains("logic")){
+                            lb.GetAllStates(s.getTag().getString("logic"), world, new BlockPos(x, y, z));
+                        }
+                        else{
+                            lb.GetAllStates("none", world, new BlockPos(x, y, z));
+                        }
                 }
             }));
             boolean[] io_boolean = lb.IO_State(world.getBlockState(new BlockPos(x,y,z)),0,0,world,new BlockPos(x,y,z));
