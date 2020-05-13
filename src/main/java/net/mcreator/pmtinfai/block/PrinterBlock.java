@@ -33,6 +33,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -75,9 +78,34 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
     }
 
     public static class CustomBlock extends Block {
+
+        protected static final VoxelShape SWL_CORNER = Block.makeCuboidShape(0.2D, 0.0D, 0.2D, 2.2D, 6.0D, 2.2D);
+        protected static final VoxelShape NWL_CORNER = Block.makeCuboidShape(0.2D, 0.0D, 15.8D, 2.0D, 6.0D, 13.8D);
+        protected static final VoxelShape NEL_CORNER = Block.makeCuboidShape(15.8D, 0.0D, 15.8D, 13.8D, 6.0D, 13.8D);
+        protected static final VoxelShape SEL_CORNER = Block.makeCuboidShape(15.8D, 0.0D, 0.2D, 13.8D, 6.0D, 2.2D);
+        protected static final VoxelShape PLATE = Block.makeCuboidShape(0.2D, 6.0D, 0.2D, 15.8D, 8.0D, 15.8D);
+        protected static final VoxelShape PRESS = Block.makeCuboidShape(4.6D, 8.0D, 4.6D, 11.8D, 15.4D, 12.0D);
+        protected static final VoxelShape COMPLETE = VoxelShapes.or(SWL_CORNER, NWL_CORNER, NEL_CORNER, SEL_CORNER, PLATE, PRESS);
+
         public CustomBlock() {
             super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
             setRegistryName("printer");
+        }
+
+
+
+        /**
+         * Gibt den VoxelShape(Aussehen) des Blockes zur�ck
+         *
+         * @param state   Blockstate des Blockes
+         * @param worldIn Teil der Welt des Blockes
+         * @param pos     Position des Blockes
+         * @param context Kontext
+         * @return VoxelShape des Blockes
+         */
+
+        public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+            return COMPLETE;
         }
 
         @Override
