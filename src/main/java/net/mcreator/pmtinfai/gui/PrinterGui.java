@@ -18,6 +18,8 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -35,6 +37,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 @PMTINFAIElements.ModElement.Tag
@@ -266,7 +269,7 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
 
     @OnlyIn(Dist.CLIENT)
     public static class GuiWindow extends ContainerScreen<GuiContainerMod> {
-
+        private int i=0;
         public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
             super(container, inventory, text);
             this.xSize = 176;
@@ -289,10 +292,28 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
             int k = (this.width - this.xSize) / 2;
             int l = (this.height - this.ySize) / 2;
             this.blit(k, l, 0, 0, this.xSize, this.ySize);
+
+            int l2 = getProgressionScaled();
+            //System.out.println(l2);
+            this.blit(k + 94, l + 40, 176, 14, l2 + 1, 16);
+        }
+
+        public int getProgressionScaled() {
+            boolean b=!((PrinterBlock.CustomTileEntity) container.world.getTileEntity(new BlockPos(container.x,container.y,container.z))).getStackInSlot(1).isEmpty();
+            int j = 2800;
+            if(b&&i==0)
+                i=2800;
+            else if(i>0)
+                i--;
+            int progression = i!=0 && j!=0 ? (24 - i*24/j) : 0;
+            //System.out.println("Scaled Pixel:" + progression + " - " + i + " - " + j);
+            return progression;
         }
 
         @Override
         public void tick() {
+
+
             super.tick();
         }
 
