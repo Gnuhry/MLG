@@ -181,20 +181,21 @@ public class TimerBlock extends PMTINFAIElements.ModElement {
          */
         public void update(BlockState state, World worldIn, BlockPos pos, int calculatedOutput) {
             calculatedOutput = this.getPowerOnSides(worldIn, pos, state);
+            InputSide i = state.get(OUTPUT);
+            int k = DirectiontoSlotID(i.GetDirection());
+            if (k >= 0)
+                getTE(worldIn, pos).SetActiveInput(k, false);
             worldIn.setBlockState(pos, state.with(POWER, 0), 3);
             if (getTE(worldIn, pos).isTimer()) {
                 if (state.get(POWER) > 0 && calculatedOutput == 0) {
                     worldIn.setBlockState(pos, state.with(POWER, 0), 3);
                 } else if (calculatedOutput > 0 && state.get(POWER) != calculatedOutput) {
+                    if (k >= 0)
+                        getTE(worldIn, pos).SetActiveInput(k, true);
                     worldIn.setBlockState(pos, state.with(POWER, calculatedOutput), 3);
                 }
-                int k = DirectiontoSlotID(state.get(OUTPUT).GetDirection());
-                if (k >= 0)
-                    getTE(worldIn, pos).SetActiveInput(k, calculatedOutput > 0);
             }
             worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
-
-            InputSide i = state.get(OUTPUT);
             if (calculatedOutput == state.get(POWER) && getTE(worldIn, pos).isSetActive()) {
                 worldIn.setBlockState(pos, state.with(OUTPUT, InputSide.NONE), 3);
                 worldIn.setBlockState(pos, state.with(OUTPUT, i), 3);
