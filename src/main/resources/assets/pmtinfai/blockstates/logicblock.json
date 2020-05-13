@@ -186,6 +186,15 @@
         "model": "pmtinfai:block/logicblock_pc_nor",
         "y": 270
       }
+    },
+    {
+      "when": {
+        "logic": "custom"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_pc_custom",
+        "y": 270
+      }
     }
   ]
 }
