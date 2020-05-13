@@ -272,6 +272,22 @@
       "compiles": true,
       "locked_code": false,
       "ids": {}
+    },
+    {
+      "name": "Timer",
+      "type": "gui",
+      "sortid": 38,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "TimerB",
+      "type": "block",
+      "sortid": 39,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
     }
   ],
   "variable_elements": [],
@@ -280,6 +296,7 @@
     "en_us": {
       "gui.pmtinfai.w": "W",
       "item.pmtinfai.prozessor": "Prozessor",
+      "block.pmtinfai.timerb": "Timer B",
       "item.pmtinfai.set": "Set",
       "gui.pmtinfai.s": "S",
       "item.pmtinfai.cable": "Cable",
@@ -304,6 +321,7 @@
     "de_de": {
       "gui.pmtinfai.w": "W",
       "item.pmtinfai.prozessor": "Prozessor",
+      "block.pmtinfai.timerb": "Timer B",
       "item.pmtinfai.set": "Set",
       "gui.pmtinfai.s": "S",
       "item.pmtinfai.cable": "Cable",
