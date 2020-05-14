@@ -60,7 +60,7 @@ public class CustomCardItem extends PMTINFAIElements.ModElement {
 		public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 			super.addInformation(stack, worldIn, tooltip, flagIn);
 			ITextComponent itextcomponent = stack.getDisplayName().deepCopy();
-			if (stack.hasTag()) {
+			if (stack.hasTag()&&stack.getTag().contains("logic")) {
 				assert stack.getTag() != null;
 				String help = stack.getTag().getString("logic");
 				boolean b = stack.getTag().getBoolean("logic_");

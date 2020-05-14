@@ -4,6 +4,7 @@ package net.mcreator.pmtinfai.gui;
 import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.block.PrinterBlock;
+import net.mcreator.pmtinfai.slots.OutSlot;
 import net.mcreator.pmtinfai.slots.PrinterSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -18,6 +19,8 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -35,6 +38,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 @PMTINFAIElements.ModElement.Tag
@@ -109,7 +113,7 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
                     ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
                 }
             }));
-            this.customSlots.put(2, this.addSlot(new PrinterSlot(internal, 2, 134, 39) {
+            this.customSlots.put(2, this.addSlot(new OutSlot(internal, 2, 134, 39) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
@@ -117,10 +121,7 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
                     internal.markDirty();
                 }
             }));
-            ((PrinterSlot) this.customSlots.get(0)).SetItem(MKLGItems.StandardcardItem);
             ((PrinterSlot) this.customSlots.get(0)).setTag(true);
-            ((PrinterSlot) this.customSlots.get(1)).SetItem(MKLGItems.StandardcardItem);
-            ((PrinterSlot) this.customSlots.get(2)).SetItem(null);
             int si;
             int sj;
             for (si = 0; si < 3; ++si)
@@ -266,7 +267,7 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
 
     @OnlyIn(Dist.CLIENT)
     public static class GuiWindow extends ContainerScreen<GuiContainerMod> {
-
+        private int i=0;
         public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
             super(container, inventory, text);
             this.xSize = 176;
@@ -289,6 +290,8 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
             int k = (this.width - this.xSize) / 2;
             int l = (this.height - this.ySize) / 2;
             this.blit(k, l, 0, 0, this.xSize, this.ySize);
+            int l2 = ((PrinterBlock.CustomBlock) container.world.getBlockState(new BlockPos(container.x,container.y,container.z)).getBlock()).ct.getProgressionScaled();
+            this.blit(k + 94, l + 40, 176, 14, l2 + 1, 16);
         }
 
         @Override
