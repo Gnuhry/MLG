@@ -84,7 +84,7 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
         protected static final VoxelShape SEL_CORNER = Block.makeCuboidShape(15.8D, 0.0D, 0.2D, 13.8D, 6.0D, 2.2D);
         protected static final VoxelShape PLATE = Block.makeCuboidShape(0.2D, 6.0D, 0.2D, 15.8D, 8.0D, 15.8D);
         protected static final VoxelShape KEYBOARD = Block.makeCuboidShape(2.0D, 8.0D, 5.0D, 4.4D, 8.6D, 11.4D);
-        protected static final VoxelShape INPUT = Block.makeCuboidShape(7.0D, 8.0D, 5.0D, 11.0D, 10.0D, 11.4D);
+        protected static final VoxelShape INPUT = Block.makeCuboidShape(7.0D, 8.0D, 5.0D, 13.0D, 10.0D, 11.4D);
         protected static final VoxelShape COMPLETE = VoxelShapes.or(SWL_CORNER, NWL_CORNER, NEL_CORNER, SEL_CORNER, PLATE, KEYBOARD, INPUT);
         public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -125,9 +125,27 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
          */
 
         public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+            if(state.get(HORIZONTAL_FACING)==Direction.SOUTH)
+                return rotateShape(Direction.WEST, Direction.SOUTH, COMPLETE);
+            if(state.get(HORIZONTAL_FACING)==Direction.NORTH)
+                return rotateShape(Direction.WEST, Direction.NORTH, COMPLETE);
+            if(state.get(HORIZONTAL_FACING)==Direction.EAST)
+                return rotateShape(Direction.WEST, Direction.EAST, COMPLETE);
             return COMPLETE;
         }
 
+        public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
+            VoxelShape[] buffer = new VoxelShape[]{ shape, VoxelShapes.empty() };
+
+            int times = (to.getHorizontalIndex() - from.getHorizontalIndex() + 4) % 4;
+            for (int i = 0; i < times; i++) {
+                buffer[0].forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1], VoxelShapes.create(1-maxZ, minY, minX, 1-minZ, maxY, maxX)));
+                buffer[0] = buffer[1];
+                buffer[1] = VoxelShapes.empty();
+            }
+
+            return buffer[0];
+        }
 
         @Override
         public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {

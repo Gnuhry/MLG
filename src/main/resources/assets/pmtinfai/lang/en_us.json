@@ -18,7 +18,9 @@
   "item.pmtinfai.clock": "Clock Card",
   "item.pmtinfai.output": "Output Card",
   "item.pmtinfai.pin": "Pin",
-  "item.pmtinfai.logic": "logic",
+  "item.pmtinfai.logic": "Logic",
+  "item.pmtinfai.printeritem": "Printer",
+  "item.pmtinfai.codeblock": "CodePart",
 
   "gui.pmtinfai.s": "S",
   "gui.pmtinfai.w": "W",

@@ -112,12 +112,6 @@ public class TischModelBlock extends PMTINFAIElements.ModElement {
                 BlockState bs = MKLGBlock.Codebench.getDefaultState();
                 worldIn.setBlockState(pos, bs);
             }
-            else if (item == MKLGItems.WorkbenchItem) {
-                player.inventory.getStackInSlot(player.inventory.currentItem).shrink(1);
-                worldIn.removeBlock(pos, false);
-                BlockState bs = MKLGBlock.Workbench.getDefaultState();
-                worldIn.setBlockState(pos, bs);
-            }
             return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
         }
     }
