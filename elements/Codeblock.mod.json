@@ -2,9 +2,9 @@
   "_fv": 6,
   "_type": "item",
   "definition": {
-    "renderType": 0,
+    "renderType": 1,
     "texture": "codeblock_model",
-    "customModelName": "Normal",
+    "customModelName": "code:default",
     "name": "Codeblock",
     "creativeTab": {
       "value": "CUSTOM:LogicBlocks"

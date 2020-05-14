@@ -1,6 +1,10 @@
 {
-  "parent": "item/generated",
+  "parent": "pmtinfai:custom/code",
   "textures": {
-    "layer0": "pmtinfai:items/codeblock_model"
+    "0": "pmtinfai:blocks/customcard",
+    "1": "pmtinfai:blocks/texture_cable",
+    "3": "pmtinfai:blocks/texture_tastatur_tasten_seite",
+    "4": "pmtinfai:blocks/texture8",
+    "5": "pmtinfai:blocks/texture9"
   }
 }

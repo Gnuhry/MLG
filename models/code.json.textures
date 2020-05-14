@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "default": {
+      "map": {
+        "0": "customcard",
+        "1": "texture_cable",
+        "3": "texture_tastatur_tasten_seite",
+        "4": "texture8",
+        "5": "texture9"
+      },
+      "name": "default"
+    }
+  }
+}

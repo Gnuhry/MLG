@@ -2,9 +2,9 @@
   "_fv": 6,
   "_type": "item",
   "definition": {
-    "renderType": 0,
+    "renderType": 1,
     "texture": "press_model",
-    "customModelName": "Normal",
+    "customModelName": "presse:default",
     "name": "Presse",
     "creativeTab": {
       "value": "CUSTOM:LogicBlocks"

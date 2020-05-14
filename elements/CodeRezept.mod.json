@@ -37,7 +37,7 @@
       }
     ],
     "recipeReturnStack": {
-      "value": "Blocks.BEDROCK"
+      "value": "CUSTOM:Codeblock"
     },
     "name": "coderezept",
     "namespace": "mod"
