@@ -4,11 +4,11 @@ package net.mcreator.pmtinfai.block;
 import io.netty.buffer.Unpooled;
 import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
+import net.mcreator.pmtinfai.enums.LogicKinds;
 import net.mcreator.pmtinfai.gui.PrinterGui;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +21,6 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.PacketBuffer;
@@ -86,12 +85,12 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
         protected static final VoxelShape PLATE = Block.makeCuboidShape(0.2D, 6.0D, 0.2D, 15.8D, 8.0D, 15.8D);
         protected static final VoxelShape PRESS = Block.makeCuboidShape(4.6D, 8.0D, 4.6D, 11.8D, 15.4D, 12.0D);
         protected static final VoxelShape COMPLETE = VoxelShapes.or(SWL_CORNER, NWL_CORNER, NEL_CORNER, SEL_CORNER, PLATE, PRESS);
+        public CustomTileEntity ct = null;
 
         public CustomBlock() {
             super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
             setRegistryName("printer");
         }
-
 
 
         /**
@@ -116,8 +115,53 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
         @Override
         public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
             super.tick(state, worldIn, pos, random);
-            ((PrinterBlock.CustomTileEntity) Objects.requireNonNull(worldIn.getTileEntity(pos))).tick();
-            worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
+            worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
+
+
+            CustomTileEntity tileEntity = (CustomTileEntity) worldIn.getTileEntity(pos);
+            ct = tileEntity;
+            if (tileEntity.getStackInSlot(0).isEmpty() && tileEntity.getCook() > 0) {
+                tileEntity.reset();
+            } else if (tileEntity.getCook() == 0) {
+                if (!(tileEntity.getStackInSlot(0).isEmpty() || tileEntity.getStackInSlot(1).isEmpty())) {
+                    if ((tileEntity.getStackInSlot(0).getItem().equals(MKLGItems.StandardcardItem)) || tileEntity.getStackInSlot(1).getItem().equals(MKLGItems.CustomCardItem)) {
+                        if (!tileEntity.getStackInSlot(2).isEmpty()) {
+                            if (tileEntity.getStackInSlot(2).getTag().equals(tileEntity.getStackInSlot(0).getTag())) {
+                                if (tileEntity.getStackInSlot(2).getCount() < tileEntity.getStackInSlot(2).getMaxStackSize()) {
+                                    if (tileEntity.getStackInSlot(1).hasTag())
+                                        tileEntity.setBlockType(tileEntity.getStackInSlot(1).getTag());
+                                    tileEntity.startCook();
+                                }
+                            }
+                        } else {
+                            if (tileEntity.getStackInSlot(1).hasTag())
+                                tileEntity.setBlockType(tileEntity.getStackInSlot(1).getTag());
+                            tileEntity.startCook();
+                        }
+                    }
+                }
+            } else if (tileEntity.getCook() > 1) {
+                tileEntity.cooking();
+            } else if (tileEntity.getCook() == 1) {
+                if (tileEntity.getStackInSlot(2).isEmpty()) {
+                    ItemStack i = ItemStack.EMPTY;
+                    if (tileEntity.getCustom().equals("")) {
+                        i = new ItemStack(MKLGItems.StandardcardItem, 1);
+                        i.setTag(tileEntity.getStackInSlot(0).getTag().copy());
+                    } else {
+                        i = new ItemStack(MKLGItems.CustomCardItem, 1);
+                        if (tileEntity.getBlockType() == -1) {
+                            i.setTag(tileEntity.getStackInSlot(0).getTag().copy());
+                        } else {
+                            i.setTag(LogicKinds.Get(tileEntity.getBlockType()).GetNBT());
+                        }
+                    }
+                    tileEntity.setInventorySlotContents(2, i);
+                } else {
+                    tileEntity.getStackInSlot(2).grow(1);
+                }
+                tileEntity.cooking();
+            }
         }
 
         @Override
@@ -129,14 +173,12 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
         }
 
         public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-
-            worldIn.getPendingBlockTicks().scheduleTick(pos, this, 1);
-
+            worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
         }
 
         @Override
         public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
-            boolean retval = super.onBlockActivated(state, world, pos, entity, hand, hit);
+            super.onBlockActivated(state, world, pos, entity, hand, hit);
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();
@@ -195,19 +237,23 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
 
     public static class CustomTileEntity extends LockableLootTileEntity {
         private NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
+        private int cook = 0;
+        private final int cook_duration = 20;
+        private int type = 0;
+        private String custom = "";
 
         protected CustomTileEntity() {
             super(Objects.requireNonNull(tileEntityType));
         }
 
-        private int cook = 0;
-
         @Override
         public void read(CompoundNBT compound) {
             super.read(compound);
             this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+            this.cook = compound.getInt("cook");
+            this.type = compound.getInt("type");
+            this.custom = compound.getString("custom");
             ItemStackHelper.loadAllItems(compound, this.stacks);
-            cook = compound.getInt("cook");
         }
 
         @Override
@@ -215,45 +261,72 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
             super.write(compound);
             ItemStackHelper.saveAllItems(compound, this.stacks);
             compound.putInt("cook", cook);
+            compound.putInt("type", type);
+            compound.putString("custom", custom);
             return compound;
+        }
+
+        public int getCook() {
+            return cook;
+        }
+
+        public void startCook() {
+            cook = cook_duration;
+            stacks.get(1).shrink(1);
+        }
+
+        public void cooking() {
+            cook -= 1;
+        }
+
+        public int getProgressionScaled() {
+            return cook != 0 ? (24 - cook * 24 / cook_duration) : 0;
+        }
+
+        public void reset() {
+            cook = 0;
+            if (stacks.get(1).isEmpty()) {
+                ItemStack i = null;
+                CompoundNBT nbt = new CompoundNBT();
+                if (type == -1) {
+                    nbt.putString("logic", custom);
+                    System.out.println(custom);
+                    nbt.putBoolean("logic_", true);
+                    i = new ItemStack(MKLGItems.CustomCardItem, 1);
+                } else {
+                    nbt = LogicKinds.Get(type).GetNBT();
+                    i = new ItemStack(MKLGItems.StandardcardItem, 1);
+                }
+                i.setTag(nbt);
+                stacks.set(1, i);
+            } else {
+                stacks.get(1).grow(1);
+            }
+        }
+
+        public void setBlockType(CompoundNBT nbt) {
+            for (LogicKinds lk : LogicKinds.AndGate.getDeclaringClass().getEnumConstants()) {
+                if (lk.GetNBT().equals(nbt)) {
+                    type = lk.Get();
+                    custom = "";
+                    return;
+                }
+            }
+            type = -1;
+            custom = nbt.getString("logic");
+        }
+
+        public int getBlockType() {
+            return type;
+        }
+
+        public String getCustom() {
+            return custom;
         }
 
         @Override
         public SUpdateTileEntityPacket getUpdatePacket() {
             return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
-        }
-
-        public void tick() {
-            if (cook != 0 && !stacks.get(0).hasTag()) {
-                cook = 0;
-                if (getStackInSlot(1).getItem() == Items.AIR)
-                    stacks.set(1, new ItemStack(MKLGItems.StandardcardItem, 1));
-                else
-                    getStackInSlot(1).grow(1);
-            }
-            if (cook > 1) {
-                cook--;
-            } else if (cook == 1) {
-                if (!stacks.get(2).hasTag()) {
-                    ItemStack erg = new ItemStack(MKLGItems.StandardcardItem, 1);
-                    CompoundNBT nbt = new CompoundNBT();
-                    nbt.putString("logic", stacks.get(0).getTag().getString("logic"));
-                    if (stacks.get(0).getTag().contains("logic_"))
-                        nbt.putBoolean("logic_", stacks.get(0).getTag().getBoolean("logic_"));
-                    erg.setTag(nbt);
-                    stacks.set(2, erg);
-                    getStackInSlot(0).grow(1);
-                    getStackInSlot(0).shrink(1);
-                } else {
-                    getStackInSlot(2).grow(1);
-                }
-                cook--;
-            } else if (cook == 0 && getStackInSlot(1).getCount() > 0 && stacks.get(0).hasTag() && stacks.get(0).getTag().contains("logic")) {
-                if (stacks.get(2).hasTag() && !stacks.get(2).getTag().getString("logic").equals(Objects.requireNonNull(stacks.get(0).getTag()).getString("logic")))
-                    return;
-                cook = 200;
-                getStackInSlot(1).shrink(1);
-            }
         }
 
         @Override

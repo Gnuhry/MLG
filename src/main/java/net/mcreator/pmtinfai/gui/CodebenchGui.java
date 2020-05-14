@@ -112,6 +112,11 @@ public class CodebenchGui extends PMTINFAIElements.ModElement {
                         if (tw != null) {
                             tw.setText(customSlots.get(0).getStack().getTag().getString("logic"));
                         }
+                    }else if(customSlots.get(0).getStack()==ItemStack.EMPTY){
+                        TextFieldWidget tw = (TextFieldWidget) guistate.getOrDefault("text:Logiccode", null);
+                        if (tw != null) {
+                            tw.setText("");
+                        }
                     }
                 }
             }));

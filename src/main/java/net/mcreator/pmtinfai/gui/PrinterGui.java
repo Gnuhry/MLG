@@ -4,6 +4,7 @@ package net.mcreator.pmtinfai.gui;
 import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.block.PrinterBlock;
+import net.mcreator.pmtinfai.slots.OutSlot;
 import net.mcreator.pmtinfai.slots.PrinterSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -112,7 +113,7 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
                     ((PrinterBlock.CustomTileEntity)world.getTileEntity(new BlockPos(x,y,z))).setInventorySlotContents(0,customSlots.get(0).getStack());
                 }
             }));
-            this.customSlots.put(2, this.addSlot(new PrinterSlot(internal, 2, 134, 39) {
+            this.customSlots.put(2, this.addSlot(new OutSlot(internal, 2, 134, 39) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
@@ -120,10 +121,7 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
                     internal.markDirty();
                 }
             }));
-            ((PrinterSlot) this.customSlots.get(0)).SetItem(MKLGItems.StandardcardItem);
             ((PrinterSlot) this.customSlots.get(0)).setTag(true);
-            ((PrinterSlot) this.customSlots.get(1)).SetItem(MKLGItems.StandardcardItem);
-            ((PrinterSlot) this.customSlots.get(2)).SetItem(null);
             int si;
             int sj;
             for (si = 0; si < 3; ++si)
@@ -292,28 +290,12 @@ public class PrinterGui extends PMTINFAIElements.ModElement {
             int k = (this.width - this.xSize) / 2;
             int l = (this.height - this.ySize) / 2;
             this.blit(k, l, 0, 0, this.xSize, this.ySize);
-
-            int l2 = getProgressionScaled();
-            //System.out.println(l2);
+            int l2 = ((PrinterBlock.CustomBlock) container.world.getBlockState(new BlockPos(container.x,container.y,container.z)).getBlock()).ct.getProgressionScaled();
             this.blit(k + 94, l + 40, 176, 14, l2 + 1, 16);
-        }
-
-        public int getProgressionScaled() {
-            boolean b=!((PrinterBlock.CustomTileEntity) container.world.getTileEntity(new BlockPos(container.x,container.y,container.z))).getStackInSlot(1).isEmpty();
-            int j = 2800;
-            if(b&&i==0)
-                i=2800;
-            else if(i>0)
-                i--;
-            int progression = i!=0 && j!=0 ? (24 - i*24/j) : 0;
-            //System.out.println("Scaled Pixel:" + progression + " - " + i + " - " + j);
-            return progression;
         }
 
         @Override
         public void tick() {
-
-
             super.tick();
         }
 
