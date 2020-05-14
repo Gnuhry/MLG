@@ -3,6 +3,8 @@ package net.mcreator.pmtinfai.item;
 
 import net.mcreator.pmtinfai.MKLGItems;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.registries.ObjectHolder;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
@@ -59,7 +61,7 @@ public class StandardCardItem extends PMTINFAIElements.ModElement {
 		@OnlyIn(Dist.CLIENT)
 		public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 			super.addInformation(stack, worldIn, tooltip, flagIn);
-			ITextComponent itextcomponent = stack.getDisplayName().deepCopy();
+			ITextComponent itextcomponent = new StringTextComponent("");
 			if (stack.hasTag()&&stack.getTag().contains("logic")) {
 				assert stack.getTag() != null;
 				String help = stack.getTag().getString("logic");
@@ -67,7 +69,8 @@ public class StandardCardItem extends PMTINFAIElements.ModElement {
 				if (b) {
 					help = LogicSpecies.GetEnum(help).getTranslationName();
 				}
-				itextcomponent.appendText(I18n.format("item.pmtinfai.logic")+": ").appendText(help);
+				itextcomponent.appendText(I18n.format("item.pmtinfai.logic")+": ").appendText(help)
+						.applyTextStyle(TextFormatting.GRAY).applyTextStyle(TextFormatting.ITALIC);
 				tooltip.add(itextcomponent);
 			}
 		}
