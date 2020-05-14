@@ -37,11 +37,12 @@ import net.minecraft.block.Block;
 
 import java.util.function.Supplier;
 
-@Mod("pmtinfai")
+@Mod(PMTINFAI.MODID)
 public class PMTINFAI {
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation("pmtinfai", "pmtinfai"),
 			() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+	public static final String MODID = "pmtinfai";
 	public PMTINFAIElements elements;
 	public PMTINFAI() {
 		elements = new PMTINFAIElements();
