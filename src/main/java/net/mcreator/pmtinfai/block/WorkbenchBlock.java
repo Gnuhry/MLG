@@ -30,6 +30,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -70,9 +73,21 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
     }
 
     public static class CustomBlock extends Block {
+
+        protected static final VoxelShape SWL_CORNER = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 14.0D, 2.0D);
+        protected static final VoxelShape NWL_CORNER = Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 2.0D, 14.0D, 16.0D);
+        protected static final VoxelShape NEL_CORNER = Block.makeCuboidShape(14.0D, 0.0D, 14.0D, 16.0D, 14.0D, 16.0D);
+        protected static final VoxelShape SEL_CORNER = Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 14.0D, 2.0D);
+        protected static final VoxelShape PLATE = Block.makeCuboidShape(0.0D, 14.0D, 0.0D, 16.0D, 14.5D, 16.0D);
+        protected static final VoxelShape COMPLETE = VoxelShapes.or(SWL_CORNER, NWL_CORNER, NEL_CORNER, SEL_CORNER, PLATE);
+
         public CustomBlock() {
             super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
             setRegistryName("workbench");
+        }
+
+        public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+            return COMPLETE;
         }
 
         @Override
