@@ -1,0 +1,12 @@
+{
+  "mappings": {
+    "default": {
+      "map": {
+        "0": "texture_beine",
+        "1": "texture_beine2",
+        "2": "texture_oben2"
+      },
+      "name": "default"
+    }
+  }
+}
