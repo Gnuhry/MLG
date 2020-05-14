@@ -16,22 +16,23 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -75,9 +76,54 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
 
 
     public static class CustomBlock extends Block {
+
+        protected static final VoxelShape SWL_CORNER = Block.makeCuboidShape(0.2D, 0.0D, 0.2D, 2.2D, 6.0D, 2.2D);
+        protected static final VoxelShape NWL_CORNER = Block.makeCuboidShape(0.2D, 0.0D, 15.8D, 2.0D, 6.0D, 13.8D);
+        protected static final VoxelShape NEL_CORNER = Block.makeCuboidShape(15.8D, 0.0D, 15.8D, 13.8D, 6.0D, 13.8D);
+        protected static final VoxelShape SEL_CORNER = Block.makeCuboidShape(15.8D, 0.0D, 0.2D, 13.8D, 6.0D, 2.2D);
+        protected static final VoxelShape PLATE = Block.makeCuboidShape(0.2D, 6.0D, 0.2D, 15.8D, 8.0D, 15.8D);
+        protected static final VoxelShape KEYBOARD = Block.makeCuboidShape(2.0D, 8.0D, 5.0D, 4.4D, 8.6D, 11.4D);
+        protected static final VoxelShape INPUT = Block.makeCuboidShape(7.0D, 8.0D, 5.0D, 11.0D, 10.0D, 11.4D);
+        protected static final VoxelShape COMPLETE = VoxelShapes.or(SWL_CORNER, NWL_CORNER, NEL_CORNER, SEL_CORNER, PLATE, KEYBOARD, INPUT);
+        public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+
         public CustomBlock() {
             super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
             setRegistryName("codebench");
+            this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH));
+        }
+
+        @Override
+        protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+            builder.add(HORIZONTAL_FACING);
+        }
+
+        public BlockState rotate(BlockState state, Rotation rot) {
+            return state.with(HORIZONTAL_FACING, rot.rotate(state.get(HORIZONTAL_FACING)));
+        }
+
+        public BlockState mirror(BlockState state, Mirror mirrorIn) {
+            return state.rotate(mirrorIn.toRotation(state.get(HORIZONTAL_FACING)));
+        }
+
+        @Override
+        public BlockState getStateForPlacement(BlockItemUseContext context) {
+            return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
+        }
+
+
+        /**
+         * Gibt den VoxelShape(Aussehen) des Blockes zur�ck
+         *
+         * @param state   Blockstate des Blockes
+         * @param worldIn Teil der Welt des Blockes
+         * @param pos     Position des Blockes
+         * @param context Kontext
+         * @return VoxelShape des Blockes
+         */
+
+        public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+            return COMPLETE;
         }
 
 
