@@ -1,6 +1,7 @@
 
 package net.mcreator.pmtinfai.item;
 
+import net.mcreator.pmtinfai.MKLGItems;
 import net.minecraftforge.registries.ObjectHolder;
 
 import net.minecraft.item.ItemStack;
@@ -11,10 +12,10 @@ import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 
 @PMTINFAIElements.ModElement.Tag
-public class PresseItem extends PMTINFAIElements.ModElement {
-	@ObjectHolder("pmtinfai:presse")
+public class PrinterItem extends PMTINFAIElements.ModElement {
+	@ObjectHolder("pmtinfai:printeritem")
 	public static final Item block = null;
-	public PresseItem(PMTINFAIElements instance) {
+	public PrinterItem(PMTINFAIElements instance) {
 		super(instance, 42);
 	}
 
@@ -25,7 +26,8 @@ public class PresseItem extends PMTINFAIElements.ModElement {
 	public static class ItemCustom extends Item {
 		public ItemCustom() {
 			super(new Item.Properties().group(LogicBlocksItemGroup.tab).maxStackSize(1));
-			setRegistryName("presse");
+			setRegistryName("printeritem");
+			MKLGItems.PrinterItem=this;
 		}
 
 		@Override
