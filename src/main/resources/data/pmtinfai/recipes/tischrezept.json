@@ -1,0 +1,36 @@
+{
+  "group": "pmtinfai",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0 2",
+    "345",
+    "6 8"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:stone_brick_wall"
+    },
+    "2": {
+      "item": "minecraft:stone_brick_wall"
+    },
+    "3": {
+      "item": "minecraft:quartz_slab"
+    },
+    "4": {
+      "item": "minecraft:smooth_quartz_slab"
+    },
+    "5": {
+      "item": "minecraft:smooth_quartz_slab"
+    },
+    "6": {
+      "item": "minecraft:stone_brick_wall"
+    },
+    "8": {
+      "item": "minecraft:stone_brick_wall"
+    }
+  },
+  "result": {
+    "item": "pmtinfai:tischmodel",
+    "count": 1
+  }
+}

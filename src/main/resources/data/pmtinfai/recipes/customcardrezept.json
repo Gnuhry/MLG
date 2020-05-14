@@ -1,0 +1,42 @@
+{
+  "group": "pmtinfai",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:pufferfish"
+    },
+    "1": {
+      "item": "minecraft:pumpkin"
+    },
+    "2": {
+      "item": "minecraft:red_mushroom"
+    },
+    "3": {
+      "item": "minecraft:cocoa_beans"
+    },
+    "4": {
+      "item": "pmtinfai:standardcard"
+    },
+    "5": {
+      "item": "minecraft:prismarine_shard"
+    },
+    "6": {
+      "item": "minecraft:blaze_powder"
+    },
+    "7": {
+      "item": "minecraft:ender_pearl"
+    },
+    "8": {
+      "item": "minecraft:carrot"
+    }
+  },
+  "result": {
+    "item": "pmtinfai:customcard",
+    "count": 1
+  }
+}

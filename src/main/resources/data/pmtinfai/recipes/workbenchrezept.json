@@ -1,0 +1,33 @@
+{
+  "group": "pmtinfai",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 1 ",
+    "345",
+    "6 8"
+  ],
+  "key": {
+    "1": {
+      "item": "pmtinfai:standardcard"
+    },
+    "3": {
+      "item": "minecraft:stick"
+    },
+    "4": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "5": {
+      "item": "minecraft:stick"
+    },
+    "6": {
+      "item": "minecraft:stick"
+    },
+    "8": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "pmtinfai:workbench",
+    "count": 1
+  }
+}

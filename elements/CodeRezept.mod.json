@@ -1,0 +1,45 @@
+{
+  "_fv": 6,
+  "_type": "recipe",
+  "definition": {
+    "recipeType": "Crafting",
+    "xpReward": 0.0,
+    "recipeRetstackSize": 1,
+    "group": "",
+    "recipeShapeless": false,
+    "recipeSlots": [
+      {
+        "value": "Blocks.STONE_BUTTON"
+      },
+      {
+        "value": ""
+      },
+      {
+        "value": "CUSTOM:Prozessor"
+      },
+      {
+        "value": "Blocks.STONE_BUTTON"
+      },
+      {
+        "value": "CUSTOM:Cable"
+      },
+      {
+        "value": "Items.NETHER_STAR"
+      },
+      {
+        "value": "Blocks.STONE_BUTTON"
+      },
+      {
+        "value": ""
+      },
+      {
+        "value": "CUSTOM:Prozessor"
+      }
+    ],
+    "recipeReturnStack": {
+      "value": "Blocks.BEDROCK"
+    },
+    "name": "coderezept",
+    "namespace": "mod"
+  }
+}
