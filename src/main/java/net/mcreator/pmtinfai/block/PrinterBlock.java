@@ -2,6 +2,7 @@
 package net.mcreator.pmtinfai.block;
 
 import io.netty.buffer.Unpooled;
+import net.mcreator.pmtinfai.MKLGBlock;
 import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.enums.LogicKinds;
@@ -90,6 +91,7 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
         public CustomBlock() {
             super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
             setRegistryName("printer");
+            MKLGBlock.Printer=this;
         }
 
 

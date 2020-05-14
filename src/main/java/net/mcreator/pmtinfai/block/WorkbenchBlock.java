@@ -2,6 +2,7 @@
 package net.mcreator.pmtinfai.block;
 
 import io.netty.buffer.Unpooled;
+import net.mcreator.pmtinfai.MKLGBlock;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.gui.WorkbenchGui;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
@@ -84,6 +85,7 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
         public CustomBlock() {
             super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
             setRegistryName("workbench");
+            MKLGBlock.Workbench=this;
         }
 
         public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
