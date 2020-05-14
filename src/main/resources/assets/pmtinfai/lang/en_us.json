@@ -5,6 +5,7 @@
   "block.pmtinfai.printer": "Printer Block",
   "block.pmtinfai.codebench": "Codebench Block",
   "block.pmtinfai.timerb": "Timer Block",
+  "block.pmtinfai.tisch": "Table Block",
 
   "item.pmtinfai.cable": "Cable",
   "item.pmtinfai.set": "Set Card",
@@ -17,7 +18,9 @@
   "item.pmtinfai.clock": "Clock Card",
   "item.pmtinfai.output": "Output Card",
   "item.pmtinfai.pin": "Pin",
-  "item.pmtinfai.logic": "logic",
+  "item.pmtinfai.logic": "Logic",
+  "item.pmtinfai.printeritem": "Printer",
+  "item.pmtinfai.codeblock": "CodePart",
 
   "gui.pmtinfai.s": "S",
   "gui.pmtinfai.w": "W",

@@ -1,0 +1,45 @@
+{
+  "_fv": 6,
+  "_type": "recipe",
+  "definition": {
+    "recipeType": "Crafting",
+    "xpReward": 0.0,
+    "recipeRetstackSize": 1,
+    "group": "",
+    "recipeShapeless": false,
+    "recipeSlots": [
+      {
+        "value": "Blocks.STONE_BRICK_WALL"
+      },
+      {
+        "value": ""
+      },
+      {
+        "value": "Blocks.STONE_BRICK_WALL"
+      },
+      {
+        "value": "Blocks.STONE_SLAB#7"
+      },
+      {
+        "value": "Blocks.SMOOTH_QUARTZ_SLAB"
+      },
+      {
+        "value": "Blocks.SMOOTH_QUARTZ_SLAB"
+      },
+      {
+        "value": "Blocks.STONE_BRICK_WALL"
+      },
+      {
+        "value": ""
+      },
+      {
+        "value": "Blocks.STONE_BRICK_WALL"
+      }
+    ],
+    "recipeReturnStack": {
+      "value": "CUSTOM:TischModel"
+    },
+    "name": "tischrezept",
+    "namespace": "mod"
+  }
+}

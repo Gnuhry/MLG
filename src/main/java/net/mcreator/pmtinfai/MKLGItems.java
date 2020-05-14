@@ -1,6 +1,7 @@
 package net.mcreator.pmtinfai;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 
 public class MKLGItems {
     public static Item InputItem = null;
@@ -14,4 +15,6 @@ public class MKLGItems {
     public static Item Pin = null;
     public static Item Cable = null;
     public static Item Resistor = null;
+    public static Item CodeBenchItem= null;
+    public static Item PrinterItem= null;
 }

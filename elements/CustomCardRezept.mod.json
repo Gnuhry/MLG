@@ -1,0 +1,45 @@
+{
+  "_fv": 6,
+  "_type": "recipe",
+  "definition": {
+    "recipeType": "Crafting",
+    "xpReward": 0.0,
+    "recipeRetstackSize": 1,
+    "group": "",
+    "recipeShapeless": false,
+    "recipeSlots": [
+      {
+        "value": "Items.FISH#3"
+      },
+      {
+        "value": "Blocks.PUMPKIN"
+      },
+      {
+        "value": "Blocks.RED_MUSHROOM"
+      },
+      {
+        "value": "Items.DYE#3"
+      },
+      {
+        "value": "CUSTOM:Standardcard"
+      },
+      {
+        "value": "Items.PRISMARINE_SHARD"
+      },
+      {
+        "value": "Items.BLAZE_POWDER"
+      },
+      {
+        "value": "Items.ENDER_PEARL"
+      },
+      {
+        "value": "Items.CARROT"
+      }
+    ],
+    "recipeReturnStack": {
+      "value": "CUSTOM:CustomCard"
+    },
+    "name": "customcardrezept",
+    "namespace": "mod"
+  }
+}

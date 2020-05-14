@@ -2,6 +2,7 @@
 package net.mcreator.pmtinfai.block;
 
 import io.netty.buffer.Unpooled;
+import net.mcreator.pmtinfai.MKLGBlock;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.gui.CodebenchGui;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
@@ -91,6 +92,7 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
             super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
             setRegistryName("codebench");
             this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH));
+            MKLGBlock.Codebench=this;
         }
 
         @Override
