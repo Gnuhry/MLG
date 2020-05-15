@@ -58,6 +58,7 @@ public class TischModelBlock extends PMTINFAIElements.ModElement {
         public CustomBlock() {
             super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1f, 10f).lightValue(0));
             setRegistryName("tisch");
+            MKLGBlock.Table=this;
         }
 
         /**
