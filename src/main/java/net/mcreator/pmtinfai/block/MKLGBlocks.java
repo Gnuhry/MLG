@@ -31,12 +31,10 @@ import java.util.Random;
 
 public abstract class MKLGBlocks extends Block {
     public static final IntegerProperty POWER = BlockStateProperties.POWER_0_15;
-    public static final EnumProperty<InputSide> OUTPUT = EnumProperty.create("output", InputSide.class);
-
 
     public MKLGBlocks(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(POWER, 0).with(OUTPUT, InputSide.NONE));
+        this.setDefaultState(this.stateContainer.getBaseState().with(POWER, 0));
     }
     /**
      * Gibt den Block als Item zurück
@@ -68,19 +66,7 @@ public abstract class MKLGBlocks extends Block {
         return 1;
     }
 
-    /**
-     * Abfgage wie stark die WeakPower(direkte Redstoneansteuerung) ist
-     *
-     * @param blockState  BlockState des Blockes
-     * @param blockAccess Angabe welche Art der Block ist
-     * @param pos         Position des Blockes
-     * @param side        Seite an der die Power abgefragt wird
-     * @return Gibt die RedstonePower(0-15) zurück
-     */
-    @Override
-    public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-        return blockState.get(OUTPUT).GetDirection() == side ? blockState.get(POWER) : 0;
-    }
+
 
     /**
      * Gibt den VoxelShape(Aussehen) des Blockes zurück

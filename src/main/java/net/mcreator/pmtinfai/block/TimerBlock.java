@@ -88,7 +88,21 @@ public class TimerBlock extends PMTINFAIElements.ModElement {
             this.setDefaultState(this.stateContainer.getBaseState().with(POWER, 0).with(INPUT1, InputSide.NONE).with(OUTPUT, InputSide.NONE));
         }
 
+        //--------------------Getter---------------
 
+        /**
+         * Abfgage wie stark die WeakPower(direkte Redstoneansteuerung) ist
+         *
+         * @param blockState  BlockState des Blockes
+         * @param blockAccess Angabe welche Art der Block ist
+         * @param pos         Position des Blockes
+         * @param side        Seite an der die Power abgefragt wird
+         * @return Gibt die RedstonePower(0-15) zurück
+         */
+        @Override
+        public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+            return blockState.get(OUTPUT).GetDirection() == side ? blockState.get(POWER) : 0;
+        }
         // -------------------------------------Eventlistener----------------------
 
         /**

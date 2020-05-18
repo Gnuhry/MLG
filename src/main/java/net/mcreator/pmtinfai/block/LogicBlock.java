@@ -83,6 +83,7 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
 
     public static class CustomBlock extends MKLGBlocks {
         // Properties des Blocks
+        public static final EnumProperty<InputSide> OUTPUT = EnumProperty.create("output", InputSide.class);
         public static final EnumProperty<InputSide> INPUT1 = EnumProperty.create("input1_side", InputSide.class);
         public static final EnumProperty<InputSide> INPUT2 = EnumProperty.create("input2_side", InputSide.class);
         public static final EnumProperty<InputSide> INPUT3 = EnumProperty.create("input3_side", InputSide.class);
@@ -94,12 +95,24 @@ public class LogicBlock extends PMTINFAIElements.ModElement {
             setRegistryName("logicblock");
             // Laden der Default Properties der Blöcke
             this.setDefaultState(this.stateContainer.getBaseState().with(INPUT1, InputSide.NONE)
-                    .with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE).with(LOGIC, LogicSpecies.NONE));
+                    .with(INPUT2, InputSide.NONE).with(INPUT3, InputSide.NONE).with(LOGIC, LogicSpecies.NONE).with(OUTPUT,InputSide.NONE));
         }
 
         // --------------------------------------------Getter------------
 
-
+        /**
+         * Abfgage wie stark die WeakPower(direkte Redstoneansteuerung) ist
+         *
+         * @param blockState  BlockState des Blockes
+         * @param blockAccess Angabe welche Art der Block ist
+         * @param pos         Position des Blockes
+         * @param side        Seite an der die Power abgefragt wird
+         * @return Gibt die RedstonePower(0-15) zurück
+         */
+        @Override
+        public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+            return blockState.get(OUTPUT).GetDirection() == side ? blockState.get(POWER) : 0;
+        }
         /**
          * Erstellt die neue Warheitstabelle
          *
