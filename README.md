@@ -5,6 +5,12 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/Gnuhry/PM_TINF19AI2)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Gnuhry/PM_TINF19AI2)
 
+The minecraft mod for logic-gates like and , or, rs-flipflops and more.
+
+Have a look:  http://minekraft-logik-gatter.de/ (Website is only in german. English support is following)
+
+---
+
 Die Minecraft Mod für Logikblöcke wie And, Or, RS-FF und weiteres.
 
 Schaue vorbei: http://minekraft-logik-gatter.de/
