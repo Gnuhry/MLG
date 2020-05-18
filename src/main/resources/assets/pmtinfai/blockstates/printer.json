@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "pmtinfai:block/printer",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "pmtinfai:block/printer",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "pmtinfai:block/printer",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "pmtinfai:block/printer"
+    }
+  }
+}

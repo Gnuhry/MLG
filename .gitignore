@@ -9,6 +9,10 @@ build/
 # Minecraft client/server files
 run/
 
+#IntelliJ
+bin
+PM_TINF19AI2.iml
+
 # MCreator generator ignores
 *.project
 *.classpath

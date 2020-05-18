@@ -3,11 +3,15 @@ loaderVersion="[28,)"
 
 [[mods]]
 modId="pmtinfai"
-version="1.0.0"
-displayName="PM_TINF19AI2"
-credits=""
-displayURL=""
-authors="Gnuh"
+version="${version}"
+displayName="Minekraft Logik Gatter"
+credits="Created by a group of students from Germany"
+displayURL="https://minekraft-logik-gatter.de"
+logoFile="logo.png"
+authors="Hung, Silas, Tim, Leander, Oli, Jannik"
+description='''
+    Coolest mod on earth.
+    '''
 
 [[dependencies.pmtinfai]]
     modId="minecraft"

@@ -4,7 +4,7 @@
   "definition": {
     "name": "Logic Block",
     "icon": {
-      "value": "CUSTOM:AndGateBlock"
+      "value": "Blocks.REDSTONE_WIRE"
     },
     "showSearch": false
   }
