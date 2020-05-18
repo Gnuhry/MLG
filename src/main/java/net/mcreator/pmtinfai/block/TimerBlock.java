@@ -83,7 +83,7 @@ public class TimerBlock extends PMTINFAIElements.ModElement {
         public static final EnumProperty<InputSide> OUTPUT = EnumProperty.create("output", InputSide.class);
 
         public CustomBlock() {
-            super(Block.Properties.create(Material.ROCK).sound(SoundType.GROUND).hardnessAndResistance(1f, 10f).lightValue(0));
+            super(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0f, 0f).lightValue(0));
             setRegistryName("timerb");
             this.setDefaultState(this.stateContainer.getBaseState().with(POWER, 0).with(INPUT1, InputSide.NONE).with(OUTPUT, InputSide.NONE));
         }

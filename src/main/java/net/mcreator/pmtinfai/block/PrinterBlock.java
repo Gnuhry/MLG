@@ -15,22 +15,23 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -83,12 +84,30 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
         protected static final VoxelShape PLATE = Block.makeCuboidShape(0.2D, 6.0D, 0.2D, 15.8D, 8.0D, 15.8D);
         protected static final VoxelShape PRESS = Block.makeCuboidShape(4.6D, 8.0D, 4.6D, 11.8D, 15.4D, 12.0D);
         protected static final VoxelShape COMPLETE = VoxelShapes.or(SWL_CORNER, NWL_CORNER, NEL_CORNER, SEL_CORNER, PLATE, PRESS);
+        public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.FACING_EXCEPT_UP;
         public CustomTileEntity ct = null;
 
         public CustomBlock() {
             super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 6.0F).lightValue(0));
             setRegistryName("printer");
+            this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH));
             MKLGBlock.Printer=this;
+        }
+        @Override
+        protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+            builder.add(HORIZONTAL_FACING);
+        }
+
+        public BlockState rotate(BlockState state, Rotation rot) {
+            return state.with(HORIZONTAL_FACING, rot.rotate(state.get(HORIZONTAL_FACING)));
+        }
+
+        public BlockState mirror(BlockState state, Mirror mirrorIn) {
+            return state.rotate(mirrorIn.toRotation(state.get(HORIZONTAL_FACING)));
+        }
+        @Override
+        public BlockState getStateForPlacement(BlockItemUseContext context) {
+            return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
         }
 
 
@@ -103,7 +122,26 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
          */
 
         public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+            if (state.get(HORIZONTAL_FACING) == Direction.SOUTH)
+                return rotateShape(Direction.WEST, Direction.SOUTH, COMPLETE);
+            if (state.get(HORIZONTAL_FACING) == Direction.NORTH)
+                return rotateShape(Direction.WEST, Direction.NORTH, COMPLETE);
+            if (state.get(HORIZONTAL_FACING) == Direction.EAST)
+                return rotateShape(Direction.WEST, Direction.EAST, COMPLETE);
             return COMPLETE;
+        }
+
+        public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
+            VoxelShape[] buffer = new VoxelShape[]{shape, VoxelShapes.empty()};
+
+            int times = (to.getHorizontalIndex() - from.getHorizontalIndex() + 4) % 4;
+            for (int i = 0; i < times; i++) {
+                buffer[0].forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1], VoxelShapes.create(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
+                buffer[0] = buffer[1];
+                buffer[1] = VoxelShapes.empty();
+            }
+
+            return buffer[0];
         }
 
         @Override
@@ -162,7 +200,29 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
                 tileEntity.cooking();
             }
         }
+        @Override
+        public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+            if (!state.isValidPosition(worldIn, pos)) {
+                TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
+                spawnDrops(state, worldIn, pos, tileentity);
+                worldIn.removeBlock(pos, false);
+                for (Direction d : Direction.values())
+                    worldIn.notifyNeighborsOfStateChange(pos.offset(d), this);
+                return;
+            }
+        }
 
+        /**
+         * Abfrage ob es eine valide Position für den Block ist
+         *
+         * @param state   Blockstate des Blockes
+         * @param worldIn Teil der Welt des Blockes
+         * @param pos     Position des Blockes
+         * @return Gibt an ob der Platz des Blockes valide ist
+         */
+        public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+            return func_220064_c(worldIn, pos.down());
+        }
         @Override
         public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
             List<ItemStack> dropsOriginal = super.getDrops(state, builder);
@@ -170,7 +230,8 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
                 return dropsOriginal;
             List<ItemStack> i= new ArrayList<>();
             i.add(new ItemStack(MKLGItems.PrinterItem,1));
-            i.add(new ItemStack(MKLGBlock.Table, 1));
+            if(!state.get(HORIZONTAL_FACING).equals(Direction.DOWN))
+                i.add(new ItemStack(MKLGBlock.Table, 1));
             return i;
         }
 
@@ -181,6 +242,17 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
         @Override
         public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
             super.onBlockActivated(state, world, pos, entity, hand, hit);
+            Item item = entity.inventory.getStackInSlot(entity.inventory.currentItem).getItem();
+            if (item instanceof BucketItem && ((BucketItem) item).getFluid().isEquivalentTo(Fluids.WATER)) {
+                TileEntity tileentity = state.hasTileEntity() ? world.getTileEntity(pos) : null;
+                spawnDrops(state.with(HORIZONTAL_FACING,Direction.DOWN), world, pos, tileentity);
+                world.removeBlock(pos, false);
+                BlockState bs = MKLGBlock.Table.getDefaultState();
+                world.setBlockState(pos, bs);
+                for (Direction d : Direction.values())
+                    world.notifyNeighborsOfStateChange(pos.offset(d), this);
+                return false;
+            }
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();

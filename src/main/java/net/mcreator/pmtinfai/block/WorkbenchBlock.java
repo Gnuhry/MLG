@@ -27,6 +27,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -37,6 +38,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.event.RegistryEvent;
@@ -157,7 +159,29 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
             TileEntity tileentity = world.getTileEntity(pos);
             return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
         }
+        @Override
+        public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+            if (!state.isValidPosition(worldIn, pos)) {
+                TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
+                spawnDrops(state, worldIn, pos, tileentity);
+                worldIn.removeBlock(pos, false);
+                for (Direction d : Direction.values())
+                    worldIn.notifyNeighborsOfStateChange(pos.offset(d), this);
+                return;
+            }
+        }
 
+        /**
+         * Abfrage ob es eine valide Position für den Block ist
+         *
+         * @param state   Blockstate des Blockes
+         * @param worldIn Teil der Welt des Blockes
+         * @param pos     Position des Blockes
+         * @return Gibt an ob der Platz des Blockes valide ist
+         */
+        public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+            return func_220064_c(worldIn, pos.down());
+        }
         @Override
         public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
             if (state.getBlock() != newState.getBlock()) {
