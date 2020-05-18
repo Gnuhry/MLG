@@ -83,7 +83,7 @@ public class WorkbenchBlock extends PMTINFAIElements.ModElement {
         protected static final VoxelShape COMPLETE = VoxelShapes.or(SWL_CORNER, NWL_CORNER, NEL_CORNER, SEL_CORNER, PLATE);
 
         public CustomBlock() {
-            super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
+            super(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).lightValue(0));
             setRegistryName("workbench");
             MKLGBlock.Workbench=this;
         }

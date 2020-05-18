@@ -3,6 +3,7 @@ package net.mcreator.pmtinfai.block;
 
 import io.netty.buffer.Unpooled;
 import net.mcreator.pmtinfai.MKLGBlock;
+import net.mcreator.pmtinfai.MKLGItems;
 import net.mcreator.pmtinfai.PMTINFAIElements;
 import net.mcreator.pmtinfai.gui.CodebenchGui;
 import net.mcreator.pmtinfai.itemgroup.LogicBlocksItemGroup;
@@ -10,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -47,6 +49,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -89,7 +92,7 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
         public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
         public CustomBlock() {
-            super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
+            super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 6.0F).lightValue(0));
             setRegistryName("codebench");
             this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH));
             MKLGBlock.Codebench=this;
@@ -152,7 +155,10 @@ public class CodebenchBlock extends PMTINFAIElements.ModElement {
             List<ItemStack> dropsOriginal = super.getDrops(state, builder);
             if (!dropsOriginal.isEmpty())
                 return dropsOriginal;
-            return Collections.singletonList(new ItemStack(this, 1));
+            List<ItemStack> i= new ArrayList<>();
+            i.add(new ItemStack(MKLGItems.CodeBenchItem,1));
+            i.add(new ItemStack(MKLGBlock.Table, 1));
+            return i;
         }
 
         @Override

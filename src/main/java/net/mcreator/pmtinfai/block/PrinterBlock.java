@@ -48,10 +48,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 @PMTINFAIElements.ModElement.Tag
 public class PrinterBlock extends PMTINFAIElements.ModElement {
@@ -89,7 +86,7 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
         public CustomTileEntity ct = null;
 
         public CustomBlock() {
-            super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1f, 10f).lightValue(0));
+            super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 6.0F).lightValue(0));
             setRegistryName("printer");
             MKLGBlock.Printer=this;
         }
@@ -171,7 +168,10 @@ public class PrinterBlock extends PMTINFAIElements.ModElement {
             List<ItemStack> dropsOriginal = super.getDrops(state, builder);
             if (!dropsOriginal.isEmpty())
                 return dropsOriginal;
-            return Collections.singletonList(new ItemStack(this, 1));
+            List<ItemStack> i= new ArrayList<>();
+            i.add(new ItemStack(MKLGItems.PrinterItem,1));
+            i.add(new ItemStack(MKLGBlock.Table, 1));
+            return i;
         }
 
         public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
