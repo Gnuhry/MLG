@@ -1,15 +1,15 @@
 {
   "display": {
     "icon": {
-      "item": "pmtinfai:standardcard"
+      "item": "pmtinfai:standardcard",
+      "nbt": "{CustomModelData: 1}"
     },
     "title": {
-      "translate": "advancements.card.title"
+      "translate": "advancements.logic.title"
     },
     "description": {
-      "translate": "advancements.card.descr"
+      "translate": "advancements.logic.descr"
     },
-    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
@@ -21,7 +21,8 @@
       "conditions": {
         "items": [
           {
-            "item": "pmtinfai:standardcard"
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 1}"
           }
         ]
       }
@@ -29,5 +30,6 @@
   },
   "rewards": {
     "experience": 1
-  }
+  },
+  "parent": "pmtinfai:workbench"
 }

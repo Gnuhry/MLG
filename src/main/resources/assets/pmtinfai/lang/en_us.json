@@ -103,5 +103,11 @@
   "advancements.redstone.title": "The sparkeling red diamond",
   "advancements.redstone.descr": "Pick up redstone",
   "advancements.wb.title": "Create the card magic",
-  "advancements.wb.descr": "Place a workbench"
+  "advancements.wb.descr": "Place a workbench",
+  "advancements.logic.title": "you AND me",
+  "advancements.logic.descr": "Get a and-card from the workbench",
+  "advancements.flipflop.title": "ReSet your thinking",
+  "advancements.flipflop.descr": "Get a rs-card from the workbench",
+  "advancements.all.title": "Collector",
+  "advancements.all.descr": "Get every card once in your inventory"
 }

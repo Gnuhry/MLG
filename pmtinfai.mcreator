@@ -376,6 +376,14 @@
       "compiles": true,
       "locked_code": false,
       "ids": {}
+    },
+    {
+      "name": "Tt",
+      "type": "achievement",
+      "sortid": 51,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
     }
   ],
   "variable_elements": [],
@@ -388,6 +396,7 @@
       "block.pmtinfai.tischmodel": "Tisch Model",
       "item.pmtinfai.customcard": "Custom Card",
       "gui.pmtinfai.io": "I/O",
+      "advancements.tt.descr": "hhhhh",
       "gui.pmtinfai.e": "E",
       "item.pmtinfai.output": "Output",
       "item.pmtinfai.pin": "Pin",
@@ -402,6 +411,7 @@
       "item.pmtinfai.set": "Set",
       "gui.pmtinfai.s": "S",
       "block.pmtinfai.logicblock": "Logic Block",
+      "advancements.tt.title": "Tt",
       "gui.pmtinfai.n": "N",
       "item.pmtinfai.standardcard": "Card",
       "item.pmtinfai.clock": "Clock",
@@ -416,6 +426,7 @@
       "block.pmtinfai.tischmodel": "Tisch Model",
       "item.pmtinfai.customcard": "Custom Card",
       "gui.pmtinfai.io": "E/A",
+      "advancements.tt.descr": "hhhhh",
       "gui.pmtinfai.e": "O",
       "item.pmtinfai.output": "Ausgang",
       "item.pmtinfai.pin": "Pin",
@@ -430,6 +441,7 @@
       "item.pmtinfai.set": "Set",
       "gui.pmtinfai.s": "S",
       "block.pmtinfai.logicblock": "Logik Block",
+      "advancements.tt.title": "Tt",
       "gui.pmtinfai.n": "N",
       "item.pmtinfai.standardcard": "Karte",
       "item.pmtinfai.clock": "Clock",
