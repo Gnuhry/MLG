@@ -14,6 +14,9 @@
     },
     "facing=west": {
       "model": "pmtinfai:block/codebench"
+    },
+    "facing=down": {
+      "model": "pmtinfai:block/codebench"
     }
   }
 }
