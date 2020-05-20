@@ -54,7 +54,6 @@
 
   "itemGroup.tablogicblocks": "Logic Block",
 
-
   "enum.pmtinfai.rs_ff": "rs_flipflop",
   "enum.pmtinfai.gated_rs_ff": "gated_rs_flipflop",
   "enum.pmtinfai.rising_rs_ff": "rising_rs_flipflop",
@@ -76,12 +75,10 @@
   "enum.pmtinfai.master_slave_d_ff": "master_slave_d_flipflop",
   "enum.pmtinfai.master_slave_t_ff": "master_slave_t_flipflop",
   "enum.pmtinfai.none": "none",
-
   "enum.pmtinfai.west": "west",
   "enum.pmtinfai.east": "east",
   "enum.pmtinfai.south": "south",
   "enum.pmtinfai.north": "north",
-
   "enum.pmtinfai.and": "and",
   "enum.pmtinfai.or": "or",
   "enum.pmtinfai.not": "not",
@@ -89,5 +86,28 @@
   "enum.pmtinfai.nand": "nand",
   "enum.pmtinfai.xor": "xor",
   "enum.pmtinfai.xnor": "xnor",
-  "enum.pmtinfai.custom": "custom"
+  "enum.pmtinfai.custom": "custom",
+
+  "advancements.ffb.title": "Let's wear some FlipFlops",
+  "advancements.ffb.descr": "Place a FlipFlop Block",
+  "advancements.custom.title": "The custom power",
+  "advancements.custom.descr": "Create a custom Card in the Codebench",
+  "advancements.code.title": "Let's start coding",
+  "advancements.code.descr": "Craft the Codebench Item",
+  "advancements.card.title": "Let's begin the adventure",
+  "advancements.card.descr": "Craft a standard card",
+  "advancements.lb.title": "The heart of the mod",
+  "advancements.lb.descr": "Place a logic Block",
+  "advancements.pi.title": "Let's print your a..",
+  "advancements.pi.descr": "Craft the Printer Item",
+  "advancements.redstone.title": "The sparkeling red diamond",
+  "advancements.redstone.descr": "Pick up redstone",
+  "advancements.wb.title": "Create the card magic",
+  "advancements.wb.descr": "Place a workbench",
+  "advancements.logic.title": "you AND me",
+  "advancements.logic.descr": "Get a and-card from the workbench",
+  "advancements.flipflop.title": "ReSet your thinking",
+  "advancements.flipflop.descr": "Get a rs-card from the workbench",
+  "advancements.all.title": "Collector",
+  "advancements.all.descr": "Get every card once in your inventory"
 }
