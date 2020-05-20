@@ -1,0 +1,30 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "pmtinfai:blocks/grundblock/texture_flipflopblock_pc_seite",
+		"3": "pmtinfai:blocks/flipflop_top_pc/texture_flipflop_top_pc_rs_negativ",
+		"particle": "pmtinfai:blocks/grundblock/texture_flipflopblock_platte"
+	},
+	"elements": [
+		{
+			"from": [5, 1, 5],
+			"to": [11, 7, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 2, 0]},
+			"faces": {
+				"north": {"uv": [0, 0, 6, 6], "texture": "#1"},
+				"east": {"uv": [0, 0, 6, 6], "texture": "#1"},
+				"south": {"uv": [0, 0, 6, 6], "texture": "#1"},
+				"west": {"uv": [0, 0, 6, 6], "texture": "#1"},
+				"up": {"uv": [0, 0, 6, 6], "texture": "#3"},
+				"down": {"uv": [0, 0, 6, 6], "texture": "#3"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "bone",
+			"origin": [0, 0, 0],
+			"children": [0]
+		}
+	]
+}

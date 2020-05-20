@@ -1,0 +1,36 @@
+{
+  "group": "pmtinfai",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0 2",
+    "345",
+    "6 8"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:stone_button"
+    },
+    "2": {
+      "item": "pmtinfai:prozessor"
+    },
+    "3": {
+      "item": "minecraft:stone_button"
+    },
+    "4": {
+      "item": "pmtinfai:cable"
+    },
+    "5": {
+      "item": "minecraft:nether_star"
+    },
+    "6": {
+      "item": "minecraft:stone_button"
+    },
+    "8": {
+      "item": "pmtinfai:prozessor"
+    }
+  },
+  "result": {
+    "item": "pmtinfai:codeblock",
+    "count": 1
+  }
+}

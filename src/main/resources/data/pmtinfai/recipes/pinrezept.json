@@ -1,0 +1,16 @@
+{
+  "group": "pmtinfai",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "result": {
+    "item": "pmtinfai:pin",
+    "count": 1
+  }
+}

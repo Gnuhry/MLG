@@ -1,0 +1,317 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_base"
+      }
+    },
+    {
+      "when": {
+        "clock_side": "north"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_clock_input",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "clock_side": "east"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_clock_input",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "clock_side": "south"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_clock_input"
+      }
+    },
+    {
+      "when": {
+        "clock_side": "west"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_clock_input",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "set_side": "north"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_set_input",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "set_side": "east"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_set_input",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "set_side": "south"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_set_input"
+      }
+    },
+    {
+      "when": {
+        "set_side": "west"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_set_input",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "reset_side": "north"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_reset_input",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "reset_side": "east"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_reset_input",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "reset_side": "south"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_reset_input"
+      }
+    },
+    {
+      "when": {
+        "reset_side": "west"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_reset_input",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "output": "north"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_output",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "output": "east"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_output",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "output": "south"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_output"
+      }
+    },
+    {
+      "when": {
+        "output": "west"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_output",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "logic": "none"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc"
+      }
+    },
+    {
+      "when": {
+        "logic": "rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_oc"
+      }
+    },
+    {
+      "when": {
+        "logic": "gated_rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_pg"
+      }
+    },
+    {
+      "when": {
+        "logic": "rising_rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_p"
+      }
+    },
+    {
+      "when": {
+        "logic": "falling_rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_n"
+      }
+    },
+    {
+      "when": {
+        "logic": "master_slave_rs_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_rs_ms"
+      }
+    },
+    {
+      "when": {
+        "logic": "d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_oc"
+      }
+    },
+    {
+      "when": {
+        "logic": "gated_d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_pg"
+      }
+    },
+    {
+      "when": {
+        "logic": "rising_d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_p"
+      }
+    },
+    {
+      "when": {
+        "logic": "falling_d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_n"
+      }
+    },
+    {
+      "when": {
+        "logic": "master_slave_d_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_d_ms"
+      }
+    },
+    {
+      "when": {
+        "logic": "t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_oc"
+      }
+    },
+    {
+      "when": {
+        "logic": "gated_t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_pg"
+      }
+    },
+    {
+      "when": {
+        "logic": "rising_t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_p"
+      }
+    },
+    {
+      "when": {
+        "logic": "falling_t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_n"
+      }
+    },
+    {
+      "when": {
+        "logic": "master_slave_t_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_t_ms"
+      }
+    },
+    {
+      "when": {
+        "logic": "jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_oc"
+      }
+    },
+    {
+      "when": {
+        "logic": "gated_jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_pg"
+      }
+    },
+    {
+      "when": {
+        "logic": "rising_jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_p"
+      }
+    },
+    {
+      "when": {
+        "logic": "falling_jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_n"
+      }
+    },
+    {
+      "when": {
+        "logic": "master_slave_jk_ff"
+      },
+      "apply": {
+        "model": "pmtinfai:block/flipflopblock_pc_jk_ms"
+      }
+    }
+  ]
+}

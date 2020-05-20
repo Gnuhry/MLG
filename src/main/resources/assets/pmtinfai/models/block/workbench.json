@@ -1,0 +1,132 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [16, 16],
+	"textures": {
+		"0": "pmtinfai:blocks/wood_square",
+		"1": "pmtinfai:blocks/blueprint",
+		"2": "block/stripped_oak_log",
+		"particle": "pmtinfai:blocks/wood_square"
+	},
+	"elements": [
+		{
+			"name": "Blueprint1",
+			"from": [1, 14.5, 7],
+			"to": [8, 14.75, 12],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [8, 8, 6]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 1], "texture": "#1"},
+				"east": {"uv": [0, 0, 1, 16], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 1], "texture": "#1"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#1", "tintindex": 0},
+				"down": {"uv": [0, 0, 2.25, 1.75], "texture": "#1"}
+			}
+		},
+		{
+			"name": "Tischplatte",
+			"from": [0, 14, 0],
+			"to": [16, 14.5, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Tischbein4",
+			"from": [14, 0, 14],
+			"to": [16, 14, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"east": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"south": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"west": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"up": {"uv": [0, 0, 0.5, 0.5], "texture": "#2"},
+				"down": {"uv": [0, 0, 0.5, 0.5], "texture": "#2"}
+			}
+		},
+		{
+			"name": "Tischbein1",
+			"from": [0, 0, 0],
+			"to": [2, 14, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"east": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"south": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"west": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"up": {"uv": [0, 0, 0.5, 0.5], "texture": "#2"},
+				"down": {"uv": [0, 0, 0.5, 0.5], "texture": "#2"}
+			}
+		},
+		{
+			"name": "Tischbein2",
+			"from": [14, 0, 0],
+			"to": [16, 14, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"east": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"south": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"west": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"up": {"uv": [0, 0, 0.5, 0.5], "texture": "#2"},
+				"down": {"uv": [0, 0, 0.5, 0.5], "texture": "#2"}
+			}
+		},
+		{
+			"name": "Tischbein3",
+			"from": [0, 0, 14],
+			"to": [2, 14, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"east": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"south": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"west": {"uv": [0, 0, 2, 16], "texture": "#2"},
+				"up": {"uv": [0, 0, 0.5, 0.5], "texture": "#2"},
+				"down": {"uv": [0, 0, 0.5, 0.5], "texture": "#2"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [47, 34, 0],
+			"translation": [0, 1, -4],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [50, 26, 0],
+			"translation": [0, 0.25, -3.75],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 26, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 37, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [23, 59, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"head": {
+			"translation": [0, 0.5, 0]
+		},
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [0,0,4.5]
+		}
+	},
+	"groups": [0,
+		{
+			"name": "Tisch",
+			"origin": [8, 8, 6],
+			"children": [1, 2, 3, 4, 5]
+		}
+	]
+}

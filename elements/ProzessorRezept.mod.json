@@ -1,0 +1,45 @@
+{
+  "_fv": 6,
+  "_type": "recipe",
+  "definition": {
+    "recipeType": "Crafting",
+    "xpReward": 0.0,
+    "recipeRetstackSize": 1,
+    "group": "",
+    "recipeShapeless": false,
+    "recipeSlots": [
+      {
+        "value": "CUSTOM:Pin"
+      },
+      {
+        "value": "CUSTOM:Cable"
+      },
+      {
+        "value": "CUSTOM:Pin"
+      },
+      {
+        "value": "CUSTOM:Cable"
+      },
+      {
+        "value": "CUSTOM:Memory"
+      },
+      {
+        "value": "CUSTOM:Cable"
+      },
+      {
+        "value": "CUSTOM:Pin"
+      },
+      {
+        "value": "CUSTOM:Cable"
+      },
+      {
+        "value": "CUSTOM:Pin"
+      }
+    ],
+    "recipeReturnStack": {
+      "value": "CUSTOM:Prozessor"
+    },
+    "name": "prozessorrezept",
+    "namespace": "mod"
+  }
+}

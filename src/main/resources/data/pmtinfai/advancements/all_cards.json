@@ -1,0 +1,116 @@
+{
+  "display": {
+    "icon": {
+      "item": "pmtinfai:standardcard",
+      "nbt": "{CustomModelData: 1}"
+    },
+    "title": {
+      "translate": "advancements.all.title"
+    },
+    "description": {
+      "translate": "advancements.all.descr"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "logic_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 1}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 2}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 3}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 4}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 5}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 6}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 7}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 8}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 9}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 10}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 11}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 12}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 13}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 14}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 15}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 16}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 17}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 18}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 19}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 20}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 21}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 22}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 23}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 24}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 25}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 26}"
+          },{
+            "item": "pmtinfai:standardcard",
+            "nbt": "{CustomModelData: 27}"
+          },{
+            "item": "pmtinfai:customcard",
+            "nbt": "{logic_:true}"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 1
+  },
+  "parent": "pmtinfai:custom_item"
+}

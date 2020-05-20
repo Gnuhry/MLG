@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "pmtinfai:standardcard"
+    },
+    "title": {
+      "translate": "advancements.card.title"
+    },
+    "description": {
+      "translate": "advancements.card.descr"
+    },
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "logic_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "pmtinfai:standardcard"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 1
+  }
+}

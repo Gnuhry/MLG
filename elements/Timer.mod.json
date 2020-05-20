@@ -1,0 +1,196 @@
+{
+  "_fv": 6,
+  "_type": "gui",
+  "definition": {
+    "type": 1,
+    "width": 352,
+    "height": 332,
+    "renderBgLayer": true,
+    "components": [
+      {
+        "type": "inputslot",
+        "data": {
+          "inputLimit": {
+            "value": ""
+          },
+          "id": 0,
+          "onSlotChanged": {
+            "name": "ChangeItem"
+          },
+          "onTakenFromSlot": {
+            "name": "ChangeItem"
+          },
+          "onStackTransfer": {
+            "name": "ChangeItem"
+          },
+          "name": "Slot #0",
+          "x": 318,
+          "y": 132
+        }
+      },
+      {
+        "type": "inputslot",
+        "data": {
+          "inputLimit": {
+            "value": ""
+          },
+          "id": 1,
+          "onSlotChanged": {
+            "name": "ChangeItem"
+          },
+          "onTakenFromSlot": {
+            "name": "ChangeItem"
+          },
+          "onStackTransfer": {
+            "name": "ChangeItem"
+          },
+          "name": "Slot #1",
+          "x": 354,
+          "y": 96
+        }
+      },
+      {
+        "type": "inputslot",
+        "data": {
+          "inputLimit": {
+            "value": ""
+          },
+          "id": 2,
+          "onSlotChanged": {
+            "name": "ChangeItem"
+          },
+          "onTakenFromSlot": {
+            "name": "ChangeItem"
+          },
+          "onStackTransfer": {
+            "name": "ChangeItem"
+          },
+          "name": "Slot #2",
+          "x": 390,
+          "y": 132
+        }
+      },
+      {
+        "type": "inputslot",
+        "data": {
+          "inputLimit": {
+            "value": ""
+          },
+          "id": 3,
+          "onSlotChanged": {
+            "name": "ChangeItem"
+          },
+          "onTakenFromSlot": {
+            "name": "ChangeItem"
+          },
+          "onStackTransfer": {
+            "name": "ChangeItem"
+          },
+          "name": "Slot #3",
+          "x": 354,
+          "y": 168
+        }
+      },
+      {
+        "type": "label",
+        "data": {
+          "text": "N",
+          "color": {
+            "value": -16777216,
+            "falpha": 0.0
+          },
+          "name": "N",
+          "x": 367,
+          "y": 76
+        }
+      },
+      {
+        "type": "label",
+        "data": {
+          "text": "E",
+          "color": {
+            "value": -16777216,
+            "falpha": 0.0
+          },
+          "name": "E",
+          "x": 304,
+          "y": 139
+        }
+      },
+      {
+        "type": "label",
+        "data": {
+          "text": "S",
+          "color": {
+            "value": -16777216,
+            "falpha": 0.0
+          },
+          "name": "S",
+          "x": 365,
+          "y": 203
+        }
+      },
+      {
+        "type": "label",
+        "data": {
+          "text": "W",
+          "color": {
+            "value": -16777216,
+            "falpha": 0.0
+          },
+          "name": "W",
+          "x": 430,
+          "y": 140
+        }
+      },
+      {
+        "type": "label",
+        "data": {
+          "text": "I/O",
+          "color": {
+            "value": -16777216,
+            "falpha": 0.0
+          },
+          "name": "I/O",
+          "x": 285,
+          "y": 86
+        }
+      },
+      {
+        "type": "label",
+        "data": {
+          "text": "Ticks",
+          "color": {
+            "value": -16777216,
+            "falpha": 0.0
+          },
+          "name": "Ticks",
+          "x": 519,
+          "y": 85
+        }
+      },
+      {
+        "type": "textfield",
+        "data": {
+          "placeholder": "Ticks",
+          "width": 240,
+          "height": 40,
+          "name": "ticks",
+          "x": 479,
+          "y": 127
+        }
+      },
+      {
+        "type": "button",
+        "data": {
+          "text": "Set",
+          "width": 60,
+          "height": 40,
+          "name": "Set",
+          "x": 516,
+          "y": 179
+        }
+      }
+    ]
+  }
+}

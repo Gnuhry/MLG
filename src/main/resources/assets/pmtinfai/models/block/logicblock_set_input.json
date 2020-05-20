@@ -1,0 +1,64 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "pmtinfai:blocks/texture_logicblock_oben",
+		"2": "pmtinfai:blocks/grundblock/texture_logic_block_seite",
+		"4": "pmtinfai:blocks/grundblock/texture_logicblock_restonetorch_oben",
+		"5": "pmtinfai:blocks/grundblock/texture_logicblock_restonetorch_seite",
+		"8": "pmtinfai:blocks/grundblock/texture_set",
+		"particle": "pmtinfai:blocks/texture_logicblock_oben"
+	},
+	"elements": [
+		{
+			"from": [7, 1.1, 3],
+			"to": [8, 5.1, 4],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -1, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 1, 4], "texture": "#5"},
+				"east": {"uv": [0, 0, 1, 4], "texture": "#5"},
+				"south": {"uv": [0, 0, 1, 4], "texture": "#5"},
+				"west": {"uv": [0, 0, 1, 4], "texture": "#5"},
+				"up": {"uv": [0, 0, 1, 1], "rotation": 180, "texture": "#4"},
+				"down": {"uv": [0, 0, 1, 1], "rotation": 180, "texture": "#4"}
+			}
+		},
+		{
+			"from": [8, 2, 4],
+			"to": [9, 2.1, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -1, 8]},
+			"faces": {
+				"north": {"uv": [8, 0, 9, 1], "texture": "#0"},
+				"east": {"uv": [8, 0, 9, 1], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [8, 0, 9, 1], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [8, 0, 9, 1], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [8, 0, 9, 1], "texture": "#0"},
+				"down": {"uv": [0, 0, 1, 1], "rotation": 180, "texture": "#2"}
+			}
+		},
+		{
+			"from": [7, 2, 0],
+			"to": [9, 2.1, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -1, 8]},
+			"faces": {
+				"north": {"uv": [8, 0, 9, 1], "texture": "#0"},
+				"east": {"uv": [8, 0, 9, 1], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [8, 0, 9, 1], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [8, 0, 9, 1], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#8"},
+				"down": {"uv": [0, 0, 1, 1], "rotation": 180, "texture": "#8"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "restonetorch",
+			"origin": [0, 0, 0],
+			"children": [0]
+		},
+		{
+			"name": "bone",
+			"origin": [0, 0, 0],
+			"children": [1, 2]
+		}
+	]
+}

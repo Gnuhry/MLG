@@ -1,0 +1,42 @@
+{
+  "group": "pmtinfai",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "pmtinfai:cable"
+    },
+    "1": {
+      "item": "minecraft:redstone"
+    },
+    "2": {
+      "item": "pmtinfai:cable"
+    },
+    "3": {
+      "item": "minecraft:redstone"
+    },
+    "4": {
+      "item": "pmtinfai:prozessor"
+    },
+    "5": {
+      "item": "minecraft:redstone"
+    },
+    "6": {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    "7": {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    "8": {
+      "item": "minecraft:smooth_stone_slab"
+    }
+  },
+  "result": {
+    "item": "pmtinfai:logicblock",
+    "count": 1
+  }
+}

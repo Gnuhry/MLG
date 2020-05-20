@@ -1,0 +1,13 @@
+{
+  "mappings": {
+    "default": {
+      "map": {
+        "1": "texture_presse_flach_oben",
+        "2": "texture_presse_flach_seite",
+        "3": "texture8",
+        "4": "texture9"
+      },
+      "name": "default"
+    }
+  }
+}

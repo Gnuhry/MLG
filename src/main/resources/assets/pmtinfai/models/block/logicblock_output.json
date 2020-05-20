@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "pmtinfai:blocks/texture_logicblock_oben",
+		"2": "pmtinfai:blocks/grundblock/texture_logic_block_seite",
+		"particle": "pmtinfai:blocks/texture_logicblock_oben"
+	},
+	"elements": [
+		{
+			"from": [7, 2, 0],
+			"to": [9, 2.1, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 2, 0]},
+			"faces": {
+				"north": {"uv": [8, 0, 9, 1], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [8, 0, 9, 1], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [8, 0, 9, 1], "texture": "#0"},
+				"west": {"uv": [8, 0, 9, 1], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [7, 11, 9, 16], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [0, 0, 1, 1], "texture": "#2"}
+			}
+		}
+	]
+}

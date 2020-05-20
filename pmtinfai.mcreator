@@ -1,10 +1,454 @@
 {
   "id_map": {},
-  "mod_elements": [],
+  "mod_elements": [
+    {
+      "name": "LogicBlocks",
+      "type": "tab",
+      "sortid": 2,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "LogicBlockGUI",
+      "type": "gui",
+      "sortid": 5,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "Input",
+      "type": "item",
+      "sortid": 6,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Output",
+      "type": "item",
+      "sortid": 7,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "InputRezept",
+      "type": "recipe",
+      "sortid": 8,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "OutputRezept",
+      "type": "recipe",
+      "sortid": 9,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Standardcard",
+      "type": "item",
+      "sortid": 10,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "Card",
+      "type": "recipe",
+      "sortid": 10,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "LogicBlock",
+      "type": "block",
+      "sortid": 12,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "FlipFlopGUI",
+      "type": "gui",
+      "sortid": 13,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "FlipFlopBlock",
+      "type": "block",
+      "sortid": 14,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "Tisch",
+      "type": "gui",
+      "sortid": 15,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "Workbench",
+      "type": "block",
+      "sortid": 16,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Table",
+      "type": "gui",
+      "sortid": 17,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "Codebench",
+      "type": "block",
+      "sortid": 18,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "Printer",
+      "type": "block",
+      "sortid": 19,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "PrinterGUI",
+      "type": "gui",
+      "sortid": 20,
+      "compiles": true,
+      "locked_code": true,
+      "ids": {}
+    },
+    {
+      "name": "Resistor",
+      "type": "item",
+      "sortid": 21,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Pin",
+      "type": "item",
+      "sortid": 22,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Memory",
+      "type": "item",
+      "sortid": 23,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Cable",
+      "type": "item",
+      "sortid": 24,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Set",
+      "type": "item",
+      "sortid": 25,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Reset",
+      "type": "item",
+      "sortid": 26,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Clock",
+      "type": "item",
+      "sortid": 27,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "CustomCard",
+      "type": "item",
+      "sortid": 28,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Test",
+      "type": "gui",
+      "sortid": 29,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Prozessor",
+      "type": "item",
+      "sortid": 30,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "WiderstandRezept",
+      "type": "recipe",
+      "sortid": 31,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "KabelRezept",
+      "type": "recipe",
+      "sortid": 32,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "SpeicherRezept",
+      "type": "recipe",
+      "sortid": 33,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "PinRezept",
+      "type": "recipe",
+      "sortid": 34,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "ProzessorRezept",
+      "type": "recipe",
+      "sortid": 35,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "LogikBlockRezept",
+      "type": "recipe",
+      "sortid": 36,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "FlipFlopRezept",
+      "type": "recipe",
+      "sortid": 37,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Timer",
+      "type": "gui",
+      "sortid": 38,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "TimerB",
+      "type": "block",
+      "sortid": 39,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "TischModel",
+      "type": "block",
+      "sortid": 40,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "TischRezept",
+      "type": "recipe",
+      "sortid": 41,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Presse",
+      "type": "item",
+      "sortid": 42,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "PresseRezept",
+      "type": "recipe",
+      "sortid": 43,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "CustomCardRezept",
+      "type": "recipe",
+      "sortid": 44,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "CodeRezept",
+      "type": "recipe",
+      "sortid": 45,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Codeblock",
+      "type": "item",
+      "sortid": 46,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "WorkbenchRezept",
+      "type": "recipe",
+      "sortid": 47,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "ClockRezept",
+      "type": "recipe",
+      "sortid": 48,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "ResetRezept",
+      "type": "recipe",
+      "sortid": 49,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "SetRezept",
+      "type": "recipe",
+      "sortid": 50,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    },
+    {
+      "name": "Tt",
+      "type": "achievement",
+      "sortid": 51,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {}
+    }
+  ],
   "variable_elements": [],
   "sound_elements": [],
   "language_map": {
-    "en_us": {}
+    "en_us": {
+      "item.pmtinfai.cable": "Cable",
+      "item.pmtinfai.codeblock": "Codeblock",
+      "item.pmtinfai.memory": "Memory",
+      "block.pmtinfai.tischmodel": "Tisch Model",
+      "item.pmtinfai.customcard": "Custom Card",
+      "gui.pmtinfai.io": "I/O",
+      "advancements.tt.descr": "hhhhh",
+      "gui.pmtinfai.e": "E",
+      "item.pmtinfai.output": "Output",
+      "item.pmtinfai.pin": "Pin",
+      "item.pmtinfai.presse": "Presse",
+      "itemGroup.tablogicblocks": "Logic Block",
+      "item.pmtinfai.input": "Input",
+      "item.pmtinfai.resistor": "Resistor",
+      "item.pmtinfai.reset": "Reset",
+      "gui.pmtinfai.w": "W",
+      "item.pmtinfai.prozessor": "Prozessor",
+      "block.pmtinfai.timerb": "Timer B",
+      "item.pmtinfai.set": "Set",
+      "gui.pmtinfai.s": "S",
+      "block.pmtinfai.logicblock": "Logic Block",
+      "advancements.tt.title": "Tt",
+      "gui.pmtinfai.n": "N",
+      "item.pmtinfai.standardcard": "Card",
+      "item.pmtinfai.clock": "Clock",
+      "block.pmtinfai.flipflopblock": "FlipFlop Block",
+      "block.pmtinfai.workbench": "Workbench",
+      "gui.pmtinfai.logic": "Logic"
+    },
+    "de_de": {
+      "item.pmtinfai.cable": "Cable",
+      "item.pmtinfai.codeblock": "Codeblock",
+      "item.pmtinfai.memory": "Memory",
+      "block.pmtinfai.tischmodel": "Tisch Model",
+      "item.pmtinfai.customcard": "Custom Card",
+      "gui.pmtinfai.io": "E/A",
+      "advancements.tt.descr": "hhhhh",
+      "gui.pmtinfai.e": "O",
+      "item.pmtinfai.output": "Ausgang",
+      "item.pmtinfai.pin": "Pin",
+      "item.pmtinfai.presse": "Presse",
+      "itemGroup.tablogicblocks": "Logik Block",
+      "item.pmtinfai.input": "Eingang",
+      "item.pmtinfai.resistor": "Resistor",
+      "item.pmtinfai.reset": "Reset",
+      "gui.pmtinfai.w": "W",
+      "item.pmtinfai.prozessor": "Prozessor",
+      "block.pmtinfai.timerb": "Timer B",
+      "item.pmtinfai.set": "Set",
+      "gui.pmtinfai.s": "S",
+      "block.pmtinfai.logicblock": "Logik Block",
+      "advancements.tt.title": "Tt",
+      "gui.pmtinfai.n": "N",
+      "item.pmtinfai.standardcard": "Karte",
+      "item.pmtinfai.clock": "Clock",
+      "block.pmtinfai.flipflopblock": "FlipFlop Block",
+      "block.pmtinfai.workbench": "Werkbank",
+      "gui.pmtinfai.logic": "Logik"
+    }
   },
   "workspaceSettings": {
     "modid": "pmtinfai",
@@ -19,6 +463,7 @@
     "dependants": [],
     "mcreatorDependencies": [],
     "currentGenerator": "1.14.4",
+    "credits": "Created using mod maker MCreator - https://mcreator.net/about",
     "modElementsPackage": "net.mcreator.pmtinfai",
     "lockBaseModFiles": false
   },

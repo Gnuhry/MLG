@@ -1,0 +1,79 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "pmtinfai:block/logicblock_base"
+      }
+    },
+    {
+      "when": {
+            "input1_side": "north"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_input",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+            "input1_side": "east"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_input",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+            "input1_side": "south"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_input"
+      }
+    },
+    {
+      "when": {
+            "input1_side": "west"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_input",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "output": "north"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_output",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "output": "east"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_output",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "output": "south"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_output"
+      }
+    },
+    {
+      "when": {
+        "output": "west"
+      },
+      "apply": {
+        "model": "pmtinfai:block/logicblock_output",
+        "y": 90
+      }
+    }
+  ]
+}
