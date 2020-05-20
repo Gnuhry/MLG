@@ -4,6 +4,7 @@
 ![GitHub issues](https://img.shields.io/github/issues/Gnuhry/PM_TINF19AI2)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Gnuhry/PM_TINF19AI2)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Gnuhry/PM_TINF19AI2)
+![Minecraft CI](https://github.com/Gnuhry/MLG/workflows/Minecraft%20CI/badge.svg)
 
 The minecraft mod for logic-gates like and , or, rs-flipflops and more.
 
